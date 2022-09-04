@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:plandroid/screens/home.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

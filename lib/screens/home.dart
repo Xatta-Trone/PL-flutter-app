@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/constants/const.dart';
+import 'package:plandroid/controller/BottomNavigationBarController.dart';
 import 'package:plandroid/controller/DashboardController.dart';
 import 'package:plandroid/screens/books/books.dart';
 import 'package:plandroid/screens/dashboard/dashboard.dart';
@@ -16,13 +17,17 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final BottomNavigationBarController botNavController =
+        Get.put(BottomNavigationBarController());
+
     final DashboardController dashboardController =
         Get.put(DashboardController());
+
     return SafeArea(
       child: Scaffold(
           body: Obx(
             () => IndexedStack(
-              index: dashboardController.tabIndex.value,
+              index: botNavController.tabIndex.value,
               children: const [
                 Dashboard(),
                 Departments(),
@@ -35,8 +40,8 @@ class Home extends StatelessWidget {
           ),
           bottomNavigationBar: Obx(
             () => BottomNavigationBar(
-              currentIndex: dashboardController.tabIndex.value,
-              onTap: dashboardController.changeTabIndex,
+              currentIndex: botNavController.tabIndex.value,
+              onTap: botNavController.changeTabIndex,
               showSelectedLabels: false,
               showUnselectedLabels: false,
               selectedItemColor: selectedColor,
@@ -93,8 +98,12 @@ class Home extends StatelessWidget {
             onPressed: () {
               print('search clicked');
               Get.to(const Search());
+              // dashboardController.getQuote();
             },
-            child: const FaIcon(FontAwesomeIcons.magnifyingGlass),
+            child: const FaIcon(
+              FontAwesomeIcons.magnifyingGlass,
+              size: iconSize,
+            ),
           )),
     );
   }
