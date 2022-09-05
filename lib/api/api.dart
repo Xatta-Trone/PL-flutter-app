@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:plandroid/constants/const.dart';
@@ -16,6 +15,8 @@ class Api {
   static Dio createDio() {
     var dio = Dio(BaseOptions(
       baseUrl: apiUrl,
+      headers: {'Accept': 'application/json'}
+            // responseType: ResponseType.json
       // receiveTimeout: 15000, // 15 seconds
       // connectTimeout: 15000,
       // sendTimeout: 15000,

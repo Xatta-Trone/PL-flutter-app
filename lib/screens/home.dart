@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/constants/const.dart';
+import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/controller/BottomNavigationBarController.dart';
 import 'package:plandroid/controller/DashboardController.dart';
 import 'package:plandroid/screens/books/books.dart';
@@ -22,6 +23,8 @@ class Home extends StatelessWidget {
 
     final DashboardController dashboardController =
         Get.put(DashboardController());
+
+    final AuthController authController = Get.put(AuthController());
 
     return SafeArea(
       child: Scaffold(
@@ -44,8 +47,8 @@ class Home extends StatelessWidget {
               onTap: botNavController.changeTabIndex,
               showSelectedLabels: false,
               showUnselectedLabels: false,
-              selectedItemColor: selectedColor,
-              unselectedItemColor: unSelectedColor,
+              selectedItemColor: Colors.cyan,
+              unselectedItemColor: Colors.grey,
               type: BottomNavigationBarType.fixed,
               backgroundColor: bottomBgColor,
               items: const [
@@ -97,8 +100,9 @@ class Home extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               print('search clicked');
-              Get.to(const Search());
-              // dashboardController.getQuote();
+              // Get.to(const Search());
+              // dashboardController.getId();
+              authController.login();
             },
             child: const FaIcon(
               FontAwesomeIcons.magnifyingGlass,

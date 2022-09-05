@@ -19,4 +19,4 @@ const tutorCircleAvatarColor = primaryColor;
 
 //search page
 
-const searchAppbarBg = primaryColor;
+const searchAppBarBg = primaryColor;
