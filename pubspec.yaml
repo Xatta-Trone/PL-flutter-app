@@ -41,6 +41,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   device_info_plus: ^4.1.2
   platform_device_id: ^1.0.1
+  flutter_svg: ^1.1.4
+  animated_text_kit: ^4.2.2
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:
@@ -101,6 +104,8 @@ flutter:
           weight: 400
         - asset: assets/fonts/Nunito/Nunito-SemiBold.ttf
           weight: 600
+  assets:
+    - assets/images/
 
   #   - family: Trajan Pro
   #     fonts:

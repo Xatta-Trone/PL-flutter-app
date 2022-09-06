@@ -107,6 +107,7 @@ class Home extends StatelessWidget {
             child: const FaIcon(
               FontAwesomeIcons.magnifyingGlass,
               size: iconSize,
+              color: Colors.white,
             ),
           )),
     );

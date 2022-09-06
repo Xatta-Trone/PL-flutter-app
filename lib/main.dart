@@ -18,6 +18,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.cyan,
         fontFamily: 'Nunito',
+        scaffoldBackgroundColor: Colors.grey[200]
+        
       ),
       home: const Home(),
     );

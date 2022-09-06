@@ -20,3 +20,13 @@ const tutorCircleAvatarColor = primaryColor;
 //search page
 
 const searchAppBarBg = primaryColor;
+
+// Animated text style
+
+const TextStyle animatedText = TextStyle(
+  fontSize: 32.0,
+  fontWeight: FontWeight.w600,
+  color: Colors.black87,
+);
+
+const animatedTextDuration = Duration(milliseconds: 180);

@@ -12,13 +12,9 @@ class DashboardController extends GetxController {
   Future<void> getQuote() async {
     try {
       var response = await Api().dio.get('/quote');
-      // var dio = Dio(BaseOptions(baseUrl: apiUrl));
-      // var response = await dio.get('/quote');
       print(response.data['data']);
-
       quote.value = Quote.fromJson(response.data);
-      update();
-      print(quote);
+
     } catch (e) {
       print(e);
     }
@@ -37,9 +33,41 @@ class DashboardController extends GetxController {
     print("devide id ${deviceId}");
   }
 
+  String greetingText() {
+    var hour = DateTime.now().hour;
+    String text = 'Welcome';
+
+    if (hour <= 12) {
+      text = "Good Morning";
+    } else if ((hour > 12) && (hour <= 16)) {
+      text = "Good Afternoon";
+    } else if ((hour > 16) && (hour < 20)) {
+      text = "Good Evening";
+    } else {
+      text = "Good Night";
+    }
+    return "$text !!";
+  }
+
+  String getHello() {
+    var list = [
+      'Hello !',
+      'Hola !',
+      'Bonjour !',
+      'Salve !',
+      'Nǐn hǎo !',
+      'Asalaam-alaikum !',
+      'Konnichiwa !',
+      'Anyoung haseyo !',
+      'Zdravstvuyte !'
+    ];
+    return (list..shuffle()).first;
+  }
+
   @override
   void onInit() {
     super.onInit();
+    getQuote();
   }
 
   @override
