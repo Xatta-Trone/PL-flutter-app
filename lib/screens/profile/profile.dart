@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:plandroid/constants/const.dart';
 import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/globals/globals.dart';
@@ -314,10 +315,14 @@ class Profile extends StatelessWidget {
                         color: iconColor,
                         size: iconSize,
                       ),
-                      onTap: () {
+                      onTap: () async {
+                        final info = await PackageInfo.fromPlatform();
                         if (kDebugMode) {
-                          print('change password');
+                          print(
+                              'https://play.google.com/store/apps/details?id=${info.packageName}');
                         }
+                        Globals.launchURL(
+                            "https://play.google.com/store/apps/details?id=${info.packageName}");
                       },
                     ),
                   ],
