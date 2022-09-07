@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.cyan,
         fontFamily: 'Nunito',
         scaffoldBackgroundColor: Colors.grey[200],
+        // ignore: prefer_const_constructors
         iconTheme: IconThemeData(
           color: Colors.white,
         ),

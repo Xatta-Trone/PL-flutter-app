@@ -7,3 +7,4 @@ const String profilePage = '/profile';
 const String searchPage = '/search';
 const String settingsPage = '/settings';
 const String notFoundPage = '/404';
+const String appInfo = '/appInfo';

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:plandroid/constants/const.dart';
 import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/globals/globals.dart';
+import 'package:plandroid/routes/routeconst.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatelessWidget {
@@ -278,8 +279,9 @@ class Profile extends StatelessWidget {
                       ),
                       onTap: () {
                         if (kDebugMode) {
-                          print('change password');
+                          print('App info');
                         }
+                        Get.toNamed(appInfo);
                       },
                     ),
                     divider,

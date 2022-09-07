@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:plandroid/routes/routeconst.dart';
 import 'package:plandroid/screens/404/404.dart';
+import 'package:plandroid/screens/appinfo/appinfo.dart';
 import 'package:plandroid/screens/books/books.dart';
 import 'package:plandroid/screens/dashboard/dashboard.dart';
 import 'package:plandroid/screens/departments/departments.dart';
@@ -55,6 +56,11 @@ appRoutes() => [
       GetPage(
         name: dashboardPage,
         page: () => const Dashboard(),
+        middlewares: [MyMiddelware()],
+      ),
+      GetPage(
+        name: appInfo,
+        page: () => const AppInfo(),
         middlewares: [MyMiddelware()],
       ),
     ];
