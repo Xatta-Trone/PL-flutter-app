@@ -30,3 +30,13 @@ const TextStyle animatedText = TextStyle(
 );
 
 const animatedTextDuration = Duration(milliseconds: 180);
+
+// profile page icon color
+const iconColor = Colors.black87;
+
+// divider
+const divider = Divider(
+  thickness: 1.0,
+  height: 0.01,
+  color: Colors.white70,
+);

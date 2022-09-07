@@ -20,7 +20,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.cyan,
         fontFamily: 'Nunito',
-        scaffoldBackgroundColor: Colors.grey[200]
+        scaffoldBackgroundColor: Colors.grey[200],
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
         
       ),
       initialRoute: homePage,

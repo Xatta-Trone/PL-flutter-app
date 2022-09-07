@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
@@ -5,6 +7,9 @@ import 'package:plandroid/api/api.dart';
 import 'package:plandroid/constants/const.dart';
 import 'package:plandroid/models/Quote.dart';
 import 'package:platform_device_id/platform_device_id.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../constants/sharedPrefConstants.dart';
 
 class DashboardController extends GetxController {
   final quote = Rxn<Quote>();
@@ -12,8 +17,17 @@ class DashboardController extends GetxController {
   Future<void> getQuote() async {
     try {
       var response = await Api().dio.get('/quote');
-      print(response.data['data']);
-      quote.value = Quote.fromJson(response.data);
+
+      print('=========== set current quote ================');
+      final SharedPreferences preferences =
+          await SharedPreferences.getInstance();
+
+      if (response.data != null) {
+        // update state
+        quote.value = Quote.fromJson(response.data);
+        // save data
+        preferences.setString(quoteKey, jsonEncode(quote.value));
+      }
 
     } catch (e) {
       print(e);
@@ -62,6 +76,17 @@ class DashboardController extends GetxController {
       'Zdravstvuyte !'
     ];
     return (list..shuffle()).first;
+  }
+
+  Future<void> getCurrentQuote() async {
+    print('=========== get current quote ================');
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? quoteData = preferences.getString(quoteKey);
+
+    if (quoteData != null) {
+      Map<String, dynamic> jsonQuoteData = jsonDecode(quoteData);
+      quote.value = Quote.fromJson(jsonQuoteData);
+    }
   }
 
   @override

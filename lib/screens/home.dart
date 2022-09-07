@@ -37,7 +37,7 @@ class Home extends StatelessWidget {
                 Books(),
                 Softwares(),
                 Profile(),
-                Settings(),
+                // Settings(),
               ],
             ),
           ),
@@ -68,7 +68,7 @@ class Home extends StatelessWidget {
                 ),
                 BottomNavigationBarItem(
                   icon: FaIcon(
-                    FontAwesomeIcons.bookOpen,
+                    FontAwesomeIcons.book,
                     size: iconSize,
                   ),
                   label: 'Books',
@@ -87,13 +87,13 @@ class Home extends StatelessWidget {
                   ),
                   label: 'Profile',
                 ),
-                BottomNavigationBarItem(
-                  icon: FaIcon(
-                    FontAwesomeIcons.gear,
-                    size: iconSize,
-                  ),
-                  label: 'Settings',
-                ),
+                // BottomNavigationBarItem(
+                //   icon: FaIcon(
+                //     FontAwesomeIcons.gear,
+                //     size: iconSize,
+                //   ),
+                //   label: 'Settings',
+                // ),
               ],
             ),
           ),
@@ -103,6 +103,7 @@ class Home extends StatelessWidget {
               // Get.to(const Search());
               // dashboardController.getId();
               authController.login();
+              // authController.autoLogin();
             },
             child: const FaIcon(
               FontAwesomeIcons.magnifyingGlass,

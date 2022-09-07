@@ -8,8 +8,6 @@ import 'package:plandroid/controller/DashboardController.dart';
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key}) : super(key: key);
 
-  
-
   @override
   Widget build(BuildContext context) {
     final DashboardController dashboardController =
@@ -70,12 +68,12 @@ class Dashboard extends StatelessWidget {
               ),
             ),
             
-            
             Obx(
               () => Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 10.0),
-                child: Container(
+                child: dashboardController.quote.value != null
+                    ? Container(
                   decoration: BoxDecoration(
                     color: Colors.redAccent,
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -112,7 +110,8 @@ class Dashboard extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
+                      )
+                    : null,
               ),
             )
           ],

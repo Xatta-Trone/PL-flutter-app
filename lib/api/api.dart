@@ -1,5 +1,6 @@
 
 import 'package:dio/dio.dart';
+import 'package:plandroid/api/authInterceptor.dart';
 import 'package:plandroid/constants/const.dart';
 
 class Api {
@@ -22,9 +23,9 @@ class Api {
       // sendTimeout: 15000,
     ));
 
-    // dio.interceptors.addAll({
-    //   // AppInterceptors(dio),
-    // });
+    dio.interceptors.addAll({
+      AuthInterceptor(),
+    });
     return dio;
   }
 }
