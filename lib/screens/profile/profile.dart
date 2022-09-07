@@ -4,6 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/constants/const.dart';
 import 'package:plandroid/controller/AuthController.dart';
+import 'package:plandroid/globals/globals.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
@@ -237,8 +239,10 @@ class Profile extends StatelessWidget {
                       ),
                       onTap: () {
                         if (kDebugMode) {
-                          print('change password');
+                          print('follow us');
                         }
+                        Globals.launchURL(
+                            "https://www.facebook.com/thepltutorials");
                       },
                     ),
                     divider,
@@ -253,10 +257,11 @@ class Profile extends StatelessWidget {
                         color: iconColor,
                         size: iconSize,
                       ),
-                      onTap: () {
+                      onTap: () async {
                         if (kDebugMode) {
-                          print('change password');
+                          print('Visit website');
                         }
+                        Globals.launchURL("https://pl-tutorials.com/");
                       },
                     ),
                     divider,
