@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:plandroid/routes/routeconst.dart';
+import 'package:plandroid/routes/routes.dart';
 import 'package:plandroid/screens/home.dart';
 
 void main() {
@@ -21,7 +23,9 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.grey[200]
         
       ),
-      home: const Home(),
+      initialRoute: homePage,
+      getPages: appRoutes(),
+      unknownRoute: unknownRoute(),
     );
   }
 }
