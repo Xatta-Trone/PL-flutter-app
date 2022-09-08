@@ -7,13 +7,16 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:plandroid/api/api.dart';
 import 'package:plandroid/constants/sharedPrefConstants.dart';
+import 'package:plandroid/globals/globals.dart';
 import 'package:plandroid/models/User.dart';
+import 'package:plandroid/routes/routeconst.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
   final isLoggedIn = RxBool(false);
   RxBool isInAsyncCall = RxBool(false);
+  RxBool isPwdReqSuccess = RxBool(false);
   final user = Rxn<User>();
   final RxString token = ''.obs;
 
@@ -22,6 +25,11 @@ class AuthController extends GetxController {
   // login text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  TextEditingController pwdResetEmailController = TextEditingController();
+  TextEditingController changePwdController = TextEditingController();
+  TextEditingController changePwdConfirmationController =
+      TextEditingController();
+  TextEditingController pwdCodeController = TextEditingController();
 
   // validation
 
@@ -116,6 +124,100 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<void> requestPassword() async {
+    // set async call to true
+    isInAsyncCall.value = true;
+
+    try {
+      var response = await Api().dio.post('/request-password', data: {
+        'email': pwdResetEmailController.value.text,
+      });
+
+      // isPwdReqSuccess.value = true;
+
+      Get.toNamed(changePassword);
+
+      print(response.data);
+    } on DioError catch (e) {
+      // server sent a res back with err
+      if (e.response != null) {
+        print(e.response);
+        print(e.response?.data['status']);
+
+        isPwdReqSuccess.value = false;
+
+        String errData = Globals().formatText(
+            e.response?.data['message'] ?? 'Something unknown occurred');
+
+        Get.defaultDialog(
+          title: 'Error !!',
+          middleText: "${e.response?.statusCode}: $errData",
+          textConfirm: ('Okay'),
+          onConfirm: () => Get.back(),
+        );
+      } else {
+        print(e.message);
+      }
+    } finally {
+      // async call complete
+      isInAsyncCall.value = false;
+    }
+  }
+
+  Future<void> resetPassword() async {
+    // set async call to true
+    isInAsyncCall.value = true;
+
+    try {
+      var response = await Api().dio.post('/reset-password', data: {
+        'email': pwdResetEmailController.value.text,
+        'password': changePwdController.value.text,
+        'password_confirmation': changePwdConfirmationController.value.text,
+        'token': pwdCodeController.value.text
+      });
+
+      // cleanup
+      pwdResetEmailController.clear();
+      changePwdController.clear();
+      changePwdConfirmationController.clear();
+      pwdCodeController.clear();
+
+      // Get.toNamed(changePassword);
+      Get.defaultDialog(
+        title: 'Success !!',
+        middleText:
+            "Password changed successfully. Now login into your account.",
+        textConfirm: ('Okay'),
+        onConfirm: () => Get.offAllNamed(homePage),
+      );
+
+      print(response.data);
+    } on DioError catch (e) {
+      // server sent a res back with err
+      if (e.response != null) {
+        print(e.response);
+        print(e.response?.data['status']);
+
+        isPwdReqSuccess.value = false;
+
+        String errData = Globals().formatText(
+            e.response?.data['message'] ?? 'Something unknown occurred');
+
+        Get.defaultDialog(
+          title: 'Error !!',
+          middleText: "${e.response?.statusCode}: $errData",
+          textConfirm: ('Okay'),
+          onConfirm: () => Get.back(),
+        );
+      } else {
+        print(e.message);
+      }
+    } finally {
+      // async call complete
+      isInAsyncCall.value = false;
+    }
+  }
+
   Future<void> logout() async {
     try {
       var response = await Api().dio.get('/logout');
@@ -182,6 +284,10 @@ class AuthController extends GetxController {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    pwdResetEmailController.dispose();
+    changePwdController.dispose();
+    changePwdConfirmationController.dispose();
+    pwdCodeController.dispose();
     super.dispose();
   }
 }

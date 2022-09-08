@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:plandroid/routes/routeconst.dart';
 import 'package:plandroid/screens/404/404.dart';
 import 'package:plandroid/screens/appinfo/appinfo.dart';
+import 'package:plandroid/screens/auth/ChangePassword.dart';
 import 'package:plandroid/screens/auth/Login.dart';
 import 'package:plandroid/screens/auth/Register.dart';
 import 'package:plandroid/screens/auth/requestPassword.dart';
@@ -82,8 +83,8 @@ appRoutes() => [
         middlewares: [MyMiddelware()],
       ),
       GetPage(
-        name: requestPassword,
-        page: () => const RequestPassword(),
+        name: changePassword,
+        page: () => const ChangePassword(),
         middlewares: [MyMiddelware()],
       ),
     ];
