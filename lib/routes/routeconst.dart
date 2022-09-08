@@ -8,3 +8,7 @@ const String searchPage = '/search';
 const String settingsPage = '/settings';
 const String notFoundPage = '/404';
 const String appInfo = '/appInfo';
+const String login = '/login';
+const String register = '/register';
+const String requestPassword = '/requestPassword';
+const String changePassword = '/changePassword';

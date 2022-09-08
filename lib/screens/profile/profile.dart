@@ -7,6 +7,7 @@ import 'package:plandroid/constants/const.dart';
 import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/globals/globals.dart';
 import 'package:plandroid/routes/routeconst.dart';
+import 'package:plandroid/screens/auth/Login.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatelessWidget {
@@ -21,9 +22,7 @@ class Profile extends StatelessWidget {
     return SafeArea(
       child: Obx(
         () => !authController.isLoggedIn.value
-            ? const Center(
-                child: Text('not logged in'),
-              )
+            ? const Login()
             : SingleChildScrollView(
                 child: Column(
                   children: [
@@ -158,7 +157,7 @@ class Profile extends StatelessWidget {
                     divider,
                     ListTile(
                       leading: const FaIcon(
-                        FontAwesomeIcons.key,
+                        FontAwesomeIcons.lock,
                         color: iconColor,
                       ),
                       title: const Text('Change password'),

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:plandroid/api/api.dart';
@@ -12,8 +13,55 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
   final isLoggedIn = RxBool(false);
+  RxBool isInAsyncCall = RxBool(false);
   final user = Rxn<User>();
   final RxString token = ''.obs;
+
+  String serverValidationErr = '';
+
+  // login text editing controllers
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  // validation
+
+  String? get emailErrorText {
+    // at any time, we can get the text from _controller.value.text
+    // final text = emailController.value.text;
+    // Note: you can do your own custom validation here
+    // Move this logic this outside the widget for more testable code
+    // final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
+    // if (text.isEmpty) {
+    //   return 'Please enter your email.';
+    // }
+
+    // if (text.isNotEmpty && emailRegExp.hasMatch(text) == false) {
+    //   return 'Please enter a valid email.';
+    // }
+
+    if (serverValidationErr.isNotEmpty) {
+      return serverValidationErr;
+    }
+
+    // return null if the text is valid
+    return null;
+  }
+
+  String? get passwordErrorText {
+    // at any time, we can get the text from _controller.value.text
+    final text = passwordController.value.text;
+    // Note: you can do your own custom validation here
+
+    // if (text.length < 2 || text.isEmpty) {
+    //   return 'Please enter your password.';
+    // }
+
+    // return null if the text is valid
+    return null;
+  }
+
+  // functions
 
   Future<String?> getDeviceId() async {
     String? deviceId = await PlatformDeviceId.getDeviceId;
@@ -28,11 +76,12 @@ class AuthController extends GetxController {
 
     String deviceName =
         "Android ${androidInfo.version.sdkInt} on ${androidInfo.model}";
+    isInAsyncCall.value = true;
 
     try {
       var response = await Api().dio.post('/login', data: {
-        'email': 'md-monzurul-islam1404143@example.com',
-        'password': 'password',
+        'email': emailController.value.text,
+        'password': passwordController.value.text,
         'fingerprint': deviceId,
         'deviceName': deviceName,
         'platform': 'android'
@@ -62,6 +111,8 @@ class AuthController extends GetxController {
       } else {
         print(e.message);
       }
+    } finally {
+      isInAsyncCall.value = false;
     }
   }
 
@@ -123,12 +174,14 @@ class AuthController extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
     autoLogin();
+    super.onInit();
   }
 
   @override
   void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 }
