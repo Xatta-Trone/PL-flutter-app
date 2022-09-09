@@ -8,7 +8,6 @@ import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/globals/globals.dart';
 import 'package:plandroid/routes/routeconst.dart';
 import 'package:plandroid/screens/auth/Login.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
@@ -309,6 +308,29 @@ class Profile extends StatelessWidget {
                         color: iconColor,
                       ),
                       title: const Text('Check for updates'),
+                      trailing: const FaIcon(
+                        FontAwesomeIcons.chevronRight,
+                        color: iconColor,
+                        size: iconSize,
+                      ),
+                      onTap: () async {
+                        final info = await PackageInfo.fromPlatform();
+                        if (kDebugMode) {
+                          print(
+                              'https://play.google.com/store/apps/details?id=${info.packageName}');
+                        }
+                        Globals.launchURL(
+                            "https://play.google.com/store/apps/details?id=${info.packageName}");
+                      },
+                    ),
+                    
+                    divider,
+                    ListTile(
+                      leading: const FaIcon(
+                        FontAwesomeIcons.star,
+                        color: iconColor,
+                      ),
+                      title: const Text('Rate the app'),
                       trailing: const FaIcon(
                         FontAwesomeIcons.chevronRight,
                         color: iconColor,

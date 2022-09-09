@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  modal_progress_hud_nsn
   platform_device_id_windows
   url_launcher_windows
 )
