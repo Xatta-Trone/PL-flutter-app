@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -25,11 +26,23 @@ class AuthController extends GetxController {
   // login text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  // change password
   TextEditingController pwdResetEmailController = TextEditingController();
   TextEditingController changePwdController = TextEditingController();
   TextEditingController changePwdConfirmationController =
       TextEditingController();
   TextEditingController pwdCodeController = TextEditingController();
+
+  // register page
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailRegisterController = TextEditingController();
+  TextEditingController meritPosController = TextEditingController();
+  TextEditingController studentIdController = TextEditingController();
+  RxString hallNameController = ''.obs;
+
+  // variables
+  RxList<String> halls = (List<String>.of([])).obs;
 
   // validation
 
@@ -227,7 +240,9 @@ class AuthController extends GetxController {
       setLogoutValues();
       // server sent a res back with err
       if (e.response != null) {
-        print(e.response);
+        if (kDebugMode) {
+          print(e.response);
+        }
         Get.defaultDialog(
           title: 'Error !!',
           middleText:
@@ -251,6 +266,29 @@ class AuthController extends GetxController {
       setLoginValues(jsonUserData);
     }
   }
+
+  Future<void> getHalls() async {
+    try {
+      var response = await Api().dio.get('/halls');
+
+      if (response.data != null) {
+        // update state
+        print(response.data['data']);
+        halls.value = List<String>.from(response.data['data']);
+        // insert select
+        // halls.insert(0, 'Select your hall');
+        // return hallList;
+        // print(halls);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void setSelectedHall(String hall) {
+    hallNameController.value = hall;
+  }
+
 
   void setLoginValues(userData) {
     user.value = User.fromJson(userData);

@@ -14,12 +14,11 @@ class RequestPassword extends StatefulWidget {
 }
 
 final _formKey = GlobalKey<FormState>();
-
+final AuthController _authController = Get.find<AuthController>();
 class _RequestPasswordState extends State<RequestPassword> {
   @override
   Widget build(BuildContext context) {
   
-    final AuthController _authController = Get.find<AuthController>();
     return Scaffold(
       body: SafeArea(
         child: Obx(
