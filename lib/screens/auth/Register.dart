@@ -25,8 +25,9 @@ enum UserType { currentStudent, alumni, outsider }
 
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
-  bool _obscureText = true; // for password toggle
+  bool _isStudentIDSet = true; // for password toggle
   var image;
+
   // final controller = BarcodeFinderController();
 
   Future<String?> scanFile() async {
@@ -44,11 +45,33 @@ class _RegisterState extends State<Register> {
         // print(res);
         try {
           var res = await BarcodeFinder.scanFile(path: filePath);
-          print(res);
-          _authController.studentIdController.text = res.toString();
-          openDialog(res.toString());
+          if (kDebugMode) {
+            print(res);
+          }
+
+          String decodedSID = res.toString();
+
+          if (decodedSID.startsWith('S') && decodedSID.length == 10) {
+            _authController.studentIdController.text = decodedSID;
+            setState(() {
+              _isStudentIDSet = true;
+            });
+          } else {
+            _authController.studentIdController.clear();
+            setState(() {
+              _isStudentIDSet = false;
+            });
+            openDialog(
+                'There is a problem with this image. Please choose a clear one.');
+          }
+          // openDialog(res.toString());
         } catch (e) {
-          openDialog('could not read');
+          _authController.studentIdController.clear();
+          setState(() {
+            _isStudentIDSet = false;
+          });
+          openDialog(
+              'There is a problem with this image. Please choose a clear one.');
         }
       }
     }
@@ -149,6 +172,8 @@ class _RegisterState extends State<Register> {
                                               filled: true,
                                               fillColor: Colors.white,
                                               hintText: "Your official name",
+                                              helperText:
+                                                  'According to your student ID',
                                               border: OutlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(5),
@@ -193,34 +218,7 @@ class _RegisterState extends State<Register> {
                                               filled: true,
                                               fillColor: Colors.white,
                                               hintText: "E-mail address",
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                borderSide: BorderSide.none,
-                                              ),
-                                            ),
-                                          ),
-                                          TextFormField(
-                                            controller: _authController
-                                                .studentIdController,
-                                            autovalidateMode: AutovalidateMode
-                                                .onUserInteraction,
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return 'Please enter your email';
-                                              }
-
-                                              return null;
-                                            },
-                                            onChanged: (value) {
-                                              if (value.isNotEmpty) {
-                                                setState(() {});
-                                              }
-                                            },
-                                            decoration: InputDecoration(
-                                              filled: true,
-                                              fillColor: Colors.white,
+                                              helperText: 'Gmail is preferred',
                                               border: OutlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(5),
@@ -231,6 +229,40 @@ class _RegisterState extends State<Register> {
                                           const SizedBox(
                                             height: 15.0,
                                           ),
+                                          Visibility(
+                                            visible: false,
+                                            child: TextFormField(
+                                              controller: _authController
+                                                  .studentIdController,
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.isEmpty) {
+                                                  return 'Please enter your student id';
+                                                }
+
+                                                return null;
+                                              },
+                                              onChanged: (value) {
+                                                if (value.isNotEmpty) {
+                                                  setState(() {});
+                                                }
+                                              },
+                                              decoration: InputDecoration(
+                                                filled: true,
+                                                fillColor: Colors.white,
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  borderSide: BorderSide.none,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          // const SizedBox(
+                                          //   height: 15.0,
+                                          // ),
                                           TextFormField(
                                             controller: _authController
                                                 .meritPosController,
@@ -325,7 +357,8 @@ class _RegisterState extends State<Register> {
                                               scanFile();
                                             },
                                             child: const Text(
-                                                'Back side photo of student id'),
+                                              'Select the back side photo of student id',
+                                            ),
                                           ),
                                           if (image != null) ...[
                                             const SizedBox(
@@ -348,14 +381,37 @@ class _RegisterState extends State<Register> {
                                                   const Size.fromHeight(
                                                       50.0), // NEW
                                             ),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              if (kDebugMode) {
+                                                print(_formKey.currentState!
+                                                    .validate());
+                                              }
+
+                                              if (!_isStudentIDSet) {
+                                                openDialog(
+                                                    'There was an error with the photo. Please use a different one.');
+                                              }
+
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                FocusManager
+                                                    .instance.primaryFocus
+                                                    ?.unfocus();
+
+                                                _formKey.currentState!.save();
+                                                _authController.register();
+                                              }
+                                            },
                                             child: Text(
                                               'Register',
                                               style: txtTheme.headline6
                                                   ?.copyWith(
                                                       color: Colors.white),
                                             ),
-                                          )
+                                          ),
+                                          const SizedBox(
+                                            height: 25.0,
+                                          ),
                                         ],
                                       ),
                                     ),

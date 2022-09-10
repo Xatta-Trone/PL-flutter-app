@@ -44,6 +44,20 @@ class AuthController extends GetxController {
   // variables
   RxList<String> halls = (List<String>.of([])).obs;
 
+  void clearValues() {
+    emailController.clear();
+    passwordController.clear();
+    pwdResetEmailController.clear();
+    changePwdController.clear();
+    changePwdConfirmationController.clear();
+    pwdCodeController.clear();
+    nameController.clear();
+    emailRegisterController.clear();
+    meritPosController.clear();
+    studentIdController.clear();
+    hallNameController.value = '';
+  }
+
   // validation
 
   String? get emailErrorText {
@@ -289,6 +303,90 @@ class AuthController extends GetxController {
     hallNameController.value = hall;
   }
 
+  Future<void> register() async {
+    isInAsyncCall.value = true;
+    try {
+      var response = await Api().dio.post('/register', data: {
+        'name': nameController.value.text,
+        'email': emailRegisterController.value.text,
+        'merit_position': meritPosController.value.text,
+        'hall_name': hallNameController.value,
+        'student_id': studentIdController.value.text,
+      });
+
+      clearValues();
+
+      Get.defaultDialog(
+        title: 'Success !!',
+        middleText:
+            "Account created successfully. Please check your email (also spam) for the password.",
+        textConfirm: ('Okay'),
+        onConfirm: () => Get.offAllNamed(homePage),
+      );
+    } on DioError catch (e) {
+      // server sent a res back with err
+      if (e.response != null) {
+        if (kDebugMode) {
+          print(e.response);
+        }
+
+        // check if validation err occurred
+        if (e.response?.data['errors'] != null) {
+          String combinedMessage = "";
+          e.response?.data['errors'].forEach((key, messages) {
+            for (var message in messages) {
+              combinedMessage = "$combinedMessage- $message\n";
+            }
+          });
+
+          return Get.defaultDialog(
+            title: 'Error !!',
+            middleText: "${e.response?.statusCode}: $combinedMessage",
+            textConfirm: ('Okay'),
+            onConfirm: () => Get.back(),
+          );
+        }
+
+        String errData = Globals().formatText(
+            e.response?.data['message'] ?? 'Something unknown occurred');
+
+        // var res = json.decode(e.response?.data['errors']);
+
+        if (kDebugMode) {
+          print(e.response?.data['errors']);
+          // String combinedMessage = "";
+
+          // e.response?.data['errors'].forEach((key, messages) {
+          //   for (var message in messages) {
+          //     combinedMessage = combinedMessage + "- $message\n";
+          //   }
+          // });
+
+          // print(combinedMessage);
+        }
+
+        Get.defaultDialog(
+          title: 'Error !!',
+          middleText: "${e.response?.statusCode}: $errData",
+          textConfirm: ('Okay'),
+          onConfirm: () => Get.back(),
+        );
+      } else {
+        if (kDebugMode) {
+          print(e.message);
+        }
+        Get.defaultDialog(
+          title: 'Error !!',
+          middleText:
+              "${e.response?.statusCode}: Something unexpected occurred. ${e.message}",
+          textConfirm: ('Okay'),
+          onConfirm: () => Get.back(),
+        );
+      }
+    } finally {
+      isInAsyncCall.value = false;
+    }
+  }
 
   void setLoginValues(userData) {
     user.value = User.fromJson(userData);
