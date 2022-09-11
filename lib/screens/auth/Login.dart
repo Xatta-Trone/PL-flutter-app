@@ -123,11 +123,11 @@ class _LoginState extends State<Login> {
                               child: GestureDetector(
                                 child: _obscureText
                                     ? const FaIcon(
-                                        FontAwesomeIcons.eye,
+                                        FontAwesomeIcons.eyeSlash,
                                         size: 18,
                                       )
                                     : const FaIcon(
-                                        FontAwesomeIcons.eyeSlash,
+                                        FontAwesomeIcons.eye,
                                         size: 18,
                                       ),
                                 onTap: () {

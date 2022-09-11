@@ -69,8 +69,14 @@ class _BooksState extends State<Books> {
             books.clear();
           }
 
-          scrollController.animateTo(scrollController.position.minScrollExtent,
-              duration: const Duration(milliseconds: 100), curve: Curves.easeOut);
+          if (scrollController.hasClients) {
+            scrollController.animateTo(
+                scrollController.position.minScrollExtent,
+                duration: const Duration(milliseconds: 100),
+                curve: Curves.easeOut);
+          }
+
+         
 
           BooksList booksList = BooksList.fromJson(response.data);
           // set total count
