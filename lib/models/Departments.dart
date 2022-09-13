@@ -41,18 +41,21 @@ class Department {
     required this.slug,
     required this.image,
     required this.id,
+    required this.canBeAccessedBy,
   });
 
   final String name;
   final String slug;
   final String image;
   final int id;
+  final String canBeAccessedBy;
 
   factory Department.fromJson(Map<String, dynamic> json) => Department(
         name: json["name"],
         slug: json["slug"],
         image: json["image"],
         id: json["id"],
+        canBeAccessedBy: json["can_be_accessed_by"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -60,5 +63,6 @@ class Department {
         "slug": slug,
         "image": image,
         "id": id,
+        "can_be_accessed_by": canBeAccessedBy,
       };
 }

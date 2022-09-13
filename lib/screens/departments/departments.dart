@@ -90,29 +90,25 @@ class _DepartmentsState extends State<Departments> {
                             print(depts[index].slug);
                           }
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15.0, vertical: 3.0),
-                          child: Card(
-                            color: theme.primaryColor,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 5.0, vertical: 15.0),
-                              child: Column(children: [
-                                Text(
+                        child: Container(
+                          color: Colors.white,
+                          margin: const EdgeInsets.symmetric(vertical: 10.0),
+                          child: ListTile(
+                            leading: Container(
+                              decoration: BoxDecoration(
+                                  color: theme.primaryColor,
+                                  borderRadius: BorderRadius.circular(7.0)),
+                              width: MediaQuery.of(context).size.width * 0.15,
+                              child: Center(
+                                child: Text(
                                   depts[index].slug.toUpperCase(),
-                                  style: theme.textTheme.headline5
-                                      ?.copyWith(color: Colors.white),
-                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
                                 ),
-                                Text(
-                                  depts[index].name,
-                                  style: theme.textTheme.headline6
-                                      ?.copyWith(color: Colors.white),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ]),
+                              ),
                             ),
+                            title: Text(depts[index].name),
+                            subtitle: Text(
+                                "Accessible to: ${depts[index].canBeAccessedBy.toUpperCase()}"),
                           ),
                         ),
                       );
