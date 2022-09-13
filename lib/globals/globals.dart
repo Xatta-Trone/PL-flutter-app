@@ -74,4 +74,8 @@ class Globals {
         model_id: model_id,
         model_type: model_type);
   }
+
+  static String generateCourseName(String string) {
+    return "${string.replaceAll(RegExp(r'[^a-zA-Z]'), '')}-${string.replaceAll(RegExp(r'[^0-9]'), '')}"; // 'phy-101'
+  }
 }
