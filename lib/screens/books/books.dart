@@ -42,6 +42,13 @@ class _BooksState extends State<Books> {
   }
 
   Future<void> searchBooks({bool isSearching = true}) async {
+
+    if (kDebugMode) {
+      print('books search  called');
+    }
+
+
+
     if (_isLoading) {
       return;
     }
@@ -61,7 +68,7 @@ class _BooksState extends State<Books> {
 
       if (response.data != null) {
         if (kDebugMode) {
-          print("count ${response.data}");
+          // print("count ${response.data}");
         }
 
         setState(() {
@@ -163,7 +170,7 @@ class _BooksState extends State<Books> {
           }
 
           if (kDebugMode) {
-            print(books.toList());
+            // print(books.toList());
           }
         });
       }
@@ -268,7 +275,7 @@ class _BooksState extends State<Books> {
                         itemCount: books.length + 1,
                         itemBuilder: (context, index) {
                           if (kDebugMode) {
-                            print("index $index");
+                            // print("index $index");
                           }
                           // check if it is the last item
                           if (index == books.length) {

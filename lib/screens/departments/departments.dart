@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:plandroid/api/api.dart';
 import 'package:plandroid/models/Departments.dart';
+import 'package:plandroid/routes/routeconst.dart';
 
 class Departments extends StatefulWidget {
   const Departments({Key? key}) : super(key: key);
@@ -89,6 +91,10 @@ class _DepartmentsState extends State<Departments> {
                           if (kDebugMode) {
                             print(depts[index].slug);
                           }
+
+                          Get.toNamed(
+                            "$levelTermsPage/${depts[index].slug.toString()}",
+                          );
                         },
                         child: Container(
                           color: Colors.white,
@@ -102,7 +108,9 @@ class _DepartmentsState extends State<Departments> {
                               child: Center(
                                 child: Text(
                                   depts[index].slug.toUpperCase(),
-                                  style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),

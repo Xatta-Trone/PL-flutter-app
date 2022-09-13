@@ -2,6 +2,7 @@ const String homePage = '/';
 const String booksPage = '/books';
 const String softwaresPage = '/softwares';
 const String departmentsPage = '/departments';
+const String levelTermsPage = '/levelTermsPage';
 const String dashboardPage = '/dashboard';
 const String profilePage = '/profile';
 const String searchPage = '/search';

@@ -45,6 +45,11 @@ class _SoftwaresState extends State<Softwares> {
   }
 
   Future<void> searchBooks({bool isSearching = true}) async {
+
+    if (kDebugMode) {
+      print('softwares search  called');
+    }
+
     if (_isLoading) {
       return;
     }
@@ -64,7 +69,7 @@ class _SoftwaresState extends State<Softwares> {
 
       if (response.data != null) {
         if (kDebugMode) {
-          print("count ${response.data}");
+          // print("count ${response.data}");
         }
 
         setState(() {
@@ -99,7 +104,7 @@ class _SoftwaresState extends State<Softwares> {
           }
 
           if (kDebugMode) {
-            print(books.toList());
+            // print(books.toList());
           }
         });
       }
@@ -164,7 +169,7 @@ class _SoftwaresState extends State<Softwares> {
           }
 
           if (kDebugMode) {
-            print(books.toList());
+            // print(books.toList());
           }
         });
       }
@@ -192,7 +197,7 @@ class _SoftwaresState extends State<Softwares> {
   @override
   void initState() {
     authController.isLoggedIn.listen((value) {
-      print("logged in value $value");
+      print("logged in value from softwares $value");
       if (value) {
         searchBooks();
       }
@@ -278,7 +283,7 @@ class _SoftwaresState extends State<Softwares> {
                                 itemCount: books.length + 1,
                                 itemBuilder: (context, index) {
                                   if (kDebugMode) {
-                                    print("index $index");
+                                    // print("index $index");
                                   }
                                   // check if it is the last item
                                   if (index == books.length) {

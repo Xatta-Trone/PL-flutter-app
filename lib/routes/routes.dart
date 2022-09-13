@@ -9,6 +9,7 @@ import 'package:plandroid/screens/auth/requestPassword.dart';
 import 'package:plandroid/screens/books/books.dart';
 import 'package:plandroid/screens/dashboard/dashboard.dart';
 import 'package:plandroid/screens/departments/departments.dart';
+import 'package:plandroid/screens/departments/levelterms.dart';
 import 'package:plandroid/screens/home.dart';
 import 'package:plandroid/screens/profile/profile.dart';
 import 'package:plandroid/screens/search/search.dart';
@@ -35,6 +36,11 @@ appRoutes() => [
       GetPage(
         name: departmentsPage,
         page: () => const Departments(),
+        middlewares: [MyMiddelware()],
+      ),
+      GetPage(
+        name: "$levelTermsPage/:department",
+        page: () => const LevelTerms(),
         middlewares: [MyMiddelware()],
       ),
       GetPage(
