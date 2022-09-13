@@ -11,6 +11,7 @@ import 'package:plandroid/screens/dashboard/dashboard.dart';
 import 'package:plandroid/screens/departments/courses.dart';
 import 'package:plandroid/screens/departments/departments.dart';
 import 'package:plandroid/screens/departments/levelterms.dart';
+import 'package:plandroid/screens/departments/posts.dart';
 import 'package:plandroid/screens/home.dart';
 import 'package:plandroid/screens/profile/profile.dart';
 import 'package:plandroid/screens/search/search.dart';
@@ -47,6 +48,11 @@ appRoutes() => [
       GetPage(
         name: "$coursesPage/:department/:levelTerm",
         page: () => const Courses(),
+        middlewares: [MyMiddelware()],
+      ),
+      GetPage(
+        name: "$postsPage/:department/:levelTerm/:course",
+        page: () => const Post(),
         middlewares: [MyMiddelware()],
       ),
       GetPage(

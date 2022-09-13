@@ -64,7 +64,7 @@ class _CoursesState extends State<Courses> {
             middleText: "422: You do not have permission to access.",
             textConfirm: 'Okay',
             onConfirm: () {
-              Get.close(1);
+              Get.close(2);
             });
 
         setState(() {
@@ -153,9 +153,9 @@ class _CoursesState extends State<Courses> {
                                       print(courses[index].slug);
                                     }
 
-                                    // Get.toNamed(
-                                    //   "$coursesPage/${Get.parameters['department']}/${Get.parameters['levelTerm']}/${courses[index].slug.toString()}",
-                                    // );
+                                    Get.toNamed(
+                                      "$postsPage/${Get.parameters['department']}/${Get.parameters['levelTerm']}/${courses[index].slug.toString()}",
+                                    );
                                   },
                                   child: Container(
                                     color: Colors.white,
