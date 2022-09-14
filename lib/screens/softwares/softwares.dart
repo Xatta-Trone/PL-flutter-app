@@ -310,7 +310,11 @@ class _SoftwaresState extends State<Softwares> {
                                   }
 
                                   return books.isNotEmpty
-                                      ? Card(
+                                      ? Container(
+                                          color: Colors.white,
+                                          margin: const EdgeInsets.symmetric(
+                                            vertical: 10.0,
+                                          ),
                                           child: GestureDetector(
                                             onTap: () {
                                               if (kDebugMode) {

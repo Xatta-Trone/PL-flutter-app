@@ -130,6 +130,9 @@ class AuthController extends GetxController {
           await SharedPreferences.getInstance();
       await preferences.setString(userDataKey, json.encode(user.value));
 
+      emailController.clear();
+      passwordController.clear();
+
       print(response.data);
     } on DioError catch (e) {
       setLogoutValues();
