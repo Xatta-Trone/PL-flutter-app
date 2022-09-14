@@ -355,7 +355,8 @@ class _SoftwaresState extends State<Softwares> {
                                               ),
                                               subtitle: Text(
                                                   books[index].author ??
-                                                      'No author'),
+                                                    'No author',
+                                              ),
                                               // trailing: Container(
                                               //   decoration: const BoxDecoration(color: Colors.white70),
                                               //   width: MediaQuery.of(context).size.width * 0.1,

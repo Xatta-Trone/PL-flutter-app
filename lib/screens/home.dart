@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,7 @@ import 'package:plandroid/constants/const.dart';
 import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/controller/BottomNavigationBarController.dart';
 import 'package:plandroid/controller/DashboardController.dart';
+import 'package:plandroid/routes/routeconst.dart';
 import 'package:plandroid/screens/books/books.dart';
 import 'package:plandroid/screens/dashboard/dashboard.dart';
 import 'package:plandroid/screens/departments/departments.dart';
@@ -99,11 +101,10 @@ class Home extends StatelessWidget {
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              print('search clicked');
-              // Get.to(const Search());
-              // dashboardController.getId();
-              authController.login();
-              // authController.autoLogin();
+              if (kDebugMode) {
+                print('search clicked');
+              }
+              Get.toNamed(searchPage);
             },
             child: const FaIcon(
               FontAwesomeIcons.magnifyingGlass,

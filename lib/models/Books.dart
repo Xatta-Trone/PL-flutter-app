@@ -47,7 +47,7 @@ class Book {
   factory Book.fromJson(Map<String, dynamic> json) => Book(
         id: json["id"],
         name: json["name"],
-        author: json["author"],
+        author: json["author"] ?? null,
         status: json["status"],
         link: json["link"],
       );
@@ -55,7 +55,7 @@ class Book {
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "author": author,
+        "author": author ?? null,
         "status": status,
         "link": link,
       };
