@@ -348,19 +348,25 @@ class _SearchState extends State<Search> {
   }
 
   String getAuthor(SearchData searchItem) {
-    // get course
-    if (searchItem.courseId != null) {
-      Course course = getSingleCourse(searchItem.courseId.toString());
-      return searchItem.getAuthor(courseSlug: course.slug);
+    if (kDebugMode) {
+      print(searchItem.toJson());
     }
+    // get course
+    if (searchItem.courseId == null) {
+      return searchItem.getAuthor();
+    }
+    String courseSlug = getSingleCourseSlug(searchItem.courseId.toString());
+    return searchItem.getAuthor(courseSlug: courseSlug);
 
-    return searchItem.getAuthor();
+    
   }
 
-  Course getSingleCourse(String courseId) {
+  String getSingleCourseSlug(String courseId) {
+    // return '';
     return courses
         .where((element) => element.id == int.tryParse(courseId))
-        .first;
+        .first
+        .slug;
   }
 
   @override
@@ -804,7 +810,7 @@ class _SearchState extends State<Search> {
                           clearSelection();
                           clearSearch();
                           setCoursesFromLevelTerm();
-                          FocusScope.of(context).unfocus();
+                          // FocusScope.of(context).unfocus();
                           Get.back();
                         });
                       },
@@ -818,7 +824,7 @@ class _SearchState extends State<Search> {
                     TextButton(
                       onPressed: () {
                         if (kDebugMode) {
-                          print('clear clicked');
+                          print('close clicked');
                         }
                         setState(() {
                           // detailSearchSelected = false;
