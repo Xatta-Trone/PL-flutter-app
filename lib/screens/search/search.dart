@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:custom_searchable_dropdown/custom_searchable_dropdown.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/api/api.dart';
@@ -15,7 +14,6 @@ import 'package:plandroid/models/Departments.dart';
 import 'package:plandroid/models/KeyValueModel.dart';
 import 'package:plandroid/models/Search.dart';
 import 'package:plandroid/screens/auth/Login.dart';
-import 'package:plandroid/screens/departments/departments.dart';
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -29,6 +27,7 @@ final AuthController authController = Get.find<AuthController>();
 class _SearchState extends State<Search> {
   List<Department> departments = List<Department>.empty(growable: true);
   List<Course> courses = List<Course>.empty(growable: true);
+  List<Course> backupCourses = List<Course>.empty(growable: true);
   List<SearchData> searchResult = List<SearchData>.empty(growable: true);
 
   List<KeyValueModel> levelTerms = [
@@ -55,6 +54,7 @@ class _SearchState extends State<Search> {
   bool _hasMore = false;
   int _totalCount = 0;
   bool _isLoading = false;
+  bool _isInitiallyLoaded = false;
 
   // bottom sheet values
   Department? selectedDepartment;
@@ -62,12 +62,58 @@ class _SearchState extends State<Search> {
   KeyValueModel? selectedLevelTerm;
   KeyValueModel? selectedContentType;
 
+  bool detailSearchSelected = false;
+
+  void setCoursesFromLevelTerm() {
+    // if (selectedLevelTerm == null) {
+    //   setState(() {
+    //     courses.clear();
+    //     courses.addAll(backupCourses);
+    //   });
+    // } else {
+    //   if (kDebugMode) {
+    //     print(selectedLevelTerm?.value);
+    //   }
+    //   Iterable<Course> filteredCourses = courses.where((element) {
+    //     if (kDebugMode) {
+    //       print(element.levelterm.slug == selectedLevelTerm?.key);
+    //     }
+    //     return element.levelterm.slug == selectedLevelTerm?.key;
+    //   });
+
+    //   if (kDebugMode) {
+    //     print(filteredCourses);
+    //   }
+    //   setState(() {
+    //     courses.clear();
+    //     courses.addAll(filteredCourses);
+    //   });
+    // }
+  }
+
   void clearSelection() {
     setState(() {
       selectedDepartment = null;
       selectedCourse = null;
       selectedLevelTerm = null;
       selectedContentType = null;
+      detailSearchSelected = false;
+      _isInitiallyLoaded = false;
+    });
+  }
+
+  void setDetailSearchActive({bool state = true}) {
+    setState(() {
+      detailSearchSelected = state;
+    });
+  }
+
+  void clearSearch() {
+    setState(() {
+      searchResult.clear();
+      _hasMore = false;
+      _isLoading = false;
+      _isInitiallyLoaded = false;
     });
   }
 
@@ -76,13 +122,27 @@ class _SearchState extends State<Search> {
 
   void handleSearchDebounce(String query) {
     if (debounce != null) debounce?.cancel();
-    debounce = Timer(const Duration(milliseconds: 500), () {
+    debounce = Timer(const Duration(milliseconds: 800), () {
       // not call the search method
       search();
       if (kDebugMode) {
         print(query);
       }
     });
+  }
+
+  Map<String, String> getQueryParams({bool isLoadingMore = false}) {
+    return {
+      'q': queryString.text,
+      'page': (isLoadingMore ? _page + 1 : 1).toString(),
+      'per_page': _pageSize.toString(),
+      'dept': selectedDepartment?.slug ?? '',
+      'l_t': selectedLevelTerm?.key ?? '',
+      'course_id': (selectedCourse?.id ?? '').toString(),
+      'course_slug': (selectedCourse?.slug ?? '').toString(),
+      'course_title': (selectedCourse?.courseName ?? '').toString(),
+      'content_type': selectedContentType?.key ?? '',
+    };
   }
 
   Future<void> search({bool isSearching = true}) async {
@@ -96,18 +156,12 @@ class _SearchState extends State<Search> {
 
     setState(() {
       _isLoading = true;
+      _isInitiallyLoaded = false;
     });
 
     try {
-      var response = await Api().dio.get('/search', queryParameters: {
-        'q': queryString.text,
-        'page': 1,
-        'per_page': _pageSize,
-        'dept': '',
-        'l_t': '',
-        'course_id': '',
-        'content_type': '',
-      });
+      var response =
+          await Api().dio.get('/search', queryParameters: getQueryParams());
 
       if (response.data != null) {
         if (kDebugMode) {
@@ -138,6 +192,9 @@ class _SearchState extends State<Search> {
           // set the  data
           searchResult.addAll(searchData);
 
+// to set the initial progress indicator
+          _isInitiallyLoaded = true;
+
           //  set the data's
           // _page++;
 
@@ -157,10 +214,16 @@ class _SearchState extends State<Search> {
       if (kDebugMode) {
         print(e);
       }
+
+      setState(() {
+        _isInitiallyLoaded = false;
+      });
     } finally {
       setState(() {
         _isLoading = false;
       });
+
+      Globals.saveSearchActivity(getQueryParams());
     }
   }
 
@@ -178,15 +241,9 @@ class _SearchState extends State<Search> {
     });
 
     try {
-      var response = await Api().dio.get('/search', queryParameters: {
-        'page': _page + 1,
-        'q': queryString.text,
-        'per_page': _pageSize,
-        'dept': '',
-        'l_t': '',
-        'course_id': '',
-        'content_type': '',
-      });
+      var response = await Api()
+          .dio
+          .get('/search', queryParameters: getQueryParams(isLoadingMore: true));
 
       if (response.data != null) {
         if (kDebugMode) {
@@ -194,8 +251,8 @@ class _SearchState extends State<Search> {
         }
 
         setState(() {
-          List<SearchData> searchData = List<SearchData>.from(
-              json.decode(response.data).map((x) => SearchData.fromJson(x)));
+          Iterable<SearchData> searchData =
+              (response.data as List).map((x) => SearchData.fromJson(x));
 
           // set the data
           searchResult.addAll(searchData);
@@ -247,6 +304,7 @@ class _SearchState extends State<Search> {
         // save data
         setState(() {
           courses.addAll(courseData.data);
+          backupCourses.addAll(courseData.data);
         });
 
         if (kDebugMode) {
@@ -283,15 +341,54 @@ class _SearchState extends State<Search> {
     } finally {}
   }
 
+  IconData getIcon({String materialType = 'post'}) {
+    if (materialType == 'software') return FontAwesomeIcons.laptopCode;
+    if (materialType == 'book') return FontAwesomeIcons.book;
+    return FontAwesomeIcons.folderOpen;
+  }
+
+  String getAuthor(SearchData searchItem) {
+    // get course
+    if (searchItem.courseId != null) {
+      Course course = getSingleCourse(searchItem.courseId.toString());
+      return searchItem.getAuthor(courseSlug: course.slug);
+    }
+
+    return searchItem.getAuthor();
+  }
+
+  Course getSingleCourse(String courseId) {
+    return courses
+        .where((element) => element.id == int.tryParse(courseId))
+        .first;
+  }
+
   @override
   void initState() {
     getCourses();
     getDept();
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.offset) {
+        if (kDebugMode) {
+          print('reached end');
+        }
+        _loadMore();
+      }
+    });
     super.initState();
   }
 
   @override
+  void dispose() {
+    scrollController.dispose();
+    queryString.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
         child: Obx(
@@ -340,349 +437,168 @@ class _SearchState extends State<Search> {
                                 // _settingModalBottomSheet(context);
                               }
 
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (BuildContext bc) {
-                                    return StatefulBuilder(
-                                      builder: (BuildContext context,
-                                          void Function(void Function())
-                                              setState) {
-                                        return Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              const Text(
-                                                'Detailed search',
-                                                style:
-                                                    TextStyle(fontSize: 20.0),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 10.0),
-                                                child: DropdownButtonFormField(
-                                                  value: selectedDepartment,
-                                                  hint:
-                                                      const Text('Department'),
-                                                  isExpanded: true,
-                                                  items: departments.map<
-                                                          DropdownMenuItem<
-                                                              Department>>(
-                                                      (Department value) {
-                                                    return DropdownMenuItem<
-                                                        Department>(
-                                                      value: value,
-                                                      child: Text(value.name),
-                                                    );
-                                                  }).toList(),
-                                                  onChanged:
-                                                      (Department? value) {
-                                                    // This is called when the user selects an item.
-                                                    setState(() {
-                                                      selectedDepartment =
-                                                          value;
-                                                    });
-
-                                                    if (kDebugMode) {
-                                                      print(value?.slug);
-                                                    }
-                                                  },
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    border: InputBorder.none,
-                                                  ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 10.0),
-                                                child: DropdownButtonFormField(
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    border: InputBorder.none,
-                                                  ),
-                                                  value: selectedLevelTerm,
-                                                  hint:
-                                                      const Text('Level Term'),
-                                                  isExpanded: true,
-                                                  items: levelTerms.map<
-                                                          DropdownMenuItem<
-                                                              KeyValueModel>>(
-                                                      (KeyValueModel value) {
-                                                    return DropdownMenuItem<
-                                                        KeyValueModel>(
-                                                      value: value,
-                                                      child: Text(value.value),
-                                                    );
-                                                  }).toList(),
-                                                  onChanged:
-                                                      (KeyValueModel? value) {
-                                                    // This is called when the user selects an item.
-                                                    setState(() {
-                                                      selectedLevelTerm = value;
-                                                    });
-
-                                                    if (kDebugMode) {
-                                                      print(value?.key);
-                                                    }
-                                                  },
-                                                ),
-                                              ),
-                                              DropdownSearch<Course>(
-                                                // ignore: prefer_const_constructors
-                                                popupProps: PopupProps.menu(
-                                                  showSearchBox: true,
-                                                  showSelectedItems: true,
-                                                ),
-                                                // itemAsString: (Course u) =>
-                                                //     u.userAsString(),
-                                                items: courses,
-
-                                                // dropdownSearchDecoration:
-                                                //     InputDecoration(
-                                                //   labelText: "Menu mode",
-                                                //   hintText:
-                                                //       "country in menu mode",
-                                                // ),
-                                                onChanged: (value) {
-                                                  // This is called when the user selects an item.
-                                                  setState(() {
-                                                    selectedCourse = value;
-                                                  });
-
-                                                  if (kDebugMode) {
-                                                    print(value?.slug);
-                                                  }
-                                                },
-                                                // selectedItem: selectedCourse,
-                                              ),
-                                              CustomSearchableDropDown(
-                                                // initialValue: [],
-                                                // showClearButton: true,
-                                                padding:
-                                                    const EdgeInsets.all(0.0),
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    style: BorderStyle.none,
-                                                  ),
-                                                ),
-                                                label: 'Course',
-                                                labelStyle: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall
-                                                    ?.copyWith(
-                                                        fontSize: 15.0,
-                                                        color: Colors.black),
-                                                items: courses,
-                                                dropDownMenuItems:
-                                                    courses.map((Course value) {
-                                                  return "${value.courseName} (${Globals.generateCourseName(value.slug).toUpperCase()})";
-                                                }).toList(),
-                                                onChanged: (value) {
-                                                  // This is called when the user selects an item.
-                                                  setState(() {
-                                                    selectedCourse = value;
-                                                  });
-
-                                                  if (kDebugMode) {
-                                                    print(value?.slug);
-                                                  }
-                                                },
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 10.0),
-                                                child: DropdownButtonFormField(
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    border: InputBorder.none,
-                                                  ),
-                                                  value: selectedContentType,
-                                                  hint: const Text(
-                                                      'Material type'),
-                                                  isExpanded: true,
-                                                  items: contentType.map<
-                                                          DropdownMenuItem<
-                                                              KeyValueModel>>(
-                                                      (KeyValueModel value) {
-                                                    return DropdownMenuItem<
-                                                        KeyValueModel>(
-                                                      value: value,
-                                                      child: Text(value.value),
-                                                    );
-                                                  }).toList(),
-                                                  onChanged:
-                                                      (KeyValueModel? value) {
-                                                    // This is called when the user selects an item.
-                                                    setState(() {
-                                                      selectedContentType =
-                                                          value;
-                                                    });
-
-                                                    if (kDebugMode) {
-                                                      print(value?.key);
-                                                    }
-                                                  },
-                                                ),
-                                              ),
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  if (kDebugMode) {
-                                                    print('search clicked');
-                                                  }
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  foregroundColor: Colors.white,
-                                                  minimumSize:
-                                                      const Size.fromHeight(
-                                                          40.0),
-                                                ),
-                                                child: const Text('Search'),
-                                              ),
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  if (kDebugMode) {
-                                                    print('clear clicked');
-                                                  }
-                                                  setState(() {
-                                                    clearSelection();
-                                                  });
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  foregroundColor: Colors.white,
-                                                  backgroundColor: Colors.grey,
-                                                  minimumSize:
-                                                      const Size.fromHeight(
-                                                          40.0),
-                                                ),
-                                                child: const Text('Clear'),
-                                              )
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  });
+                              bottomSheet(context);
                             },
-                            child: const Align(
+                            child: Align(
                               widthFactor: 1.0,
                               heightFactor: 1.0,
-                              child: FaIcon(FontAwesomeIcons.sliders),
+                              child: FaIcon(
+                                FontAwesomeIcons.sliders,
+                                color: detailSearchSelected
+                                    ? theme.primaryColor
+                                    : Colors.grey,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
+                    Text(
+                      'Double tap on the softwares to see the details',
+                      style: theme.textTheme.bodySmall,
+                    ),
                     Expanded(
-                      child: !_hasMore && searchResult.isEmpty
+                      child: _isLoading && !_isInitiallyLoaded
                           ? const Center(
-                              child: Text('No data found'),
+                              child: CircularProgressIndicator(),
                             )
-                          : RefreshIndicator(
-                              onRefresh: () {
-                                return _refreshData();
-                              },
-                              child: ListView.builder(
-                                controller: scrollController,
-                                itemCount: searchResult.length + 1,
-                                itemBuilder: (context, index) {
-                                  if (kDebugMode) {
-                                    // print("index $index");
-                                  }
-                                  // check if it is the last item
-                                  if (index == searchResult.length) {
-                                    // check if more data could not be loaded
-                                    if (_hasMore == false) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Center(
-                                          child: Text(
-                                            'End of list',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6,
-                                          ),
-                                        ),
-                                      );
-                                    }
-
-                                    return const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Center(
-                                          child: CircularProgressIndicator()),
-                                    );
-                                  }
-
-                                  return searchResult.isNotEmpty
-                                      ? Container(
-                                          color: Colors.white,
-                                          margin: const EdgeInsets.symmetric(
-                                            vertical: 10.0,
-                                          ),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              if (kDebugMode) {
-                                                print(searchResult[index]
-                                                    .link
-                                                    .toString());
-                                              }
-                                              // Globals.downloadItem(
-                                              //     searchResult[index].toJson(),
-                                              //     'software');
-                                            },
-                                            child: ListTile(
-                                              leading: Container(
-                                                decoration: const BoxDecoration(
-                                                    color: Colors.white70),
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.1,
-                                                child: const Center(
-                                                  child: FaIcon(
-                                                    FontAwesomeIcons.laptopCode,
-                                                    color: Colors.cyan,
-                                                    size: 30.0,
+                          : !_isLoading && !_isInitiallyLoaded
+                              ? const Center(
+                                  child: Text('Type something to search'),
+                                )
+                              : !_hasMore && searchResult.isEmpty
+                                  ? const Center(
+                                      child: Text('No data found'),
+                                    )
+                                  : RefreshIndicator(
+                                      onRefresh: () {
+                                        return _refreshData();
+                                      },
+                                      child: ListView.builder(
+                                        controller: scrollController,
+                                        itemCount: searchResult.length + 1,
+                                        itemBuilder: (context, index) {
+                                          if (kDebugMode) {
+                                            // print("index $index");
+                                          }
+                                          // check if it is the last item
+                                          if (index == searchResult.length) {
+                                            // check if more data could not be loaded
+                                            if (_hasMore == false) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Center(
+                                                  child: Text(
+                                                    'End of list',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline6,
                                                   ),
                                                 ),
-                                              ),
-                                              title: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 10.0),
-                                                child: Text(
-                                                  searchResult[index]
-                                                      .name
-                                                      .toString(),
-                                                  style: const TextStyle(
-                                                      fontSize: 12.0,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
-                                              subtitle: Text(
-                                                  searchResult[index].author ??
-                                                      'No author'),
-                                              // trailing: Container(
-                                              //   decoration: const BoxDecoration(color: Colors.white70),
-                                              //   width: MediaQuery.of(context).size.width * 0.1,
-                                              //   child: const Center(
-                                              //     child: FaIcon(
-                                              //       FontAwesomeIcons.download,
-                                              //       size: 28.0,
-                                              //     ),
-                                              //   ),
-                                              // ),
-                                            ),
-                                          ),
-                                        )
-                                      : const Center(
-                                          child: Text('No result found'));
-                                },
-                              ),
-                            ),
+                                              );
+                                            }
+
+                                            return const Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Center(
+                                                  child:
+                                                      CircularProgressIndicator()),
+                                            );
+                                          }
+
+                                          return searchResult.isNotEmpty
+                                              ? Container(
+                                                  color: Colors.white,
+                                                  margin: const EdgeInsets
+                                                      .symmetric(
+                                                    vertical: 10.0,
+                                                  ),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      if (kDebugMode) {
+                                                        print(
+                                                            searchResult[index]
+                                                                .link
+                                                                .toString());
+                                                        print(getQueryParams()
+                                                            .toString());
+                                                      }
+                                                      Globals.downloadItem(
+                                                          searchResult[index]
+                                                              .toJson(),
+                                                          searchResult[index]
+                                                              .postType
+                                                              .toString());
+                                                    },
+                                                    onDoubleTap: () {
+                                                      if (kDebugMode) {
+                                                        print('double tap');
+                                                        // print(searchResult[index]
+                                                        //     .description
+                                                        //     .toString());
+                                                      }
+
+                                                      return showInfoDialog(
+                                                          index);
+                                                    },
+                                                    child: ListTile(
+                                                      leading: Container(
+                                                        decoration: BoxDecoration(
+                                                            color: theme
+                                                                .primaryColor,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        7.0)),
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.15,
+                                                        child: Center(
+                                                          child: FaIcon(
+                                                            getIcon(
+                                                              materialType:
+                                                                  searchResult[
+                                                                          index]
+                                                                      .postType
+                                                                      .toString(),
+                                                            ),
+                                                            color: Colors.white,
+                                                            size: 30.0,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      title: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                bottom: 10.0),
+                                                        child: Text(
+                                                          searchResult[index]
+                                                              .name
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              fontSize: 12.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                      subtitle: Text(
+                                                        getAuthor(searchResult[
+                                                            index]),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : const Center(
+                                                  child:
+                                                      Text('No result found'));
+                                        },
+                                      ),
+                                    ),
                     ),
                   ],
                 ),
@@ -690,28 +606,239 @@ class _SearchState extends State<Search> {
       ),
     );
   }
+
+  void showInfoDialog(int index) {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+        title: Text(searchResult[index].name),
+        children: [
+          Html(
+            data: searchResult[index].description,
+            onLinkTap: (url, context, attributes, element) {
+              if (kDebugMode) {
+                print(url);
+              }
+              Globals.launchURL(url ?? '');
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<dynamic> bottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return StatefulBuilder(
+            builder: (BuildContext context,
+                void Function(void Function()) setState) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const Text(
+                      'Detailed search',
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: DropdownButtonFormField(
+                        value: selectedDepartment,
+                        hint: const Text('Department'),
+                        isExpanded: true,
+                        items: departments.map<DropdownMenuItem<Department>>(
+                            (Department value) {
+                          return DropdownMenuItem<Department>(
+                            value: value,
+                            child: Text(value.name),
+                          );
+                        }).toList(),
+                        onChanged: (Department? value) {
+                          // This is called when the user selects an item.
+                          setState(() {
+                            selectedDepartment = value;
+                            setDetailSearchActive(state: true);
+                          });
+
+                          if (kDebugMode) {
+                            print(value?.slug);
+                          }
+                        },
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: DropdownButtonFormField(
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        value: selectedLevelTerm,
+                        hint: const Text('Level Term'),
+                        isExpanded: true,
+                        items: levelTerms.map<DropdownMenuItem<KeyValueModel>>(
+                            (KeyValueModel value) {
+                          return DropdownMenuItem<KeyValueModel>(
+                            value: value,
+                            child: Text(value.value),
+                          );
+                        }).toList(),
+                        onChanged: (KeyValueModel? value) {
+                          // This is called when the user selects an item.
+                          setState(() {
+                            selectedLevelTerm = value;
+                            setDetailSearchActive(state: true);
+                            setCoursesFromLevelTerm();
+                          });
+
+                          if (kDebugMode) {
+                            print(value?.key);
+                          }
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 10.0,
+                      ),
+                      child: DropdownSearch<Course>(
+                        selectedItem: selectedCourse,
+                        itemAsString: (Course c) => c.itemAsString(),
+                        popupProps: const PopupProps.dialog(
+                          showSearchBox: true,
+                          searchFieldProps: TextFieldProps(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 5.0),
+                            decoration: InputDecoration(
+                                filled: true,
+                                border: InputBorder.none,
+                                labelText: 'Search course....'),
+                          ),
+                        ),
+                        items: courses,
+                        dropdownDecoratorProps: const DropDownDecoratorProps(
+                          dropdownSearchDecoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(0.0),
+                            label: Text('Course'),
+                            isDense: true,
+                            border: InputBorder.none,
+                          ),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedCourse = value;
+                            setDetailSearchActive(state: true);
+                          });
+
+                          if (kDebugMode) {
+                            print(value?.slug);
+                          }
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: DropdownButtonFormField(
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        value: selectedContentType,
+                        hint: const Text('Material type'),
+                        isExpanded: true,
+                        items: contentType.map<DropdownMenuItem<KeyValueModel>>(
+                            (KeyValueModel value) {
+                          return DropdownMenuItem<KeyValueModel>(
+                            value: value,
+                            child: Text(value.value),
+                          );
+                        }).toList(),
+                        onChanged: (KeyValueModel? value) {
+                          // This is called when the user selects an item.
+                          setState(() {
+                            selectedContentType = value;
+                            setDetailSearchActive(state: true);
+                          });
+
+                          if (kDebugMode) {
+                            print(value?.key);
+                          }
+                        },
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (kDebugMode) {
+                          print('search clicked');
+                        }
+                        setState(() {
+                          setDetailSearchActive(state: true);
+                          search();
+                          FocusScope.of(context).unfocus();
+                          Get.back();
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        minimumSize: const Size.fromHeight(40.0),
+                      ),
+                      child: const Text('Search'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (kDebugMode) {
+                          print('clear clicked');
+                        }
+                        setState(() {
+                          // detailSearchSelected = false;
+                          setDetailSearchActive(state: true);
+                          clearSelection();
+                          clearSearch();
+                          setCoursesFromLevelTerm();
+                          FocusScope.of(context).unfocus();
+                          Get.back();
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.grey,
+                        minimumSize: const Size.fromHeight(40.0),
+                      ),
+                      child: const Text('Clear'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        if (kDebugMode) {
+                          print('clear clicked');
+                        }
+                        setState(() {
+                          // detailSearchSelected = false;
+                          // setDetailSearchActive(state: false);
+                          // clearSelection();
+                          Get.back();
+                          FocusScope.of(context).unfocus();
+                        });
+                      },
+                      style: TextButton.styleFrom(
+                        minimumSize: const Size.fromHeight(40.0),
+                        foregroundColor: Colors.red,
+                      ),
+                      child: const Text('Close'),
+                    )
+                  ],
+                ),
+              );
+            },
+          );
+        });
+  }
 }
-
-// void _settingModalBottomSheet(context) {
-//   showModalBottomSheet(
-//       context: context,
-//       builder: (BuildContext bc) {
-//         return Wrap(
-//           children: <Widget>[
-
-//             DropdownButton(items: departments. , onChanged: onChanged)
-
-
-//             ListTile(
-//                 leading: const Icon(Icons.music_note),
-//                 title: const Text('Music'),
-//                 onTap: () => {}),
-//             ListTile(
-//               leading: const Icon(Icons.videocam),
-//               title: const Text('Video'),
-//               onTap: () => {},
-//             ),
-//           ],
-//         );
-//       });
-// }

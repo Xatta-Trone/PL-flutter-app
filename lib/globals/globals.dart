@@ -55,13 +55,13 @@ class Globals {
 
     // process data
 
-    int causer_id = _authController.isLoggedIn.value
+    int causerId = _authController.isLoggedIn.value
         ? _authController.user.value?.user.id ?? 0
         : 0;
     String label = model['name'];
-    int model_id = model['id'];
+    int modelId = model['id'];
     String url = model['link'];
-    String model_type = postType;
+    String modelType = postType;
 
     // launch url
     launchURL(url);
@@ -69,13 +69,40 @@ class Globals {
     // save activity
     postActivity(
         activity: 'downloaded',
-        causer_id: causer_id,
+        causer_id: causerId,
         label: label,
-        model_id: model_id,
-        model_type: model_type);
+        model_id: modelId,
+        model_type: modelType);
+  }
+
+  static void saveSearchActivity(Map<String, String> querySting) {
+    int causerId = _authController.isLoggedIn.value
+        ? _authController.user.value?.user.id ?? 0
+        : 0;
+    String label = '';
+
+    // process string
+    querySting.forEach((key, value) {
+      label += "$key=$value,";
+    });
+    label = label.substring(0, label.length - 1);
+
+    if (kDebugMode) {
+      print('save search activity');
+      print(label);
+    }
+
+    postActivity(
+      activity: 'searched',
+      causer_id: causerId,
+        label: label,
+      model_id: 0,
+      model_type: '',
+    );
   }
 
   static String generateCourseName(String string) {
+    if (string == '') return '';
     return "${string.replaceAll(RegExp(r'[^a-zA-Z]'), '')}-${string.replaceAll(RegExp(r'[^0-9]'), '')}"; // 'phy-101'
   }
 }

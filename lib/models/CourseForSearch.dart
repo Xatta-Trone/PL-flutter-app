@@ -1,16 +1,17 @@
+
 // To parse this JSON data, do
 //
-//     final courseDataForSearch = courseDataForSearchFromJson(jsonString);
+//     final CourseDataForSearch = CourseDataForSearchFromJson(jsonString);
 
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
 import 'package:plandroid/globals/globals.dart';
 
-CourseDataForSearch courseDataForSearchFromJson(String str) =>
+CourseDataForSearch CourseDataForSearchFromJson(String str) =>
     CourseDataForSearch.fromJson(json.decode(str));
 
-String courseDataForSearchToJson(CourseDataForSearch data) =>
+String CourseDataForSearchToJson(CourseDataForSearch data) =>
     json.encode(data.toJson());
 
 class CourseDataForSearch {
@@ -45,6 +46,7 @@ class Course {
     required this.id,
     required this.departmentId,
     required this.levelTermId,
+    required this.levelterm,
   });
 
   final String courseName;
@@ -52,9 +54,10 @@ class Course {
   final int id;
   final int departmentId;
   final int levelTermId;
+  final Levelterm levelterm;
 
-  String userAsString() {
-    return '$courseName (${Globals.generateCourseName(slug).toUpperCase()})';
+  String itemAsString() {
+    return '$courseName (${Globals.generateCourseName(slug).toUpperCase().replaceAll('-', ' ')})';
   }
 
   factory Course.fromJson(Map<String, dynamic> json) => Course(
@@ -63,6 +66,7 @@ class Course {
         id: json["id"],
         departmentId: json["department_id"],
         levelTermId: json["level_term_id"],
+        levelterm: Levelterm.fromJson(json["levelterm"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -71,5 +75,26 @@ class Course {
         "id": id,
         "department_id": departmentId,
         "level_term_id": levelTermId,
+        "levelterm": levelterm.toJson(),
+      };
+}
+
+class Levelterm {
+  Levelterm({
+    required this.id,
+    required this.slug,
+  });
+
+  final int id;
+  final String slug;
+
+  factory Levelterm.fromJson(Map<String, dynamic> json) => Levelterm(
+        id: json["id"],
+        slug: json["slug"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "slug": slug,
       };
 }

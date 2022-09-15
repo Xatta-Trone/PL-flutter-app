@@ -3,7 +3,11 @@
 //     final searchData = searchDataFromJson(jsonString);
 
 import 'package:meta/meta.dart';
+import 'package:plandroid/globals/globals.dart';
 import 'dart:convert';
+
+import 'package:plandroid/models/CourseForSearch.dart';
+
 
 List<SearchData> searchDataFromJson(String str) =>
     List<SearchData>.from(json.decode(str).map((x) => SearchData.fromJson(x)));
@@ -35,6 +39,13 @@ class SearchData {
   final String link;
   final String description;
   final DateTime createdAt;
+
+  String getAuthor({String courseSlug = ''}) {
+    if (postType == 'post') {
+      return "${departmentSlug?.toUpperCase()}/${levelTermSlug?.toUpperCase()}/${Globals.generateCourseName(courseSlug.trim()).toUpperCase()}";
+    }
+    return author ?? 'No author';
+  }
 
   factory SearchData.fromJson(Map<String, dynamic> json) => SearchData(
         id: json["id"],
