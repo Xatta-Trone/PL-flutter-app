@@ -219,6 +219,7 @@ class _BooksState extends State<Books> {
   @override
   Widget build(BuildContext context) {
     // BookController bookController = Get.put(BookController());
+    ThemeData theme = Theme.of(context);
 
     return Scaffold(
       body: SafeArea(
@@ -313,20 +314,25 @@ class _BooksState extends State<Books> {
                                           books[index].toJson(), 'book');
                                     },
                                     child: ListTile(
+
                                       leading: Container(
-                                        decoration: const BoxDecoration(
-                                            color: Colors.white70),
+                                        decoration: BoxDecoration(
+                                            color: theme.primaryColor,
+                                            borderRadius:
+                                                BorderRadius.circular(7.0)),
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.1,
+                                                0.15,
                                         child: const Center(
                                           child: FaIcon(
                                             FontAwesomeIcons.book,
-                                            color: Colors.cyan,
+                                            color: Colors.white,
                                             size: 30.0,
                                           ),
                                         ),
                                       ),
+
+
                                       title: Padding(
                                         padding:
                                             const EdgeInsets.only(bottom: 10.0),

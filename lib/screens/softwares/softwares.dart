@@ -225,6 +225,7 @@ class _SoftwaresState extends State<Softwares> {
   @override
   Widget build(BuildContext context) {
     // BookController bookController = Get.put(BookController());
+    ThemeData theme = Theme.of(context);
 
     return Scaffold(
       body: SafeArea(
@@ -328,16 +329,19 @@ class _SoftwaresState extends State<Softwares> {
                                             },
                                             child: ListTile(
                                               leading: Container(
-                                                decoration: const BoxDecoration(
-                                                    color: Colors.white70),
+                                                decoration: BoxDecoration(
+                                                    color: theme.primaryColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7.0)),
                                                 width: MediaQuery.of(context)
                                                         .size
                                                         .width *
-                                                    0.1,
+                                                    0.15,
                                                 child: const Center(
                                                   child: FaIcon(
                                                     FontAwesomeIcons.laptopCode,
-                                                    color: Colors.cyan,
+                                                    color: Colors.white,
                                                     size: 30.0,
                                                   ),
                                                 ),
