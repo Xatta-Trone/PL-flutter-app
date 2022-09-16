@@ -115,7 +115,7 @@ class Dashboard extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      'Double tap on a level term to pin that here',
+                      'Double tap on a level term to pin here',
                       textAlign: TextAlign.center,
                       style: theme.textTheme.headline6
                           ?.copyWith(color: Colors.white),

@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -95,7 +93,7 @@ class Globals {
     postActivity(
       activity: 'searched',
       causer_id: causerId,
-        label: label,
+      label: label,
       model_id: 0,
       model_type: '',
     );
@@ -104,5 +102,20 @@ class Globals {
   static String generateCourseName(String string) {
     if (string == '') return '';
     return "${string.replaceAll(RegExp(r'[^a-zA-Z]'), '')}-${string.replaceAll(RegExp(r'[^0-9]'), '')}"; // 'phy-101'
+  }
+
+  static String getRounded(int number) {
+    if (number > 1000000000) {
+      return "${(number / 1000000000).round().toStringAsFixed(1).toString()}B";
+    }
+    if (number > 1000000) {
+      return "${(number / 1000000).round().toStringAsFixed(1).toString()}M";
+    }
+
+    if (number > 1000) {
+      return "${(number / 1000).round().toStringAsFixed(1).toString()}K";
+    }
+
+    return number.toString();
   }
 }

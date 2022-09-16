@@ -5,6 +5,8 @@
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
+import 'package:plandroid/globals/globals.dart';
+
 CountData countDataFromJson(String str) => CountData.fromJson(json.decode(str));
 
 String countDataToJson(CountData data) => json.encode(data.toJson());
@@ -47,23 +49,19 @@ class Data {
   final int downloads;
 
   String formatUser() {
-    if (users < 1000) return users.toString();
-    return "${(users / 1000).round().toStringAsFixed(1).toString()}K";
+    return Globals.getRounded(users);
   }
 
   String formatBooks() {
-    if (books < 1000) return books.toString();
-    return "${(books / 1000).round().toStringAsFixed(1).toString()}K";
+   return Globals.getRounded(books);
   }
 
   String formatSoftwares() {
-    if (softwares < 1000) return softwares.toString();
-    return "${(softwares / 1000).round().toStringAsFixed(1).toString()}K";
+    return Globals.getRounded(softwares);
   }
 
   String formatDownloads() {
-    if (downloads < 1000) return downloads.toString();
-    return "${(downloads / 1000).round().toStringAsFixed(1).toString()}K";
+    return Globals.getRounded(downloads);
   }
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
