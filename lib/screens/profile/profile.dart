@@ -177,7 +177,7 @@ class Profile extends StatelessWidget {
                         FontAwesomeIcons.chartColumn,
                         color: iconColor,
                       ),
-                      title: const Text('Activity history'),
+                      title: const Text('Activity'),
                       trailing: const FaIcon(
                         FontAwesomeIcons.chevronRight,
                         color: iconColor,
@@ -192,10 +192,10 @@ class Profile extends StatelessWidget {
                     divider,
                     ListTile(
                       leading: const FaIcon(
-                        FontAwesomeIcons.list,
+                        FontAwesomeIcons.houseLaptop,
                         color: iconColor,
                       ),
-                      title: const Text('Login history'),
+                      title: const Text('Devices'),
                       trailing: const FaIcon(
                         FontAwesomeIcons.chevronRight,
                         color: iconColor,
@@ -205,6 +205,7 @@ class Profile extends StatelessWidget {
                         if (kDebugMode) {
                           print('change password');
                         }
+                        Get.toNamed(userDevices);
                       },
                     ),
                     divider,
@@ -323,7 +324,6 @@ class Profile extends StatelessWidget {
                             "https://play.google.com/store/apps/details?id=${info.packageName}");
                       },
                     ),
-                    
                     divider,
                     ListTile(
                       leading: const FaIcon(
