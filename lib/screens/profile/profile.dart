@@ -184,9 +184,7 @@ class Profile extends StatelessWidget {
                         size: iconSize,
                       ),
                       onTap: () {
-                        if (kDebugMode) {
-                          print('change password');
-                        }
+                        Get.toNamed(userActivity);
                       },
                     ),
                     divider,

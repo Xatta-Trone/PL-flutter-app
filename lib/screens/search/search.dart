@@ -122,7 +122,7 @@ class _SearchState extends State<Search> {
 
   void handleSearchDebounce(String query) {
     if (debounce != null) debounce?.cancel();
-    debounce = Timer(const Duration(milliseconds: 800), () {
+    debounce = Timer(const Duration(milliseconds: 900), () {
       // not call the search method
       search();
       if (kDebugMode) {

@@ -13,6 +13,7 @@ import 'package:plandroid/screens/departments/departments.dart';
 import 'package:plandroid/screens/departments/levelterms.dart';
 import 'package:plandroid/screens/departments/posts.dart';
 import 'package:plandroid/screens/home.dart';
+import 'package:plandroid/screens/profile/activity.dart';
 import 'package:plandroid/screens/profile/device.dart';
 import 'package:plandroid/screens/profile/profile.dart';
 import 'package:plandroid/screens/search/search.dart';
@@ -64,6 +65,11 @@ appRoutes() => [
       GetPage(
         name: userDevices,
         page: () => const UserDevices(),
+        middlewares: [MyMiddelware()],
+      ),
+      GetPage(
+        name: userActivity,
+        page: () => const UserActivitiesPage(),
         middlewares: [MyMiddelware()],
       ),
       GetPage(

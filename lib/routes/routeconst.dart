@@ -8,6 +8,7 @@ const String postsPage = '/postsPage';
 const String dashboardPage = '/dashboard';
 const String profilePage = '/profile';
 const String userDevices = '/userDevices';
+const String userActivity = '/userActivity';
 const String searchPage = '/search';
 const String settingsPage = '/settings';
 const String notFoundPage = '/404';
