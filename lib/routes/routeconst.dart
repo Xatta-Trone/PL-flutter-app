@@ -17,3 +17,5 @@ const String login = '/login';
 const String register = '/register';
 const String requestPassword = '/requestPassword';
 const String changePassword = '/changePassword';
+const String changeCurrentPassword = '/changeCurrentPassword';
+const String more = '/more';

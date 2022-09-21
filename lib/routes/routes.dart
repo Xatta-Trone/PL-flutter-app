@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/routes/routeconst.dart';
 import 'package:plandroid/screens/404/404.dart';
@@ -13,7 +14,9 @@ import 'package:plandroid/screens/departments/departments.dart';
 import 'package:plandroid/screens/departments/levelterms.dart';
 import 'package:plandroid/screens/departments/posts.dart';
 import 'package:plandroid/screens/home.dart';
+import 'package:plandroid/screens/more/more.dart';
 import 'package:plandroid/screens/profile/activity.dart';
+import 'package:plandroid/screens/profile/changeCurrentPassword.dart';
 import 'package:plandroid/screens/profile/device.dart';
 import 'package:plandroid/screens/profile/profile.dart';
 import 'package:plandroid/screens/search/search.dart';
@@ -117,6 +120,16 @@ appRoutes() => [
         page: () => const ChangePassword(),
         middlewares: [MyMiddelware()],
       ),
+      GetPage(
+        name: changeCurrentPassword,
+        page: () => const ChangeCurrentPassword(),
+        middlewares: [MyMiddelware()],
+      ),
+      GetPage(
+        name: more,
+        page: () => const More(),
+        middlewares: [MyMiddelware()],
+      ),
     ];
 
 unknownRoute() => GetPage(
@@ -127,7 +140,9 @@ unknownRoute() => GetPage(
 class MyMiddelware extends GetMiddleware {
   @override
   GetPage? onPageCalled(GetPage? page) {
-    print(page?.name);
+    if (kDebugMode) {
+      print(page?.name);
+    }
     return super.onPageCalled(page);
   }
 }

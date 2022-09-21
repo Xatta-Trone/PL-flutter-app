@@ -41,6 +41,11 @@ class AuthController extends GetxController {
   TextEditingController studentIdController = TextEditingController();
   RxString hallNameController = ''.obs;
 
+  // change current password
+  TextEditingController currentPwdController = TextEditingController();
+  TextEditingController newPwdController = TextEditingController();
+  TextEditingController newPwdConfirmController = TextEditingController();
+
   // variables
   RxList<String> halls = (List<String>.of([])).obs;
 
@@ -56,6 +61,9 @@ class AuthController extends GetxController {
     meritPosController.clear();
     studentIdController.clear();
     hallNameController.value = '';
+    currentPwdController.clear();
+    newPwdController.clear();
+    newPwdConfirmController.clear();
   }
 
   // validation
@@ -248,6 +256,64 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<void> changeCurrentPassword() async {
+    // set async call to true
+    isInAsyncCall.value = true;
+
+    try {
+      var response = await Api().dio.post('/reset-user-password', data: {
+        'old_password': currentPwdController.value.text,
+        'password': newPwdController.value.text,
+        'password_confirmation': newPwdConfirmController.value.text,
+      });
+
+      // Get.toNamed(changePassword);
+      Get.defaultDialog(
+        title: 'Success !!',
+        middleText: "Password changed successfully.",
+        textConfirm: ('Okay'),
+        onConfirm: () {
+          Get.close(2);
+          // cleanup
+          currentPwdController.clear();
+          newPwdController.clear();
+          newPwdConfirmController.clear();
+        },
+      );
+
+      if (kDebugMode) {
+        print(response.data);
+      }
+    } on DioError catch (e) {
+      // server sent a res back with err
+      if (e.response != null) {
+        if (kDebugMode) {
+          print(e.response);
+          print(e.response?.data['status']);
+        }
+
+        isPwdReqSuccess.value = false;
+
+        String errData = Globals().formatText(
+            e.response?.data['message'] ?? 'Something unknown occurred');
+
+        Get.defaultDialog(
+          title: 'Error !!',
+          middleText: "${e.response?.statusCode}: $errData",
+          textConfirm: ('Okay'),
+          onConfirm: () => Get.back(),
+        );
+      } else {
+        if (kDebugMode) {
+          print(e.message);
+        }
+      }
+    } finally {
+      // async call complete
+      isInAsyncCall.value = false;
+    }
+  }
+
   Future<void> logout() async {
     try {
       var response = await Api().dio.get('/logout');
@@ -427,6 +493,9 @@ class AuthController extends GetxController {
     changePwdController.dispose();
     changePwdConfirmationController.dispose();
     pwdCodeController.dispose();
+    currentPwdController.dispose();
+    newPwdController.dispose();
+    newPwdConfirmController.dispose();
     super.dispose();
   }
 }

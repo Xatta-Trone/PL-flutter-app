@@ -10,6 +10,7 @@ import 'package:plandroid/routes/routeconst.dart';
 import 'package:plandroid/screens/books/books.dart';
 import 'package:plandroid/screens/dashboard/dashboard.dart';
 import 'package:plandroid/screens/departments/departments.dart';
+import 'package:plandroid/screens/more/more.dart';
 import 'package:plandroid/screens/profile/profile.dart';
 import 'package:plandroid/screens/search/search.dart';
 import 'package:plandroid/screens/settings/settings.dart';
@@ -39,7 +40,7 @@ class Home extends StatelessWidget {
                 Books(),
                 Softwares(),
                 Profile(),
-                // Settings(),
+                More(),
               ],
             ),
           ),
@@ -89,13 +90,13 @@ class Home extends StatelessWidget {
                   ),
                   label: 'Profile',
                 ),
-                // BottomNavigationBarItem(
-                //   icon: FaIcon(
-                //     FontAwesomeIcons.gear,
-                //     size: iconSize,
-                //   ),
-                //   label: 'Settings',
-                // ),
+                BottomNavigationBarItem(
+                  icon: FaIcon(
+                    FontAwesomeIcons.barcode,
+                    size: iconSize,
+                  ),
+                  label: 'More',
+                ),
               ],
             ),
           ),

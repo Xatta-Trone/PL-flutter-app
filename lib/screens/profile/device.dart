@@ -27,6 +27,7 @@ class _UserDevicesState extends State<UserDevices> {
   final scrollController = ScrollController();
   bool _hasMore = false;
   bool _isLoading = false;
+  bool _isInitiallyLoaded = false;
   String fingerprint = '';
 
   Future<void> getDeviceId() async {
@@ -85,6 +86,7 @@ class _UserDevicesState extends State<UserDevices> {
 
     setState(() {
       _isLoading = true;
+      
     });
 
     try {
@@ -113,6 +115,11 @@ class _UserDevicesState extends State<UserDevices> {
           // set the books data
           devices.addAll(deviceData.data);
 
+          if (!_isInitiallyLoaded) {
+            _isInitiallyLoaded = true;
+          }
+
+        
           //  set the data's
           _page++;
 
@@ -135,6 +142,9 @@ class _UserDevicesState extends State<UserDevices> {
       if (kDebugMode) {
         print(e);
       }
+      setState(() {
+        _isInitiallyLoaded = false;
+      });
     } finally {
       setState(() {
         _isLoading = false;
@@ -159,6 +169,7 @@ class _UserDevicesState extends State<UserDevices> {
       _page = 1;
       _hasMore = true;
       _isLoading = false;
+      _isInitiallyLoaded = false;
       searchDevices();
     });
   }
@@ -205,7 +216,11 @@ class _UserDevicesState extends State<UserDevices> {
         child: Obx(
           () => !authController.isLoggedIn.value
               ? const Login()
-              : Column(
+              : _isLoading && !_isInitiallyLoaded
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Column(
                   children: [
                     const SizedBox(
                       height: 10.0,

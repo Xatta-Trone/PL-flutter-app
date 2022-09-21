@@ -28,6 +28,7 @@ class _UserActivitiesPageState extends State<UserActivitiesPage> {
   final scrollController = ScrollController();
   bool _hasMore = false;
   bool _isLoading = false;
+  bool _isInitiallyLoaded = false;
   String fingerprint = '';
 
   IconData getIcon({String deviceString = 'none'}) {
@@ -90,6 +91,9 @@ class _UserActivitiesPageState extends State<UserActivitiesPage> {
 
           // set the books data
           activities.addAll(activityData.data);
+          if (!_isInitiallyLoaded) {
+            _isInitiallyLoaded = true;
+          }
 
           //  set the data's
           _page++;
@@ -113,6 +117,9 @@ class _UserActivitiesPageState extends State<UserActivitiesPage> {
       if (kDebugMode) {
         print(e);
       }
+      setState(() {
+        _isInitiallyLoaded = false;
+      });
     } finally {
       setState(() {
         _isLoading = false;
@@ -137,6 +144,7 @@ class _UserActivitiesPageState extends State<UserActivitiesPage> {
       _page = 1;
       _hasMore = true;
       _isLoading = false;
+      _isInitiallyLoaded = false;
       searchActivity();
     });
   }
@@ -182,7 +190,11 @@ class _UserActivitiesPageState extends State<UserActivitiesPage> {
         child: Obx(
           () => !authController.isLoggedIn.value
               ? const Login()
-              : Column(
+              : _isLoading && !_isInitiallyLoaded
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Column(
                   children: [
                     const SizedBox(
                       height: 10.0,
