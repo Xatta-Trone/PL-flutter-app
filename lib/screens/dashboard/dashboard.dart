@@ -52,6 +52,7 @@ class Dashboard extends StatelessWidget {
                       dashboardController: dashboardController,
                       theme: theme,
                       icon: FontAwesomeIcons.graduationCap,
+                      subtitle: 'Students',
                       number: dashboardController.countData.value?.data
                               .formatUser() ??
                           '',
@@ -61,6 +62,7 @@ class Dashboard extends StatelessWidget {
                       dashboardController: dashboardController,
                       theme: theme,
                       icon: FontAwesomeIcons.book,
+                      subtitle: 'Books',
                       number: dashboardController.countData.value?.data
                               .formatBooks() ??
                           '',
@@ -70,6 +72,7 @@ class Dashboard extends StatelessWidget {
                       dashboardController: dashboardController,
                       theme: theme,
                       icon: FontAwesomeIcons.laptopCode,
+                      subtitle: 'Softwares',
                       number: dashboardController.countData.value?.data
                               .formatSoftwares() ??
                           '',
@@ -79,6 +82,7 @@ class Dashboard extends StatelessWidget {
                       dashboardController: dashboardController,
                       theme: theme,
                       icon: FontAwesomeIcons.cloudArrowDown,
+                      subtitle: 'Downloads',
                       number: dashboardController.countData.value?.data
                               .formatDownloads() ??
                           '',
@@ -101,7 +105,7 @@ class Dashboard extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   margin: const EdgeInsets.symmetric(horizontal: 10.0),
                   decoration: BoxDecoration(
-                    color: dashboardController.randomColor(),
+                    color: theme.primaryColor,
                     borderRadius: const BorderRadius.all(
                       Radius.circular(10.0),
                     ),
@@ -137,7 +141,7 @@ class Dashboard extends StatelessWidget {
                   child: dashboardController.quote.value != null
                       ? Container(
                           decoration: BoxDecoration(
-                            color: dashboardController.randomColor(),
+                            color: theme.primaryColor,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(10)),
                             boxShadow: [
@@ -158,10 +162,8 @@ class Dashboard extends StatelessWidget {
                                 Text(
                                   dashboardController.quote.value?.data.quote ??
                                       '',
-                                  style: const TextStyle(
-                                    fontSize: 25,
-                                    color: Colors.white,
-                                  ),
+                                  style: theme.textTheme.headline6
+                                      ?.copyWith(color: Colors.white),
                                   textAlign: TextAlign.center,
                                 ),
                                 const SizedBox(
@@ -195,8 +197,9 @@ class Dashboard extends StatelessWidget {
                         return Container(
                             width: mediaQuery.width,
                             margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                            // ignore: prefer_const_constructors
                             decoration: BoxDecoration(
-                              color: dashboardController.randomColor(),
+                              color: Colors.redAccent,
                               borderRadius: const BorderRadius.all(
                                 Radius.circular(10.0),
                               ),
@@ -252,6 +255,7 @@ class SingleDataComponent extends StatelessWidget {
     required this.theme,
     required this.icon,
     required this.number,
+    required this.subtitle,
   }) : super(key: key);
 
   final Size mediaQuery;
@@ -259,6 +263,7 @@ class SingleDataComponent extends StatelessWidget {
   final ThemeData theme;
   final IconData icon;
   final String number;
+  final String subtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -284,11 +289,10 @@ class SingleDataComponent extends StatelessWidget {
             number,
             style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
           ),
-          // Text(
-          //   'USERS',
-          //   style: theme.textTheme.titleLarge
-          //       ?.copyWith(color: Colors.white),
-          // ),
+          Text(
+            subtitle,
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.white),
+          ),
         ],
       ),
     );

@@ -152,7 +152,8 @@ class DashboardController extends GetxController {
       const Color(0xffc56cf0),
       Colors.redAccent
     ];
-    return (list..shuffle()).first;
+    return Colors.cyan;
+    // return (list..shuffle()).first;
   }
 
   Future<void> autoLoadData() async {

@@ -78,6 +78,8 @@ class Profile extends StatelessWidget {
                         ),
                       ),
                     ),
+                     
+                    divider,
                     ListTile(
                       leading: const FaIcon(
                         FontAwesomeIcons.signature,
@@ -206,6 +208,28 @@ class Profile extends StatelessWidget {
                         Get.toNamed(userDevices);
                       },
                     ),
+                    divider,
+                    const ListTile(
+                      leading: FaIcon(
+                        FontAwesomeIcons.info,
+                        color: iconColor,
+                      ),
+                      title: Padding(
+                        padding: EdgeInsets.only(right: 20.0),
+                        child: Text(
+                          'Please refrain from sharing your account with others. Such activity may lead to permanent account suspension. The website constantly monitors all activities to prevent account sharing. You can see your activities from the Activity section.',
+                          textScaleFactor: 0.85,
+                          softWrap: true,
+                          style: TextStyle(color: Colors.cyan)
+                        ),
+                      ),
+                      trailing:  FaIcon(
+                        FontAwesomeIcons.chevronRight,
+                        color: Colors.transparent,
+                        size: iconSize,
+                      ),
+                    ),
+                    divider,
                    
                     
                   ],
