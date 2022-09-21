@@ -8,6 +8,7 @@ import 'package:dio/src/form_data.dart' as form_data;
 import 'package:dio/src/multipart_file.dart' as multipart_file;
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:plandroid/api/api.dart';
 import 'package:plandroid/globals/globals.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -29,6 +30,21 @@ class _ReportBugPageState extends State<ReportBugPage> {
   // ignore: prefer_final_fields
   List<File> _images = List<File>.empty(growable: true);
   List uploadList = [];
+
+  PackageInfo _packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+    buildSignature: 'Unknown',
+  );
+
+  Future<void> _initPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
+  }
 
   _getFiles() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -93,7 +109,8 @@ class _ReportBugPageState extends State<ReportBugPage> {
       }
 
       var formData = form_data.FormData.fromMap({
-        'message': "${msgController.value.text}  \n Device Info: \n $map",
+        'message':
+            "${msgController.value.text}  \n Device Info: \n $map \n Package info \n ${_packageInfo.toString()}",
         'files': _images.isEmpty ? null : uploadList,
       });
 
@@ -145,6 +162,7 @@ class _ReportBugPageState extends State<ReportBugPage> {
 
   @override
   void initState() {
+    _initPackageInfo();
     super.initState();
   }
 
