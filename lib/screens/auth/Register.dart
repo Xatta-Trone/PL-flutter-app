@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:barcode_finder/barcode_finder.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:plandroid/constants/const.dart';
@@ -362,6 +362,9 @@ class _RegisterState extends State<Register> {
                                               'Select the back side photo of student id',
                                             ),
                                           ),
+                                          const SizedBox(
+                                            height: 15.0,
+                                          ),
                                           if (image != null) ...[
                                             const SizedBox(
                                               height: 15.0,
@@ -372,8 +375,50 @@ class _RegisterState extends State<Register> {
                                                 image,
                                                 fit: BoxFit.cover,
                                               ),
-                                            )
+                                            ),
                                           ],
+
+                                          Text.rich(
+                                            textAlign: TextAlign.center,
+                                            TextSpan(
+                                              text:
+                                                  'By registering you are agreeing to the ',
+                                              children: [
+                                                const TextSpan(text: '  '),
+                                                TextSpan(
+                                                  text: 'Terms & conditions',
+                                                  recognizer:
+                                                      TapGestureRecognizer()
+                                                        ..onTap = () {
+                                                          Globals.launchURL(
+                                                              "$homeUrl/page/terms-and-conditions");
+                                                        },
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium
+                                                      ?.copyWith(
+                                                          color: Colors.cyan),
+                                                ),
+                                                const TextSpan(text: '  '),
+                                                TextSpan(
+                                                  text: ' & Privacy policy',
+                                                  recognizer:
+                                                      TapGestureRecognizer()
+                                                        ..onTap = () {
+                                                          Globals.launchURL(
+                                                              "$homeUrl/page/privacy-policy");
+                                                        },
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium
+                                                      ?.copyWith(
+                                                          color: Colors.red),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+
                                           const SizedBox(
                                             height: 15.0,
                                           ),
