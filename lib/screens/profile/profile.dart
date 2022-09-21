@@ -220,7 +220,7 @@ class Profile extends StatelessWidget {
                           'Please refrain from sharing your account with others. Such activity may lead to permanent account suspension. The website constantly monitors all activities to prevent account sharing. You can see your activities from the Activity section.',
                           textScaleFactor: 0.85,
                           softWrap: true,
-                          style: TextStyle(color: Colors.cyan)
+                          style: TextStyle(color: Colors.redAccent)
                         ),
                       ),
                       trailing:  FaIcon(

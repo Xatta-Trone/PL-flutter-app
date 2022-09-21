@@ -31,8 +31,10 @@ class More extends StatelessWidget {
               ),
               onTap: () {
                 if (kDebugMode) {
-                  print('change password');
+                  print('Contact PL Tutorials');
                 }
+
+                Get.toNamed(contact);
               },
             ),
             divider,
@@ -108,6 +110,7 @@ class More extends StatelessWidget {
                 if (kDebugMode) {
                   print('change password');
                 }
+                Get.toNamed(reportBug);
               },
             ),
             divider,
@@ -186,8 +189,7 @@ class More extends StatelessWidget {
                     text: '(Github)',
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        Globals.launchURL(
-                            'https://github.com/Xatta-Trone');
+                        Globals.launchURL('https://github.com/Xatta-Trone');
                       },
                     style: Theme.of(context)
                         .textTheme

@@ -37,7 +37,9 @@ class _RegisterState extends State<Register> {
     if (pickedFile != null) {
       final filePath = pickedFile.files.single.path;
       if (filePath != null) {
-        print(filePath);
+        if (kDebugMode) {
+          print(filePath);
+        }
         setState(() {
           image = File(filePath);
         });

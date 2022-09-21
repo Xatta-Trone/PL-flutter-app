@@ -14,7 +14,9 @@ import 'package:plandroid/screens/departments/departments.dart';
 import 'package:plandroid/screens/departments/levelterms.dart';
 import 'package:plandroid/screens/departments/posts.dart';
 import 'package:plandroid/screens/home.dart';
+import 'package:plandroid/screens/more/contact.dart';
 import 'package:plandroid/screens/more/more.dart';
+import 'package:plandroid/screens/more/reportBug.dart';
 import 'package:plandroid/screens/profile/activity.dart';
 import 'package:plandroid/screens/profile/changeCurrentPassword.dart';
 import 'package:plandroid/screens/profile/device.dart';
@@ -128,6 +130,16 @@ appRoutes() => [
       GetPage(
         name: more,
         page: () => const More(),
+        middlewares: [MyMiddelware()],
+      ),
+      GetPage(
+        name: contact,
+        page: () => const ContactPage(),
+        middlewares: [MyMiddelware()],
+      ),
+      GetPage(
+        name: reportBug,
+        page: () => const ReportBugPage(),
         middlewares: [MyMiddelware()],
       ),
     ];
