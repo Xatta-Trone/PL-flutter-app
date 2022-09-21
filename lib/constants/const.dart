@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const String apiUrl = "https://server.gre-sentence-equivalence.com/api/v1";
+const String homeUrl = "https://gre-sentence-equivalence.com";
 
 const primaryColor = Color(0xFF17a2b8);
 const appBgColor = Color(0xFF272727);

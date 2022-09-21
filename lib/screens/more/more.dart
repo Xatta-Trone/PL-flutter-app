@@ -59,6 +59,25 @@ class More extends StatelessWidget {
             divider,
             ListTile(
               leading: const FaIcon(
+                FontAwesomeIcons.facebookMessenger,
+                color: iconColor,
+              ),
+              title: const Text('Send message'),
+              trailing: const FaIcon(
+                FontAwesomeIcons.chevronRight,
+                color: iconColor,
+                size: iconSize,
+              ),
+              onTap: () {
+                if (kDebugMode) {
+                  print('follow us');
+                }
+                Globals.launchURL("https://m.me/thepltutorials");
+              },
+            ),
+            divider,
+            ListTile(
+              leading: const FaIcon(
                 FontAwesomeIcons.laptop,
                 color: iconColor,
               ),
@@ -73,6 +92,63 @@ class More extends StatelessWidget {
                   print('Visit website');
                 }
                 Globals.launchURL("https://pl-tutorials.com/");
+              },
+            ),
+            divider,
+            ListTile(
+              leading: const FaIcon(
+                FontAwesomeIcons.youtube,
+                color: iconColor,
+              ),
+              title: const Text('Visit youtube'),
+              trailing: const FaIcon(
+                FontAwesomeIcons.chevronRight,
+                color: iconColor,
+                size: iconSize,
+              ),
+              onTap: () async {
+                if (kDebugMode) {
+                  print('Visit youtube');
+                }
+                Globals.launchURL("https://www.youtube.com/c/PLTutorials");
+              },
+            ),
+            divider,
+            ListTile(
+              leading: const FaIcon(
+                FontAwesomeIcons.question,
+                color: iconColor,
+              ),
+              title: const Text('Terms & Conditions'),
+              trailing: const FaIcon(
+                FontAwesomeIcons.chevronRight,
+                color: iconColor,
+                size: iconSize,
+              ),
+              onTap: () async {
+                if (kDebugMode) {
+                  print('Visit terms');
+                }
+                Globals.launchURL("$homeUrl/page/terms-and-conditions");
+              },
+            ),
+            divider,
+            ListTile(
+              leading: const FaIcon(
+                FontAwesomeIcons.userSecret,
+                color: iconColor,
+              ),
+              title: const Text('Privacy policy'),
+              trailing: const FaIcon(
+                FontAwesomeIcons.chevronRight,
+                color: iconColor,
+                size: iconSize,
+              ),
+              onTap: () async {
+                if (kDebugMode) {
+                  print('Visit terms');
+                }
+                Globals.launchURL("$homeUrl/page/privacy-policy");
               },
             ),
             divider,
