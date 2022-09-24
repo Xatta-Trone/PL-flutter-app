@@ -5,6 +5,8 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_user_agentx/flutter_user_agent.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/api/api.dart';
 import 'package:plandroid/constants/const.dart';
@@ -20,6 +22,7 @@ class DashboardController extends GetxController {
   final quote = Rxn<Quote>();
   final countData = Rxn<CountData>();
   final RxList<Testimonial> testimonials = RxList<Testimonial>();
+  final RxString UA = RxString('');
 
   Future<void> getQuote() async {
     try {
@@ -42,11 +45,31 @@ class DashboardController extends GetxController {
     }
   }
 
+  Future<void> initUserAgentState() async {
+    String userAgent;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      userAgent = await FlutterUserAgent.getPropertyAsync('userAgent');
+      await FlutterUserAgent.init();
+
+      if (kDebugMode) {
+        print(
+            ''' user agent $userAgent \n package ${FlutterUserAgent.getProperty('packageUserAgent')}''');
+      }
+
+      UA.value = FlutterUserAgent.getProperty('packageUserAgent');
+    } on PlatformException {
+      userAgent = '<error>';
+    }
+  }
+
   Future<void> getTestimonials() async {
     try {
       var response = await Api().dio.get('/testimonials');
 
-      print('=========== set current testimonials ================');
+      if (kDebugMode) {
+        print('=========== set current testimonials ================');
+      }
       final SharedPreferences preferences =
           await SharedPreferences.getInstance();
 
@@ -94,14 +117,19 @@ class DashboardController extends GetxController {
   Future<String?> getId() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    print('Running on ${androidInfo.model}');
-    print('Running on ${androidInfo.toMap()}');
-    print(
-        'Running on Android ${androidInfo.version.sdkInt} on ${androidInfo.model}');
+    if (kDebugMode) {
+      print('Running on ${androidInfo.model}');
+      print('Running on ${androidInfo.toMap()}');
+      print(
+          'Running on Android ${androidInfo.version.sdkInt} on ${androidInfo.model}');
+    }
+    
 
     String? deviceId = await PlatformDeviceId.getDeviceId;
 
-    print("devide id ${deviceId}");
+    if (kDebugMode) {
+      print("devide id ${deviceId}");
+    }
   }
 
   String greetingText() {
@@ -200,6 +228,7 @@ class DashboardController extends GetxController {
     getTestimonials();
     getQuote();
     getCountData();
+    // initUserAgentState();
     super.onInit();
   }
 
