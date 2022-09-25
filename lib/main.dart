@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:plandroid/bindings/Initialbindings.dart';
-import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/routes/routeconst.dart';
 import 'package:plandroid/routes/routes.dart';
-import 'package:plandroid/screens/home.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
