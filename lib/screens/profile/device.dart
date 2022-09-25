@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/api/api.dart';
 import 'package:plandroid/controller/AuthController.dart';
+import 'package:plandroid/globals/globals.dart';
 import 'package:plandroid/models/UserDevicesData.dart';
 import 'package:plandroid/screens/auth/Login.dart';
 import 'package:platform_device_id/platform_device_id.dart';
@@ -39,27 +40,7 @@ class _UserDevicesState extends State<UserDevices> {
     });
   }
 
-  IconData getIcon({String deviceString = 'none'}) {
-    if (deviceString.toLowerCase().contains('firefox')) {
-      return FontAwesomeIcons.firefoxBrowser;
-    }
-    if (deviceString.toLowerCase().contains('android')) {
-      return FontAwesomeIcons.android;
-    }
-    if (deviceString.toLowerCase().contains('chrome')) {
-      return FontAwesomeIcons.chrome;
-    }
-    if (deviceString.toLowerCase().contains('safari')) {
-      return FontAwesomeIcons.safari;
-    }
-    if (deviceString.toLowerCase().contains('edg') ||
-        deviceString.toLowerCase().contains('edge') ||
-        deviceString.toLowerCase().contains('edga')) {
-      return FontAwesomeIcons.edge;
-    }
 
-    return FontAwesomeIcons.windows;
-  }
 
   Map<String, String> getQueryParams({bool isLoadingMore = false}) {
     return {
@@ -346,7 +327,7 @@ class _UserDevicesState extends State<UserDevices> {
                                                 0.15,
                                             child: Center(
                                               child: FaIcon(
-                                                getIcon(
+                                                    Globals.getIcon(
                                                   deviceString: devices[index]
                                                       .device
                                                       .toString(),

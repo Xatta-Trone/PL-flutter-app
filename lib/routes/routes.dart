@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/routes/routeconst.dart';
 import 'package:plandroid/screens/404/404.dart';
 import 'package:plandroid/screens/appinfo/appinfo.dart';
@@ -13,6 +15,7 @@ import 'package:plandroid/screens/departments/courses.dart';
 import 'package:plandroid/screens/departments/departments.dart';
 import 'package:plandroid/screens/departments/levelterms.dart';
 import 'package:plandroid/screens/departments/posts.dart';
+import 'package:plandroid/screens/devices/devices.dart';
 import 'package:plandroid/screens/home.dart';
 import 'package:plandroid/screens/more/contact.dart';
 import 'package:plandroid/screens/more/more.dart';
@@ -142,6 +145,11 @@ appRoutes() => [
         page: () => const ReportBugPage(),
         middlewares: [MyMiddelware()],
       ),
+      GetPage(
+        name: userListedDevices,
+        page: () => const UserListedDevices(),
+        middlewares: [MyMiddelware()],
+      ),
     ];
 
 unknownRoute() => GetPage(
@@ -156,5 +164,23 @@ class MyMiddelware extends GetMiddleware {
       print(page?.name);
     }
     return super.onPageCalled(page);
+  }
+}
+
+
+class AuthGuard extends GetMiddleware {
+//   Get the auth service
+  final AuthController authController = Get.find<AuthController>();
+
+//   The default is 0 but you can update it to any number. Please ensure you match the priority based
+//   on the number of guards you have.
+  @override
+  int? get priority => 1;
+
+  @override
+  RouteSettings? redirect(String? route) {
+    // Navigate to login if client is not authenticated other wise continue
+    // if (authController.isAuthenticated) return RouteSettings(name: AppLinks.LOGIN);
+    // return RouteSettings(name: AppLinks.DASHBOARD);
   }
 }

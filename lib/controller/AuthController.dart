@@ -10,6 +10,7 @@ import 'package:plandroid/api/api.dart';
 import 'package:plandroid/constants/sharedPrefConstants.dart';
 import 'package:plandroid/globals/globals.dart';
 import 'package:plandroid/models/User.dart';
+import 'package:plandroid/models/UserSavedDevices.dart';
 import 'package:plandroid/routes/routeconst.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,8 +19,10 @@ class AuthController extends GetxController {
   final isLoggedIn = RxBool(false);
   RxBool isInAsyncCall = RxBool(false);
   RxBool isPwdReqSuccess = RxBool(false);
+  RxBool isInSavedDevice = RxBool(false);
   final user = Rxn<User>();
   final RxString token = ''.obs;
+  final Rxn<UserSavedDevices> userDevices = Rxn<UserSavedDevices>();
 
   String serverValidationErr = '';
 
@@ -106,12 +109,6 @@ class AuthController extends GetxController {
 
   // functions
 
-  Future<String?> getDeviceId() async {
-    String? deviceId = await PlatformDeviceId.getDeviceId;
-    print("devide id ${deviceId}");
-    return deviceId;
-  }
-
   Future<void> login() async {
     String? deviceId = await PlatformDeviceId.getDeviceId;
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -141,12 +138,16 @@ class AuthController extends GetxController {
       emailController.clear();
       passwordController.clear();
 
-      print(response.data);
+      if (kDebugMode) {
+        print(response.data);
+      }
     } on DioError catch (e) {
       setLogoutValues();
       // server sent a res back with err
       if (e.response != null) {
-        print(e.response);
+        if (kDebugMode) {
+          print(e.response);
+        }
         Get.defaultDialog(
           title: 'Error !!',
           middleText:
@@ -175,12 +176,16 @@ class AuthController extends GetxController {
 
       Get.toNamed(changePassword);
 
-      print(response.data);
+      if (kDebugMode) {
+        print(response.data);
+      }
     } on DioError catch (e) {
       // server sent a res back with err
       if (e.response != null) {
-        print(e.response);
-        print(e.response?.data['status']);
+        if (kDebugMode) {
+          print(e.response);
+          print(e.response?.data['status']);
+        }
 
         isPwdReqSuccess.value = false;
 
@@ -194,7 +199,9 @@ class AuthController extends GetxController {
           onConfirm: () => Get.back(),
         );
       } else {
-        print(e.message);
+        if (kDebugMode) {
+          print(e.message);
+        }
       }
     } finally {
       // async call complete
@@ -229,12 +236,16 @@ class AuthController extends GetxController {
         onConfirm: () => Get.offAllNamed(homePage),
       );
 
-      print(response.data);
+      if (kDebugMode) {
+        print(response.data);
+      }
     } on DioError catch (e) {
       // server sent a res back with err
       if (e.response != null) {
-        print(e.response);
-        print(e.response?.data['status']);
+        if (kDebugMode) {
+          print(e.response);
+          print(e.response?.data['status']);
+        }
 
         isPwdReqSuccess.value = false;
 
@@ -340,13 +351,16 @@ class AuthController extends GetxController {
   }
 
   Future<void> autoLogin() async {
-    print('===========auto login================');
+    if (kDebugMode) {
+      print('===========auto login================');
+    }
     final SharedPreferences preferences = await SharedPreferences.getInstance();
     String? userData = preferences.getString(userDataKey);
 
     if (userData != null) {
       Map<String, dynamic> jsonUserData = jsonDecode(userData);
       setLoginValues(jsonUserData);
+      getUserDevices();
     }
   }
 
@@ -461,6 +475,7 @@ class AuthController extends GetxController {
     user.value = User.fromJson(userData);
     isLoggedIn.value = true;
     token.value = user.value!.accessToken;
+    getUserDevices();
   }
 
   Future<void> setLogoutValues() async {
@@ -469,6 +484,136 @@ class AuthController extends GetxController {
     token.value = '';
     final SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.remove(userDataKey);
+    await preferences.remove(isPrimaryDeviceKey);
+    userDevices.value = null;
+  }
+
+  Future<void> getUserDevices() async {
+    String? deviceId = await PlatformDeviceId.getDeviceId;
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    isInAsyncCall.value = true;
+    try {
+      var response = await Api().dio.get('/user-devices');
+
+      if (kDebugMode) {
+        print('====user devices ===');
+        // print(response.data);
+      }
+      userDevices.value = null;
+      userDevices.value = UserSavedDevices.fromMap(response.data);
+
+      if (kDebugMode) {
+        print(userDevices.value.toString());
+      }
+
+      // check if current device is set
+      var currentDevice =
+          userDevices.value?.devices.firstWhereOrNull((Device device) {
+        return device.fingerprint == deviceId;
+      });
+
+      if (currentDevice == null) {
+        isInSavedDevice.value = false;
+        preferences.remove(isPrimaryDeviceKey);
+      }else{
+        isInSavedDevice.value = true;
+        preferences.setBool(isPrimaryDeviceKey,true);
+      }
+    } on DioError catch (e) {
+      if (kDebugMode) {
+        print(e.message);
+      }
+      userDevices.value = null;
+    } finally {
+      isInAsyncCall.value = false;
+    }
+  }
+
+  Future<void> setUserDevice() async {
+    String? deviceId = await PlatformDeviceId.getDeviceId;
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
+    String deviceName =
+        "Android ${androidInfo.version.sdkInt} on ${androidInfo.model}";
+    isInAsyncCall.value = true;
+
+    try {
+      var response = await Api().dio.post('/user-devices', data: {
+        'fingerprint': deviceId,
+        'deviceName': deviceName,
+        'platform': 'android'
+      });
+
+      if (kDebugMode) {
+        print('==== set user devices ===');
+        // print(response.data);
+      }
+
+      getUserDevices();
+      // set this is the device that is set
+      isInSavedDevice.value = true;
+      final SharedPreferences preferences =
+          await SharedPreferences.getInstance();
+      await preferences.setBool(isPrimaryDeviceKey, true);
+
+      Get.defaultDialog(
+        title: 'Success',
+        middleText: "Device added",
+        textConfirm: ('Okay'),
+        onConfirm: () => Get.back(),
+      );
+    } on DioError catch (e) {
+      if (kDebugMode) {
+        print(e.message);
+      }
+      String errData = Globals().formatText(
+          e.response?.data['message'] ?? 'Something unknown occurred');
+
+      Get.defaultDialog(
+        title: 'Error !!',
+        middleText: "${e.response?.statusCode}: $errData",
+        textConfirm: ('Okay'),
+        onConfirm: () => Get.back(),
+      );
+    } finally {
+      isInAsyncCall.value = false;
+    }
+  }
+
+  Future<void> deleteUserDevice({String id = ""}) async {
+    if (id == "") return;
+
+    isInAsyncCall.value = true;
+    try {
+      var response = await Api().dio.delete("/user-devices/$id");
+
+      if (kDebugMode) {
+        print('====user devices delete ===');
+        // print(response.data);
+      }
+      Get.defaultDialog(
+        title: 'Success',
+        middleText: "Device removed",
+        textConfirm: ('Okay'),
+        onConfirm: () => Get.back(),
+      );
+      getUserDevices();
+    } on DioError catch (e) {
+      if (kDebugMode) {
+        print(e.message);
+      }
+      String errData = Globals().formatText(
+          e.response?.data['message'] ?? 'Something unknown occurred');
+
+      Get.defaultDialog(
+        title: 'Error !!',
+        middleText: "${e.response?.statusCode}: $errData",
+        textConfirm: ('Okay'),
+        onConfirm: () => Get.back(),
+      );
+    }
   }
 
   String getCreateAt() {

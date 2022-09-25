@@ -21,3 +21,4 @@ const String changeCurrentPassword = '/changeCurrentPassword';
 const String more = '/more';
 const String contact = '/contact';
 const String reportBug = '/reportBug';
+const String userListedDevices = '/userListedDevices';

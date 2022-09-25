@@ -157,10 +157,10 @@ class Profile extends StatelessWidget {
                     divider,
                     ListTile(
                       leading: const FaIcon(
-                        FontAwesomeIcons.lock,
+                        FontAwesomeIcons.laptopFile,
                         color: iconColor,
                       ),
-                      title: const Text('Change password'),
+                      title: const Text('Saved devices'),
                       trailing: const FaIcon(
                         FontAwesomeIcons.chevronRight,
                         color: iconColor,
@@ -168,11 +168,12 @@ class Profile extends StatelessWidget {
                       ),
                       onTap: () {
                         if (kDebugMode) {
-                          print('change password');
+                          print('saved devices');
                         }
-                        Get.toNamed(changeCurrentPassword);
+                        Get.toNamed(userListedDevices);
                       },
                     ),
+                    
                     divider,
                     ListTile(
                       leading: const FaIcon(
@@ -206,6 +207,25 @@ class Profile extends StatelessWidget {
                           print('devices clicked');
                         }
                         Get.toNamed(userDevices);
+                      },
+                    ),
+                    divider,
+                    ListTile(
+                      leading: const FaIcon(
+                        FontAwesomeIcons.lock,
+                        color: iconColor,
+                      ),
+                      title: const Text('Change password'),
+                      trailing: const FaIcon(
+                        FontAwesomeIcons.chevronRight,
+                        color: iconColor,
+                        size: iconSize,
+                      ),
+                      onTap: () {
+                        if (kDebugMode) {
+                          print('change password');
+                        }
+                        Get.toNamed(changeCurrentPassword);
                       },
                     ),
                     divider,

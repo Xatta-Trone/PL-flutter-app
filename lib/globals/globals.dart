@@ -1,5 +1,7 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/api/api.dart';
 import 'package:plandroid/controller/AuthController.dart';
@@ -117,5 +119,27 @@ class Globals {
     }
 
     return number.toString();
+  }
+
+  static IconData getIcon({String deviceString = 'none'}) {
+    if (deviceString.toLowerCase().contains('firefox')) {
+      return FontAwesomeIcons.firefoxBrowser;
+    }
+    if (deviceString.toLowerCase().contains('android')) {
+      return FontAwesomeIcons.android;
+    }
+    if (deviceString.toLowerCase().contains('chrome')) {
+      return FontAwesomeIcons.chrome;
+    }
+    if (deviceString.toLowerCase().contains('safari')) {
+      return FontAwesomeIcons.safari;
+    }
+    if (deviceString.toLowerCase().contains('edg') ||
+        deviceString.toLowerCase().contains('edge') ||
+        deviceString.toLowerCase().contains('edga')) {
+      return FontAwesomeIcons.edge;
+    }
+
+    return FontAwesomeIcons.windows;
   }
 }
