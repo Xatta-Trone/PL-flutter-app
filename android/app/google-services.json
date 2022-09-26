@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "34461137929",
+    "project_id": "pl-tutorials-1d26c",
+    "storage_bucket": "pl-tutorials-1d26c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34461137929:android:2f6b3cbc7887a593388cd8",
+        "android_client_info": {
+          "package_name": "com.pltutorials.plandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34461137929-knlg0555cqalru0fp4of3ejddfelthap.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtbAf_JiWQeaCJF2Ik2qeewSwGxHzTntw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "34461137929-knlg0555cqalru0fp4of3ejddfelthap.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

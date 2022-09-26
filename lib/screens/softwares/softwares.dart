@@ -272,8 +272,16 @@ class _SoftwaresState extends State<Softwares> {
                     ),
                     Expanded(
                       child: !_hasMore && books.isEmpty
-                          ? const Center(
-                              child: Text('No data found'),
+                          ? Center(
+                              child: Column(
+                                children: [
+                                  const Text('No data found'),
+                                  ElevatedButton(
+                                    onPressed: () => _refreshData(),
+                                    child: const Text('Refresh data'),
+                                  )
+                                ],
+                              ),
                             )
                           : RefreshIndicator(
                               onRefresh: () {

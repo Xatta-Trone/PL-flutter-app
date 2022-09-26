@@ -55,6 +55,8 @@ dependencies:
   carousel_slider: ^4.1.1
   timeago: ^3.3.0
   flutter_user_agentx: ^1.2.4
+  firebase_analytics: ^9.3.6
+  firebase_core: ^1.23.0
 
 dev_dependencies:
   flutter_test:

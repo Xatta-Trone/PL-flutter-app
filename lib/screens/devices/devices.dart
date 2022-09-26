@@ -68,7 +68,7 @@ class _UserListedDevicesState extends State<UserListedDevices> {
                             style: theme.textTheme.titleLarge,
                           ),
                           Text(
-                            "Maximum allowed device : ${authController.userDevices.value?.maxAllowedDevice.toString()}",
+                            "Maximum allowed device : ${authController.userDevices.value?.maxAllowedDevice.toString() ?? "refresh data"}",
                             style: theme.textTheme.titleMedium,
                           ),
                           if (authController.userDevices.value != null) ...[
