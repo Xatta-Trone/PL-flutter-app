@@ -36,7 +36,8 @@ class _LevelTermsState extends State<LevelTerms> {
 
     if (levelTerm != null) {
       setState(() {
-        levelTermK = levelTerm.toString().split("/").last;
+        levelTermK =
+            "${levelTerm.toString().split("/")[2]}/${levelTerm.toString().split("/").last}";
       });
     }
   }
@@ -49,7 +50,7 @@ class _LevelTermsState extends State<LevelTerms> {
     preference.setString(levelTermPinKey, LTString);
 
     setState(() {
-      levelTermK = levelTermSlug;
+      levelTermK = "${Get.parameters['department']}/$levelTermSlug";
       dashboardController.levelTermString.value = LTString;
     });
     Get.showSnackbar(GetSnackBar(
@@ -234,13 +235,14 @@ class _LevelTermsState extends State<LevelTerms> {
                                           title: Text(levelTerms[index].slug),
                                           subtitle:
                                               Text(levelTerms[index].name),
-                                          trailing: levelTerms[index].slug ==
-                                                  levelTermK
-                                              ? const FaIcon(
-                                                  FontAwesomeIcons.fire,
-                                                  color: Colors.cyan,
-                                                )
-                                              : null,
+                                          trailing:
+                                              "${Get.parameters['department']}/${levelTerms[index].slug}" ==
+                                                      levelTermK
+                                                  ? const FaIcon(
+                                                      FontAwesomeIcons.fire,
+                                                      color: Colors.cyan,
+                                                    )
+                                                  : null,
                                         ),
                                       ),
                                     );
