@@ -57,6 +57,7 @@ dependencies:
   flutter_user_agentx: ^1.2.4
   firebase_analytics: ^9.3.6
   firebase_core: ^1.23.0
+  flutter_native_splash: ^2.2.10
 
 dev_dependencies:
   flutter_test:
