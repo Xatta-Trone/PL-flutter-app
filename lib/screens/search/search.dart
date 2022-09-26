@@ -531,11 +531,18 @@ class _SearchState extends State<Search> {
                                                             .toString());
                                                       }
                                                       Globals.downloadItem(
-                                                          searchResult[index]
+                                                          model: searchResult[
+                                                                  index]
                                                               .toJson(),
-                                                          searchResult[index]
+                                                          postType:
+                                                              searchResult[
+                                                                      index]
                                                               .postType
-                                                              .toString());
+                                                                  .toString(),
+                                                          additionalData:
+                                                              searchResult[
+                                                                      index]
+                                                                  .getAuthor());
                                                     },
                                                     onDoubleTap: () {
                                                       if (kDebugMode) {

@@ -49,7 +49,8 @@ class Globals {
     });
   }
 
-  static downloadItem(dynamic model, String postType) {
+  static downloadItem(
+      {dynamic model, String postType = 'post', String additionalData = ''}) {
     // launchURL(url);
     if (kDebugMode) {
       print(_authController.isLoggedIn);
@@ -63,6 +64,11 @@ class Globals {
         ? _authController.user.value?.user.id ?? 0
         : 0;
     String label = model['name'];
+
+    if (additionalData != "") {
+      label += "($additionalData)";
+    }
+
     int modelId = model['id'];
     String url = model['link'];
     String modelType = postType;

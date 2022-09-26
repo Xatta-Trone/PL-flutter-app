@@ -152,7 +152,10 @@ class _PostState extends State<Post> {
                                     }
 
                                     Globals.downloadItem(
-                                        posts[index].toJson(), 'post');
+                                        model: posts[index].toJson(),
+                                        postType: 'post',
+                                        additionalData:
+                                            "${Get.parameters['department']}/${Get.parameters['levelTerm']}/${Get.parameters['course']}");
                                   },
                                   child: Container(
                                     color: Colors.white,

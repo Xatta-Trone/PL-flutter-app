@@ -319,7 +319,10 @@ class _BooksState extends State<Books> {
                                         print(books[index].link.toString());
                                       }
                                       Globals.downloadItem(
-                                          books[index].toJson(), 'book');
+                                          model: books[index].toJson(),
+                                          postType: 'book',
+                                          additionalData:
+                                              books[index].author ?? "");
                                     },
                                     child: ListTile(
 

@@ -338,8 +338,12 @@ class _SoftwaresState extends State<Softwares> {
                                                     .toString());
                                               }
                                               Globals.downloadItem(
-                                                  books[index].toJson(),
-                                                  'software');
+                                                      model:
+                                                          books[index].toJson(),
+                                                      postType: 'software',
+                                                      additionalData:
+                                                          books[index].author ??
+                                                              "");
                                             },
                                             child: ListTile(
                                               leading: Container(

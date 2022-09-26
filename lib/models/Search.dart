@@ -44,7 +44,7 @@ class SearchData {
     if (postType == 'post') {
       return "${departmentSlug?.toUpperCase()}/${levelTermSlug?.toUpperCase()}/${Globals.generateCourseName(courseSlug.trim()).toUpperCase()}";
     }
-    return author ?? 'No author';
+    return author ?? name;
   }
 
   factory SearchData.fromJson(Map<String, dynamic> json) => SearchData(
