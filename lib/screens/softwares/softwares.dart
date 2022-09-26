@@ -9,6 +9,7 @@ import 'package:plandroid/api/api.dart';
 import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/globals/globals.dart';
 import 'package:plandroid/models/Books.dart';
+import 'package:plandroid/models/SoftwaresData.dart';
 import 'package:plandroid/screens/auth/Login.dart';
 import 'package:plandroid/screens/devices/deviceGuard.dart';
 import 'package:plandroid/screens/devices/devices.dart';
@@ -23,7 +24,7 @@ class Softwares extends StatefulWidget {
 final AuthController authController = Get.find<AuthController>();
 
 class _SoftwaresState extends State<Softwares> {
-  List<Book> books = List<Book>.empty(growable: true);
+  List<Software> books = List<Software>.empty(growable: true);
   static const _pageSize = 50;
   int _page = 1;
   TextEditingController queryString = TextEditingController();
@@ -86,20 +87,20 @@ class _SoftwaresState extends State<Softwares> {
                 curve: Curves.easeOut);
           }
 
-          BooksList booksList = BooksList.fromJson(response.data);
+          SoftwaresData softwaresData = SoftwaresData.fromJson(response.data);
           // set total count
           // if (_totalCount != 0) {
           //   _totalCount = booksList.count;
           // }
 
           // set the books data
-          books.addAll(booksList.data);
+          books.addAll(softwaresData.data);
 
           //  set the data's
           // _page++;
 
           // is last page
-          if (booksList.data.length < _pageSize) {
+          if (softwaresData.data.length < _pageSize) {
             _hasMore = false;
           } else {
             _hasMore = true;
@@ -149,7 +150,7 @@ class _SoftwaresState extends State<Softwares> {
         }
 
         setState(() {
-          BooksList booksList = BooksList.fromJson(response.data);
+          SoftwaresData booksList = SoftwaresData.fromJson(response.data);
           // set total count
           // if (_totalCount != 0) {
           //   _totalCount = booksList.count;
@@ -209,7 +210,7 @@ class _SoftwaresState extends State<Softwares> {
       if (scrollController.position.maxScrollExtent ==
           scrollController.offset) {
         if (kDebugMode) {
-          print('reaced end');
+          print('reached end');
         }
         _loadMore();
       }
@@ -278,6 +279,7 @@ class _SoftwaresState extends State<Softwares> {
                       child: !_hasMore && books.isEmpty
                           ? Center(
                               child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const Text('No data found'),
                                   ElevatedButton(
@@ -370,19 +372,12 @@ class _SoftwaresState extends State<Softwares> {
                                                 ),
                                               ),
                                               subtitle: Text(
-                                                  books[index].author ??
-                                                    'No author',
+                                                      books[index].author ??
+                                                          books[index]
+                                                              .name
+                                                              .toString()
                                               ),
-                                              // trailing: Container(
-                                              //   decoration: const BoxDecoration(color: Colors.white70),
-                                              //   width: MediaQuery.of(context).size.width * 0.1,
-                                              //   child: const Center(
-                                              //     child: FaIcon(
-                                              //       FontAwesomeIcons.download,
-                                              //       size: 28.0,
-                                              //     ),
-                                              //   ),
-                                              // ),
+                                              
                                             ),
                                           ),
                                         )
