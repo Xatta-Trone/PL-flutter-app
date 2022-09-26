@@ -10,6 +10,8 @@ import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/globals/globals.dart';
 import 'package:plandroid/models/Books.dart';
 import 'package:plandroid/screens/auth/Login.dart';
+import 'package:plandroid/screens/devices/deviceGuard.dart';
+import 'package:plandroid/screens/devices/devices.dart';
 
 class Softwares extends StatefulWidget {
   const Softwares({Key? key}) : super(key: key);
@@ -232,7 +234,9 @@ class _SoftwaresState extends State<Softwares> {
         child: Obx(
           () => !authController.isLoggedIn.value
               ? const Login()
-              : Column(
+              : !authController.hasCheckedDevice.value
+                  ? const DeviceGuardPage()
+                  : Column(
                   children: [
                     const SizedBox(
                       height: 10.0,

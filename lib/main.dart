@@ -1,7 +1,10 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:plandroid/bindings/Initialbindings.dart';
+import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/routes/routeconst.dart';
 import 'package:plandroid/routes/routes.dart';
 
@@ -11,15 +14,19 @@ void main() async {
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
+ 
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+    
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Get.put(AuthController());
     return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,

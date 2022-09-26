@@ -17,10 +17,10 @@ class UAInterceptor extends Interceptor {
       userAgent = await FlutterUserAgent.getPropertyAsync('userAgent');
       await FlutterUserAgent.init();
 
-      if (kDebugMode) {
-        print(
-            ''' user agent $userAgent \n package ${FlutterUserAgent.getProperty('packageUserAgent')}''');
-      }
+      // if (kDebugMode) {
+      //   print(
+      //       ''' user agent $userAgent \n package ${FlutterUserAgent.getProperty('packageUserAgent')}''');
+      // }
 
       userAgent = FlutterUserAgent.getProperty('packageUserAgent');
     } on PlatformException {
@@ -28,7 +28,7 @@ class UAInterceptor extends Interceptor {
     }
 
     if (kDebugMode) {
-      print("user agent $userAgent");
+      // print("user agent $userAgent");
     }
 
     options.headers.addAll({'User-Agent': userAgent});

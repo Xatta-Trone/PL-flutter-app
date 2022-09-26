@@ -4,6 +4,6 @@ import 'package:plandroid/controller/AuthController.dart';
 class InitialBindings implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<AuthController>(() => AuthController());
+    Get.put(AuthController());
   }
 }

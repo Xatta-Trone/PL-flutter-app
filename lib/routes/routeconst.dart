@@ -22,3 +22,4 @@ const String more = '/more';
 const String contact = '/contact';
 const String reportBug = '/reportBug';
 const String userListedDevices = '/userListedDevices';
+const String deviceGuard = '/deviceGuard';

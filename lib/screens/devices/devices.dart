@@ -71,6 +71,37 @@ class _UserListedDevicesState extends State<UserListedDevices> {
                             "Maximum allowed device : ${authController.userDevices.value?.maxAllowedDevice.toString() ?? "refresh data"}",
                             style: theme.textTheme.titleMedium,
                           ),
+
+                          if (authController.isGuestDevice.value) ...[
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Text(
+                                "You are using this device as a guest user. If you wish to use this device frequently, then please add to the saved devices.",
+                                style: theme.textTheme.titleMedium
+                                    ?.copyWith(color: Colors.redAccent),
+                              ),
+                            ),
+                          ],
+
+                          if (!authController.hasCheckedDevice.value) ...[
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Text(
+                                "Please set the device to access restricted pages.",
+                                style: theme.textTheme.titleMedium
+                                    ?.copyWith(color: Colors.redAccent),
+                              ),
+                            ),
+                          ],
+
                           if (authController.userDevices.value != null) ...[
                             Flexible(
                               child: ListView.builder(
@@ -266,6 +297,7 @@ class _UserListedDevicesState extends State<UserListedDevices> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
+          heroTag: 'refresh-devices',
           onPressed: () {
             if (kDebugMode) {
               print('refresh  clicked');

@@ -20,6 +20,8 @@ class AuthController extends GetxController {
   RxBool isInAsyncCall = RxBool(false);
   RxBool isPwdReqSuccess = RxBool(false);
   RxBool isInSavedDevice = RxBool(false);
+  RxBool isGuestDevice = RxBool(false);
+  RxBool hasCheckedDevice = RxBool(false);
   final user = Rxn<User>();
   final RxString token = ''.obs;
   final Rxn<UserSavedDevices> userDevices = Rxn<UserSavedDevices>();
@@ -360,7 +362,7 @@ class AuthController extends GetxController {
     if (userData != null) {
       Map<String, dynamic> jsonUserData = jsonDecode(userData);
       setLoginValues(jsonUserData);
-      getUserDevices();
+      // getUserDevices();
     }
   }
 
@@ -515,10 +517,23 @@ class AuthController extends GetxController {
 
       if (currentDevice == null) {
         isInSavedDevice.value = false;
+        // check if guest device
+        var isGuest = preferences.get(isGuestDeviceKey);
+        if (isGuest != null) {
+          isGuestDevice.value = true;
+          hasCheckedDevice.value = true;
+        } else {
+          isGuestDevice.value = false;
+          hasCheckedDevice.value = false;
+        }
+
         preferences.remove(isPrimaryDeviceKey);
-      }else{
+      } else {
         isInSavedDevice.value = true;
-        preferences.setBool(isPrimaryDeviceKey,true);
+        isGuestDevice.value = false;
+        hasCheckedDevice.value = true;
+        preferences.remove(isGuestDeviceKey);
+        preferences.setBool(isPrimaryDeviceKey, true);
       }
     } on DioError catch (e) {
       if (kDebugMode) {
@@ -554,9 +569,12 @@ class AuthController extends GetxController {
       getUserDevices();
       // set this is the device that is set
       isInSavedDevice.value = true;
+      hasCheckedDevice.value = true;
+      isGuestDevice.value = false;
       final SharedPreferences preferences =
           await SharedPreferences.getInstance();
       await preferences.setBool(isPrimaryDeviceKey, true);
+      await preferences.remove(isGuestDeviceKey);
 
       Get.defaultDialog(
         title: 'Success',
@@ -616,6 +634,29 @@ class AuthController extends GetxController {
     }
   }
 
+  void setAsGuestDevice() async {
+    // RxBool isInSavedDevice = RxBool(false);
+    // RxBool isGuestDevice = RxBool(true);
+    // RxBool hasCheckedDevice = RxBool(false);
+    isInAsyncCall.value = true;
+
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    isGuestDevice.value = true;
+    hasCheckedDevice.value = true;
+    preferences.setBool(isGuestDeviceKey, true);
+
+    isInAsyncCall.value = false;
+  }
+
+  void checkIfGuestDevice() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    var isGuest = preferences.get(isGuestDeviceKey);
+    if (isGuest != null) {
+      isGuestDevice.value = true;
+      hasCheckedDevice.value = true;
+    }
+  }
+
   String getCreateAt() {
     if (user.value != null) {
       return DateFormat("MMM d, yyyy h:mm a")
@@ -627,6 +668,7 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     autoLogin();
+    checkIfGuestDevice();
     super.onInit();
   }
 

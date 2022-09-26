@@ -15,6 +15,7 @@ import 'package:plandroid/screens/departments/courses.dart';
 import 'package:plandroid/screens/departments/departments.dart';
 import 'package:plandroid/screens/departments/levelterms.dart';
 import 'package:plandroid/screens/departments/posts.dart';
+import 'package:plandroid/screens/devices/deviceGuard.dart';
 import 'package:plandroid/screens/devices/devices.dart';
 import 'package:plandroid/screens/home.dart';
 import 'package:plandroid/screens/more/contact.dart';
@@ -31,7 +32,7 @@ import 'package:plandroid/screens/softwares/softwares.dart';
 appRoutes() => [
       GetPage(
         name: homePage,
-        page: () => Home(),
+        page: () => const Home(),
         // transition: Transition.leftToRightWithFade,
         // transitionDuration: Duration(milliseconds: 500),
       ),
@@ -43,27 +44,27 @@ appRoutes() => [
       GetPage(
         name: softwaresPage,
         page: () => const Softwares(),
-        middlewares: [MyMiddelware()],
+        middlewares: [MyMiddelware(), AuthGuard()],
       ),
       GetPage(
         name: departmentsPage,
         page: () => const Departments(),
-        middlewares: [MyMiddelware()],
+        middlewares: [MyMiddelware(), AuthGuard()],
       ),
       GetPage(
         name: "$levelTermsPage/:department",
         page: () => const LevelTerms(),
-        middlewares: [MyMiddelware()],
+        middlewares: [MyMiddelware(), AuthGuard()],
       ),
       GetPage(
         name: "$coursesPage/:department/:levelTerm",
         page: () => const Courses(),
-        middlewares: [MyMiddelware()],
+        middlewares: [MyMiddelware(), AuthGuard()],
       ),
       GetPage(
         name: "$postsPage/:department/:levelTerm/:course",
         page: () => const Post(),
-        middlewares: [MyMiddelware()],
+        middlewares: [MyMiddelware(), AuthGuard()],
       ),
       GetPage(
         name: profilePage,
@@ -83,7 +84,7 @@ appRoutes() => [
       GetPage(
         name: searchPage,
         page: () => const Search(),
-        middlewares: [MyMiddelware()],
+        middlewares: [MyMiddelware(), AuthGuard()],
       ),
       GetPage(
         name: settingsPage,
@@ -150,6 +151,11 @@ appRoutes() => [
         page: () => const UserListedDevices(),
         middlewares: [MyMiddelware()],
       ),
+      GetPage(
+        name: deviceGuard,
+        page: () => const DeviceGuardPage(),
+        middlewares: [MyMiddelware()],
+      ),
     ];
 
 unknownRoute() => GetPage(
@@ -167,7 +173,6 @@ class MyMiddelware extends GetMiddleware {
   }
 }
 
-
 class AuthGuard extends GetMiddleware {
 //   Get the auth service
   final AuthController authController = Get.find<AuthController>();
@@ -179,6 +184,17 @@ class AuthGuard extends GetMiddleware {
 
   @override
   RouteSettings? redirect(String? route) {
+    if (kDebugMode) {
+      print('from the auth guard');
+      print(authController.isLoggedIn.value);
+      print(authController.isInSavedDevice.value);
+    }
+
+    if (authController.isLoggedIn.value &&
+        !authController.hasCheckedDevice.value) {
+      return const RouteSettings(name: deviceGuard);
+    }
+
     // Navigate to login if client is not authenticated other wise continue
     // if (authController.isAuthenticated) return RouteSettings(name: AppLinks.LOGIN);
     // return RouteSettings(name: AppLinks.DASHBOARD);

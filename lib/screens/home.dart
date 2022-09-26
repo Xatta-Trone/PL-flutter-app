@@ -101,6 +101,7 @@ class Home extends StatelessWidget {
             ),
           ),
           floatingActionButton: FloatingActionButton(
+            heroTag: 'search',
             onPressed: () {
               if (kDebugMode) {
                 print('search clicked');
