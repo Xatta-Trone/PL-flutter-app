@@ -106,7 +106,7 @@ class _RequestPasswordState extends State<RequestPassword> {
                               'Request code',
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline6
+                                  .titleMedium
                                   ?.copyWith(color: Colors.white),
                             ),
                           ),

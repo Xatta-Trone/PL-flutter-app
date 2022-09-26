@@ -451,7 +451,7 @@ class _RegisterState extends State<Register> {
                                             },
                                             child: Text(
                                               'Register',
-                                              style: txtTheme.headline6
+                                              style: txtTheme.titleMedium
                                                   ?.copyWith(
                                                       color: Colors.white),
                                             ),

@@ -285,7 +285,7 @@ class _UserListedDevicesState extends State<UserListedDevices> {
                                   },
                                   child: Text(
                                     'Add this device',
-                                    style: theme.textTheme.bodyLarge
+                                    style: theme.textTheme.titleMedium
                                         ?.copyWith(color: Colors.white),
                                   )),
                             )

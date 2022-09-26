@@ -251,7 +251,7 @@ class _ContactPageState extends State<ContactPage> {
                               'Submit',
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline6
+                                  .titleMedium
                                   ?.copyWith(color: Colors.white),
                             ),
                           ),

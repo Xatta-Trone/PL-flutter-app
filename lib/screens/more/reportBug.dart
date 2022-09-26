@@ -290,7 +290,7 @@ class _ReportBugPageState extends State<ReportBugPage> {
                               'Submit',
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline6
+                                  .titleMedium
                                   ?.copyWith(color: Colors.white),
                             ),
                           ),

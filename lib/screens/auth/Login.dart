@@ -165,7 +165,7 @@ class _LoginState extends State<Login> {
                               'Login',
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline6
+                                  .titleMedium
                                   ?.copyWith(color: Colors.white),
                             ),
                           ),

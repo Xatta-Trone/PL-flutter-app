@@ -227,7 +227,7 @@ class _ChangeCurrentPasswordState extends State<ChangeCurrentPassword> {
                               'Change password',
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline6
+                                  .titleMedium
                                   ?.copyWith(color: Colors.white),
                             ),
                           ),
