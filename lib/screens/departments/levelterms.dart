@@ -2,13 +2,17 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:plandroid/api/api.dart';
+import 'package:plandroid/constants/sharedPrefConstants.dart';
 import 'package:plandroid/controller/AuthController.dart';
+import 'package:plandroid/controller/DashboardController.dart';
 import 'package:plandroid/models/LevelTerms.dart';
 import 'package:plandroid/routes/routeconst.dart';
 import 'package:plandroid/screens/auth/Login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LevelTerms extends StatefulWidget {
   // final String department;
@@ -20,8 +24,39 @@ class LevelTerms extends StatefulWidget {
 
 class _LevelTermsState extends State<LevelTerms> {
   final AuthController authController = Get.find<AuthController>();
+  final DashboardController dashboardController =
+      Get.find<DashboardController>();
   List<Levelterm> levelTerms = List<Levelterm>.empty(growable: true);
   bool _isLoading = false;
+  String? levelTermK = '';
+
+  void getPinnedLevelTerm() async {
+    SharedPreferences preference = await SharedPreferences.getInstance();
+    var levelTerm = preference.get(levelTermPinKey);
+
+    if (levelTerm != null) {
+      setState(() {
+        levelTermK = levelTerm.toString().split("/").last;
+      });
+    }
+  }
+
+  void setPinnedLevelTerm(String levelTermSlug) async {
+    SharedPreferences preference = await SharedPreferences.getInstance();
+    // ignore: non_constant_identifier_names
+    String LTString =
+        "$coursesPage/${Get.parameters['department']}/$levelTermSlug";
+    preference.setString(levelTermPinKey, LTString);
+
+    setState(() {
+      levelTermK = levelTermSlug;
+      dashboardController.levelTermString.value = LTString;
+    });
+    Get.showSnackbar(GetSnackBar(
+      message: "$levelTermSlug pinned on homepage",
+      duration: const Duration(seconds: 2),
+    ));
+  }
 
   Future<void> getLevelTerms() async {
     if (kDebugMode) {
@@ -45,6 +80,8 @@ class _LevelTermsState extends State<LevelTerms> {
           levelTerms.clear();
           levelTerms.addAll(deptData.data.levelterms);
         });
+
+        getPinnedLevelTerm();
 
         if (kDebugMode) {
           print('level term data');
@@ -140,6 +177,8 @@ class _LevelTermsState extends State<LevelTerms> {
                               )),
                             ),
                           ),
+                          const Text(
+                              'Double tap on a level term to pin on homepage'),
                         ],
                         Expanded(
                           child: levelTerms.isEmpty
@@ -161,6 +200,10 @@ class _LevelTermsState extends State<LevelTerms> {
                                         Get.toNamed(
                                           "$coursesPage/${Get.parameters['department']}/${levelTerms[index].slug.toString()}",
                                         );
+                                      },
+                                      onDoubleTap: () {
+                                        setPinnedLevelTerm(
+                                            levelTerms[index].slug);
                                       },
                                       child: Container(
                                         color: Colors.white,
@@ -191,6 +234,13 @@ class _LevelTermsState extends State<LevelTerms> {
                                           title: Text(levelTerms[index].slug),
                                           subtitle:
                                               Text(levelTerms[index].name),
+                                          trailing: levelTerms[index].slug ==
+                                                  levelTermK
+                                              ? const FaIcon(
+                                                  FontAwesomeIcons.fire,
+                                                  color: Colors.cyan,
+                                                )
+                                              : null,
                                         ),
                                       ),
                                     );

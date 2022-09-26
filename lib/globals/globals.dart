@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -28,6 +27,11 @@ class Globals {
 
   String formatText(String text) {
     return text.replaceAll('_', ' ').toTitleCase();
+  }
+
+  static String formatLevelTermString(String string) {
+    // return string;
+    return "Tap to navigate to ${string.split('/')[2].toUpperCase()} ${string.split('/').last.toUpperCase()}";
   }
 
   static postActivity(

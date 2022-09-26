@@ -23,6 +23,7 @@ class DashboardController extends GetxController {
   final countData = Rxn<CountData>();
   final RxList<Testimonial> testimonials = RxList<Testimonial>();
   final RxString UA = RxString('');
+  final RxString levelTermString = RxString('');
 
   Future<void> getQuote() async {
     try {
@@ -42,6 +43,15 @@ class DashboardController extends GetxController {
       if (kDebugMode) {
         print(e);
       }
+    }
+  }
+
+  void getPinnedLevelTerm() async {
+    SharedPreferences preference = await SharedPreferences.getInstance();
+    var levelTerm = preference.get(levelTermPinKey);
+
+    if (levelTerm != null) {
+      levelTermString.value = levelTerm.toString();
     }
   }
 
@@ -123,7 +133,6 @@ class DashboardController extends GetxController {
       print(
           'Running on Android ${androidInfo.version.sdkInt} on ${androidInfo.model}');
     }
-    
 
     String? deviceId = await PlatformDeviceId.getDeviceId;
 
@@ -229,6 +238,7 @@ class DashboardController extends GetxController {
     getQuote();
     getCountData();
     // initUserAgentState();
+    getPinnedLevelTerm();
     super.onInit();
   }
 

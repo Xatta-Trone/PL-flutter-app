@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/controller/DashboardController.dart';
+import 'package:plandroid/globals/globals.dart';
+import 'package:timeago/timeago.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -92,36 +94,47 @@ class Dashboard extends StatelessWidget {
               const SizedBox(
                 height: 20.0,
               ),
+              Obx(
+                () => InkWell(
+                  onTap: () {
+                    if (kDebugMode) {
+                      print('tapped');
+                    }
 
-              InkWell(
-                onTap: () {
-                  if (kDebugMode) {
-                    print('tapped');
-                  }
-                },
-                child: Container(
-                  height: mediaQuery.height * 0.1,
-                  padding: const EdgeInsets.all(8.0),
-                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                  decoration: BoxDecoration(
-                    color: theme.primaryColor,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10.0),
+                    if (dashboardController.levelTermString.value != '') {
+                      // Get.routerDelegate?.setNewRoutePath(join());
+                      Get.toNamed(
+                          dashboardController.levelTermString.value.toString());
+                    }
+                  },
+                  child: Container(
+                    height: mediaQuery.height * 0.1,
+                    padding: const EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                    decoration: BoxDecoration(
+                      color: theme.primaryColor,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10.0),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          blurRadius: 2,
+                          offset: const Offset(2, 4), // Shadow position
+                        )
+                      ],
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        blurRadius: 2,
-                        offset: const Offset(2, 4), // Shadow position
-                      )
-                    ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Double tap on a level term to pin here',
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.headline6
-                          ?.copyWith(color: Colors.white),
+                    child: Center(
+                      child: Text(
+                        // ignore: unrelated_type_equality_checks
+                        dashboardController.levelTermString.value == ''
+                            ? 'Double tap on a level term to pin here'
+                            : Globals.formatLevelTermString(
+                                dashboardController.levelTermString.value),
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.headline6
+                            ?.copyWith(color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
@@ -129,8 +142,6 @@ class Dashboard extends StatelessWidget {
               const SizedBox(
                 height: 10.0,
               ),
-
-
               Obx(
                 () => Padding(
                   padding: const EdgeInsets.symmetric(
