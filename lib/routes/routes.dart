@@ -195,8 +195,7 @@ class AuthGuard extends GetMiddleware {
       return const RouteSettings(name: deviceGuard);
     }
 
-    // Navigate to login if client is not authenticated other wise continue
-    // if (authController.isAuthenticated) return RouteSettings(name: AppLinks.LOGIN);
-    // return RouteSettings(name: AppLinks.DASHBOARD);
+    return null;
+
   }
 }
