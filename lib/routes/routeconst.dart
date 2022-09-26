@@ -23,3 +23,4 @@ const String contact = '/contact';
 const String reportBug = '/reportBug';
 const String userListedDevices = '/userListedDevices';
 const String deviceGuard = '/deviceGuard';
+const String contribute = '/contribute';

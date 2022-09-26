@@ -10,6 +10,7 @@ import 'package:plandroid/screens/auth/Login.dart';
 import 'package:plandroid/screens/auth/Register.dart';
 import 'package:plandroid/screens/auth/requestPassword.dart';
 import 'package:plandroid/screens/books/books.dart';
+import 'package:plandroid/screens/contribute/contribuet.dart';
 import 'package:plandroid/screens/dashboard/dashboard.dart';
 import 'package:plandroid/screens/departments/courses.dart';
 import 'package:plandroid/screens/departments/departments.dart';
@@ -154,6 +155,11 @@ appRoutes() => [
       GetPage(
         name: deviceGuard,
         page: () => const DeviceGuardPage(),
+        middlewares: [MyMiddelware()],
+      ),
+      GetPage(
+        name: contribute,
+        page: () => const Contribute(),
         middlewares: [MyMiddelware()],
       ),
     ];

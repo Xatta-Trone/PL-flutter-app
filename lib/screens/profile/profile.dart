@@ -78,7 +78,20 @@ class Profile extends StatelessWidget {
                         ),
                       ),
                     ),
-                     
+                    divider,
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15.0, vertical: 10.0),
+                      child: Text(
+                          'Please refrain from sharing your account with others. Such activity may lead to permanent account suspension. The website constantly monitors all activities to prevent account sharing. You can see your activities from the Activity section.',
+                          textScaleFactor: 0.85,
+                          softWrap: true,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(color: Colors.redAccent)),
+                    ),
+                    
                     divider,
                     ListTile(
                       leading: const FaIcon(
@@ -115,7 +128,103 @@ class Profile extends StatelessWidget {
                         softWrap: true,
                       ),
                     ),
+
                     divider,
+                    ListTile(
+                      leading: const FaIcon(
+                        FontAwesomeIcons.circlePlus,
+                        color: iconColor,
+                      ),
+                      title: const Text('Contribute materials'),
+                      trailing: const FaIcon(
+                        FontAwesomeIcons.chevronRight,
+                        color: iconColor,
+                        size: iconSize,
+                      ),
+                      onTap: () {
+                        if (kDebugMode) {
+                          print('contribute');
+                        }
+                        Get.toNamed(contribute);
+                      },
+                    ),
+                    divider,
+                    ListTile(
+                      leading: const FaIcon(
+                        FontAwesomeIcons.chartColumn,
+                        color: iconColor,
+                      ),
+                      title: const Text('Activity log'),
+                      trailing: const FaIcon(
+                        FontAwesomeIcons.chevronRight,
+                        color: iconColor,
+                        size: iconSize,
+                      ),
+                      onTap: () {
+                        Get.toNamed(userActivity);
+                      },
+                    ),
+                    divider,
+                    ListTile(
+                      leading: const FaIcon(
+                        FontAwesomeIcons.houseLaptop,
+                        color: iconColor,
+                      ),
+                      title: const Text('Device log'),
+                      trailing: const FaIcon(
+                        FontAwesomeIcons.chevronRight,
+                        color: iconColor,
+                        size: iconSize,
+                      ),
+                      onTap: () {
+                        if (kDebugMode) {
+                          print('devices clicked');
+                        }
+                        Get.toNamed(userDevices);
+                      },
+                    ),
+                    divider,
+                    ListTile(
+                      leading: const FaIcon(
+                        FontAwesomeIcons.laptopFile,
+                        color: iconColor,
+                      ),
+                      title: const Text('Saved devices'),
+                      trailing: const FaIcon(
+                        FontAwesomeIcons.chevronRight,
+                        color: iconColor,
+                        size: iconSize,
+                      ),
+                      onTap: () {
+                        if (kDebugMode) {
+                          print('saved devices');
+                        }
+                        Get.toNamed(userListedDevices);
+                      },
+                    ),
+                    
+                    divider,
+                    ListTile(
+                      leading: const FaIcon(
+                        FontAwesomeIcons.lock,
+                        color: iconColor,
+                      ),
+                      title: const Text('Change password'),
+                      trailing: const FaIcon(
+                        FontAwesomeIcons.chevronRight,
+                        color: iconColor,
+                        size: iconSize,
+                      ),
+                      onTap: () {
+                        if (kDebugMode) {
+                          print('change password');
+                        }
+                        Get.toNamed(changeCurrentPassword);
+                      },
+                    ),
+                    divider,
+                    
+
                     ListTile(
                         leading: const FaIcon(
                           FontAwesomeIcons.rightFromBracket,
@@ -154,102 +263,6 @@ class Profile extends StatelessWidget {
                             },
                           );
                         }),
-                    divider,
-                    ListTile(
-                      leading: const FaIcon(
-                        FontAwesomeIcons.laptopFile,
-                        color: iconColor,
-                      ),
-                      title: const Text('Saved devices'),
-                      trailing: const FaIcon(
-                        FontAwesomeIcons.chevronRight,
-                        color: iconColor,
-                        size: iconSize,
-                      ),
-                      onTap: () {
-                        if (kDebugMode) {
-                          print('saved devices');
-                        }
-                        Get.toNamed(userListedDevices);
-                      },
-                    ),
-                    
-                    divider,
-                    ListTile(
-                      leading: const FaIcon(
-                        FontAwesomeIcons.chartColumn,
-                        color: iconColor,
-                      ),
-                      title: const Text('Activity'),
-                      trailing: const FaIcon(
-                        FontAwesomeIcons.chevronRight,
-                        color: iconColor,
-                        size: iconSize,
-                      ),
-                      onTap: () {
-                        Get.toNamed(userActivity);
-                      },
-                    ),
-                    divider,
-                    ListTile(
-                      leading: const FaIcon(
-                        FontAwesomeIcons.houseLaptop,
-                        color: iconColor,
-                      ),
-                      title: const Text('Devices'),
-                      trailing: const FaIcon(
-                        FontAwesomeIcons.chevronRight,
-                        color: iconColor,
-                        size: iconSize,
-                      ),
-                      onTap: () {
-                        if (kDebugMode) {
-                          print('devices clicked');
-                        }
-                        Get.toNamed(userDevices);
-                      },
-                    ),
-                    divider,
-                    ListTile(
-                      leading: const FaIcon(
-                        FontAwesomeIcons.lock,
-                        color: iconColor,
-                      ),
-                      title: const Text('Change password'),
-                      trailing: const FaIcon(
-                        FontAwesomeIcons.chevronRight,
-                        color: iconColor,
-                        size: iconSize,
-                      ),
-                      onTap: () {
-                        if (kDebugMode) {
-                          print('change password');
-                        }
-                        Get.toNamed(changeCurrentPassword);
-                      },
-                    ),
-                    divider,
-                    const ListTile(
-                      leading: FaIcon(
-                        FontAwesomeIcons.info,
-                        color: iconColor,
-                      ),
-                      title: Padding(
-                        padding: EdgeInsets.only(right: 20.0),
-                        child: Text(
-                          'Please refrain from sharing your account with others. Such activity may lead to permanent account suspension. The website constantly monitors all activities to prevent account sharing. You can see your activities from the Activity section.',
-                          textScaleFactor: 0.85,
-                          softWrap: true,
-                          style: TextStyle(color: Colors.redAccent)
-                        ),
-                      ),
-                      trailing:  FaIcon(
-                        FontAwesomeIcons.chevronRight,
-                        color: Colors.transparent,
-                        size: iconSize,
-                      ),
-                    ),
-                    divider,
                    
                     
                   ],
