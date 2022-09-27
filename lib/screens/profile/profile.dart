@@ -249,7 +249,9 @@ class Profile extends StatelessWidget {
                                       // Navigator.of(context).pop();
                                       Get.back();
                                     },
-                                    child: const Text('NO'),
+                                    child: const Text(
+                                      'NO',
+                                    ),
                                   ),
                                   TextButton(
                                     onPressed: () {

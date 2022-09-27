@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -64,10 +66,20 @@ class MyApp extends StatelessWidget {
 
           dividerColor: Colors.grey[200],
 
-          // elevatedButtonTheme: ElevatedButtonThemeData(
-          //   style: ElevatedButton.styleFrom(
-          //       textStyle: TextStyle(color: Colors.green)),
-          // )
+            textButtonTheme: TextButtonThemeData(
+              style: ButtonStyle(
+                foregroundColor:
+                    MaterialStateProperty.resolveWith((states) => Colors.cyan),
+              ),
+            ),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ButtonStyle(
+                foregroundColor:
+                    MaterialStateProperty.resolveWith((states) => Colors.white),
+              ),
+            )
+
+          
        
         
          
@@ -94,6 +106,13 @@ class MyApp extends StatelessWidget {
             cursorColor: Colors.white70,
           ),
           dividerColor: Colors.grey[800],
+
+            textButtonTheme: TextButtonThemeData(
+              style: ButtonStyle(
+                foregroundColor:
+                    MaterialStateProperty.resolveWith((states) => Colors.white),
+              ),
+            )
 
           // scaffoldBackgroundColor: Colors.grey[900],
         ),
