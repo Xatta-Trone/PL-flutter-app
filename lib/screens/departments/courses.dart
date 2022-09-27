@@ -158,7 +158,7 @@ class _CoursesState extends State<Courses> {
                                     );
                                   },
                                   child: Container(
-                                    color: Colors.white,
+                                    color: theme.cardColor.withOpacity(0.6),
                                     margin: const EdgeInsets.symmetric(
                                         vertical: 10.0),
                                     child: ListTile(

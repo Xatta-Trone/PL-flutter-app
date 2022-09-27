@@ -123,13 +123,13 @@ class _PostState extends State<Post> {
                     if (posts.isNotEmpty) ...[
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),
-                        child: SizedBox(
-                          height: 40.0,
-                          child: Center(
-                            child: Text(
-                              courseName,
-                              style: theme.textTheme.headline5,
-                            ),
+                        child: Center(
+                          child: Text(
+                            courseName,
+                            style: theme.textTheme.headline5,
+                            softWrap: true,
+                            overflow: TextOverflow.visible,
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       ),
@@ -158,7 +158,7 @@ class _PostState extends State<Post> {
                                             "${Get.parameters['department']}/${Get.parameters['levelTerm']}/${Get.parameters['course']}");
                                   },
                                   child: Container(
-                                    color: Colors.white,
+                                    color: theme.cardColor.withOpacity(0.6),
                                     margin: const EdgeInsets.symmetric(
                                         vertical: 10.0),
                                     child: ListTile(
