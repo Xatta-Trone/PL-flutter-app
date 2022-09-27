@@ -265,8 +265,7 @@ class _SoftwaresState extends State<Softwares> {
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.only(
                               left: 15.0, top: 15.0, right: 25.0, bottom: 15.0),
-                          filled: true,
-                          fillColor: Colors.white,
+                              filled: true,
                           hintText: "Search softwares here....",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
@@ -317,16 +316,19 @@ class _SoftwaresState extends State<Softwares> {
                                       );
                                     }
 
-                                    return const Padding(
-                                      padding: EdgeInsets.all(8.0),
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
                                       child: Center(
-                                          child: CircularProgressIndicator()),
+                                              child: CircularProgressIndicator(
+                                            color: theme.primaryColor,
+                                          )),
                                     );
                                   }
 
                                   return books.isNotEmpty
                                       ? Container(
-                                          color: Colors.white,
+                                              color: theme.cardColor
+                                                  .withOpacity(0.6),
                                           margin: const EdgeInsets.symmetric(
                                             vertical: 10.0,
                                           ),

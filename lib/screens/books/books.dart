@@ -252,7 +252,7 @@ class _BooksState extends State<Books> {
                   contentPadding: const EdgeInsets.only(
                       left: 15.0, top: 15.0, right: 25.0, bottom: 15.0),
                   filled: true,
-                  fillColor: Colors.white,
+                  // fillColor: Colors.white,
                   hintText: "Search books here....",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
@@ -301,15 +301,18 @@ class _BooksState extends State<Books> {
                               );
                             }
 
-                            return const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Center(child: CircularProgressIndicator()),
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                  child: CircularProgressIndicator(
+                                color: theme.primaryColor,
+                              )),
                             );
                           }
 
                           return books.isNotEmpty
                               ? Container(
-                                  color: Colors.white,
+                                  color: theme.cardColor.withOpacity(0.6),
                                   margin: const EdgeInsets.symmetric(
                                     vertical: 10.0,
                                   ),

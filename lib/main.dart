@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Nunito',
           scaffoldBackgroundColor: const Color(0xfff6f8fa),
           primaryColorLight: Colors.cyan,
+          
           iconTheme: const IconThemeData(
             color: Colors.white,
           ),
@@ -52,9 +53,14 @@ class MyApp extends StatelessWidget {
             elevation: 10.0,
           ),
           cardColor: Colors.white,
-          // backgroundColor:
-          // ignore: prefer_const_constructors
-          // elevatedButtonTheme: ElevatedButtonThemeData()
+          inputDecorationTheme: const InputDecorationTheme(
+            fillColor: Colors.white,
+          ),
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: Colors.cyan,
+          ),
+        
+         
         ),
         darkTheme: ThemeData(
           brightness: Brightness.dark,
@@ -63,11 +69,17 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Nunito',
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
             backgroundColor: Colors.grey[800],
-            selectedItemColor: Colors.grey[900],
+            selectedItemColor: Colors.grey[100],
             unselectedItemColor: Colors.grey[600],
             elevation: 10.0,
           ),
           cardColor: Colors.grey[900],
+          inputDecorationTheme: InputDecorationTheme(
+            fillColor: Colors.grey[800],
+          ),
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: Colors.white70,
+          ),
 
           // scaffoldBackgroundColor: Colors.grey[900],
         ),
