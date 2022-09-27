@@ -42,9 +42,11 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Nunito',
           scaffoldBackgroundColor: const Color(0xfff6f8fa),
           primaryColorLight: Colors.cyan,
-          
           iconTheme: const IconThemeData(
-            color: Colors.white,
+            color: Colors.black,
+          ),
+          primaryIconTheme: const IconThemeData(
+            color: Colors.black,
           ),
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
             backgroundColor: Colors.white,
@@ -59,6 +61,9 @@ class MyApp extends StatelessWidget {
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: Colors.cyan,
           ),
+
+          dividerColor: Colors.grey[200],
+       
         
          
         ),
@@ -67,6 +72,9 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.cyan,
           primaryColorLight: Colors.grey,
           fontFamily: 'Nunito',
+          iconTheme: const IconThemeData(
+            color: Colors.white70,
+          ),
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
             backgroundColor: Colors.grey[800],
             selectedItemColor: Colors.grey[100],
@@ -80,6 +88,7 @@ class MyApp extends StatelessWidget {
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: Colors.white70,
           ),
+          dividerColor: Colors.grey[800],
 
           // scaffoldBackgroundColor: Colors.grey[900],
         ),

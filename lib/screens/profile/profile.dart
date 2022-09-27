@@ -14,6 +14,7 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthController authController = Get.find<AuthController>();
+    ThemeData theme = Theme.of(context);
 
     final screenSize = MediaQuery.of(context).size;
 
@@ -27,12 +28,12 @@ class Profile extends StatelessWidget {
                     Container(
                       height: screenSize.height * 0.3,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
+                        color: theme.primaryColor,
                         borderRadius:
                             const BorderRadius.all(Radius.circular(5)),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
+                            color: theme.primaryColor.withOpacity(0.1),
                             blurRadius: 2,
                             offset: const Offset(2, 4), // Shadow position
                           ),
@@ -46,12 +47,12 @@ class Profile extends StatelessWidget {
                               maxRadius: 43,
                               backgroundColor: Colors.white,
                               child: CircleAvatar(
-                                backgroundColor: Theme.of(context).primaryColor,
+                                backgroundColor: theme.primaryColor,
                                 maxRadius: 40,
                                 child: Text(
                                   authController.user.value?.user.userLetter ??
                                       '',
-                                  style: Theme.of(context)
+                                  style: theme
                                       .textTheme
                                       .headline4
                                       ?.copyWith(
@@ -66,7 +67,7 @@ class Profile extends StatelessWidget {
                             ),
                             Text(
                               "#${authController.user.value?.user.studentId ?? ''}",
-                              style: Theme.of(context)
+                              style: theme
                                   .textTheme
                                   .headline4
                                   ?.copyWith(
@@ -86,7 +87,7 @@ class Profile extends StatelessWidget {
                           'Please refrain from sharing your account with others. Such activity may lead to permanent account suspension. The website constantly monitors all activities to prevent account sharing. You can see your activities from the Activity section.',
                           textScaleFactor: 0.85,
                           softWrap: true,
-                          style: Theme.of(context)
+                          style: theme
                               .textTheme
                               .titleMedium
                               ?.copyWith(color: Colors.redAccent)),
@@ -94,9 +95,8 @@ class Profile extends StatelessWidget {
                     
                     divider,
                     ListTile(
-                      leading: const FaIcon(
+                      leading: const Icon(
                         FontAwesomeIcons.signature,
-                        color: iconColor,
                       ),
                       title: Text(
                         authController.user.value?.user.name ?? '',
@@ -106,9 +106,9 @@ class Profile extends StatelessWidget {
                     ),
                     divider,
                     ListTile(
-                      leading: const FaIcon(
+                      leading: const Icon(
                         FontAwesomeIcons.envelope,
-                        color: iconColor,
+                        
                       ),
                       title: Text(
                         authController.user.value?.user.email ?? '',
@@ -120,7 +120,7 @@ class Profile extends StatelessWidget {
                     ListTile(
                       leading: const FaIcon(
                         FontAwesomeIcons.calendarDays,
-                        color: iconColor,
+                        
                       ),
                       title: Text(
                         authController.getCreateAt(),
@@ -133,12 +133,12 @@ class Profile extends StatelessWidget {
                     ListTile(
                       leading: const FaIcon(
                         FontAwesomeIcons.circlePlus,
-                        color: iconColor,
+                        
                       ),
                       title: const Text('Contribute materials'),
                       trailing: const FaIcon(
                         FontAwesomeIcons.chevronRight,
-                        color: iconColor,
+                        
                         size: iconSize,
                       ),
                       onTap: () {
@@ -152,12 +152,12 @@ class Profile extends StatelessWidget {
                     ListTile(
                       leading: const FaIcon(
                         FontAwesomeIcons.chartColumn,
-                        color: iconColor,
+                        
                       ),
                       title: const Text('Activity log'),
                       trailing: const FaIcon(
                         FontAwesomeIcons.chevronRight,
-                        color: iconColor,
+                        
                         size: iconSize,
                       ),
                       onTap: () {
@@ -168,12 +168,12 @@ class Profile extends StatelessWidget {
                     ListTile(
                       leading: const FaIcon(
                         FontAwesomeIcons.houseLaptop,
-                        color: iconColor,
+                        
                       ),
                       title: const Text('Device log'),
                       trailing: const FaIcon(
                         FontAwesomeIcons.chevronRight,
-                        color: iconColor,
+                        
                         size: iconSize,
                       ),
                       onTap: () {
@@ -187,12 +187,12 @@ class Profile extends StatelessWidget {
                     ListTile(
                       leading: const FaIcon(
                         FontAwesomeIcons.laptopFile,
-                        color: iconColor,
+                        
                       ),
                       title: const Text('Saved devices'),
                       trailing: const FaIcon(
                         FontAwesomeIcons.chevronRight,
-                        color: iconColor,
+                        
                         size: iconSize,
                       ),
                       onTap: () {
@@ -207,12 +207,12 @@ class Profile extends StatelessWidget {
                     ListTile(
                       leading: const FaIcon(
                         FontAwesomeIcons.lock,
-                        color: iconColor,
+                        
                       ),
                       title: const Text('Change password'),
                       trailing: const FaIcon(
                         FontAwesomeIcons.chevronRight,
-                        color: iconColor,
+                        
                         size: iconSize,
                       ),
                       onTap: () {
@@ -228,12 +228,12 @@ class Profile extends StatelessWidget {
                     ListTile(
                         leading: const FaIcon(
                           FontAwesomeIcons.rightFromBracket,
-                          color: iconColor,
+                          
                         ),
                         title: const Text('Logout'),
                         trailing: const FaIcon(
                           FontAwesomeIcons.chevronRight,
-                          color: iconColor,
+                          
                           size: iconSize,
                         ),
                         onTap: () {

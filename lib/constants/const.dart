@@ -39,5 +39,4 @@ const iconColor = Colors.black87;
 const divider = Divider(
   thickness: 1.0,
   height: 0.01,
-  color: Colors.white70,
 );
