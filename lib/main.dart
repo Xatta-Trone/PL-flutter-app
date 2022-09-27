@@ -18,13 +18,14 @@ void main() async {
 
   runApp(MyApp());
 }
+
 class MyApp extends StatelessWidget {
   MyApp({super.key}) {
     // Get.changeThemeMode(
     //     themeController.isDarkTheme.value ? ThemeMode.dark : ThemeMode.light);
   }
 
-ThemeController themeController = Get.put(ThemeController());
+  ThemeController themeController = Get.put(ThemeController());
 
   // This widget is the root of your application.
   @override
@@ -49,7 +50,8 @@ ThemeController themeController = Get.put(ThemeController());
             unselectedItemColor: Colors.grey[600],
             elevation: 10.0,
           ),
-          cardColor: Colors.cyan,
+          cardColor: Colors.white,
+          // backgroundColor:
           // ignore: prefer_const_constructors
           // elevatedButtonTheme: ElevatedButtonThemeData()
         ),
@@ -64,6 +66,7 @@ ThemeController themeController = Get.put(ThemeController());
             elevation: 10.0,
           ),
           cardColor: Colors.grey[850],
+          scaffoldBackgroundColor: Colors.grey[900],
         ),
         themeMode: themeController.isDarkTheme.value
             ? ThemeMode.dark
