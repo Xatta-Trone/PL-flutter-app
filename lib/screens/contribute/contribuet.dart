@@ -31,7 +31,6 @@ class Contribute extends StatelessWidget {
             const ListTile(
               leading: FaIcon(
                 FontAwesomeIcons.diceOne,
-                color: iconColor,
               ),
               title: Text(
                   'Upload your materials on Google Drive or a similar service. '),
@@ -39,7 +38,7 @@ class Contribute extends StatelessWidget {
             ListTile(
               leading: const FaIcon(
                 FontAwesomeIcons.diceTwo,
-                color: iconColor,
+                
               ),
               title: Text.rich(
                 TextSpan(
@@ -63,7 +62,7 @@ class Contribute extends StatelessWidget {
             const ListTile(
               leading: FaIcon(
                 FontAwesomeIcons.diceThree,
-                color: iconColor,
+                
               ),
               title: Text(
                   'The contents will be shared on PL Tutorials with credits to your name. '),
