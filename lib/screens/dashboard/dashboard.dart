@@ -118,7 +118,7 @@ class Dashboard extends StatelessWidget {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
+                          color: theme.primaryColor.withOpacity(0.3),
                           blurRadius: 2,
                           offset: const Offset(2, 4), // Shadow position
                         )
@@ -156,7 +156,7 @@ class Dashboard extends StatelessWidget {
                                 const BorderRadius.all(Radius.circular(10)),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.grey.withOpacity(0.3),
+                                color: theme.primaryColor.withOpacity(0.3),
                                 blurRadius: 2,
                                 offset: const Offset(2, 4), // Shadow position
                               ),
