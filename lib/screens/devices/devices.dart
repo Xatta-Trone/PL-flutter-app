@@ -110,7 +110,7 @@ class _UserListedDevicesState extends State<UserListedDevices> {
                                     .userDevices.value?.devices.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Container(
-                                    color: Colors.white,
+                                    color: theme.cardColor.withOpacity(0.6),
                                     margin: const EdgeInsets.symmetric(
                                       vertical: 10.0,
                                     ),
@@ -179,7 +179,6 @@ class _UserListedDevicesState extends State<UserListedDevices> {
                                         trailing: IconButton(
                                           icon: const FaIcon(
                                             FontAwesomeIcons.trashCan,
-                                            color: Colors.red,
                                           ),
                                           onPressed: () {
                                             showDialog(
@@ -234,7 +233,7 @@ class _UserListedDevicesState extends State<UserListedDevices> {
                                       .toString() ??
                                   "0")) ...[
                             Container(
-                              color: Colors.white,
+                              color: theme.cardColor.withOpacity(0.6),
                               width: double.infinity,
                               alignment: Alignment.center,
                               padding: const EdgeInsets.symmetric(

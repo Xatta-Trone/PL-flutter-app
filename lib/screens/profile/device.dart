@@ -248,10 +248,12 @@ class _UserDevicesState extends State<UserDevices> {
                                       );
                                     }
 
-                                    return const Padding(
-                                      padding: EdgeInsets.all(8.0),
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
                                       child: Center(
-                                          child: CircularProgressIndicator()),
+                                              child: CircularProgressIndicator(
+                                            color: theme.primaryColor,
+                                          )),
                                     );
                                   }
 
