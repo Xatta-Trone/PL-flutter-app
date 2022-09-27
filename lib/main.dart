@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/bindings/Initialbindings.dart';
+import 'package:plandroid/constants/const.dart';
 import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/controller/ThemeController.dart';
 import 'package:plandroid/routes/routeconst.dart';
@@ -40,8 +41,8 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light,
           fontFamily: 'Nunito',
           scaffoldBackgroundColor: const Color(0xfff6f8fa),
-          // ignore: prefer_const_constructors
-          iconTheme: IconThemeData(
+          primaryColorLight: Colors.cyan,
+          iconTheme: const IconThemeData(
             color: Colors.white,
           ),
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
         darkTheme: ThemeData(
           brightness: Brightness.dark,
           primarySwatch: Colors.cyan,
+          primaryColorLight: Colors.grey,
           fontFamily: 'Nunito',
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
             backgroundColor: Colors.grey[800],
@@ -65,8 +67,9 @@ class MyApp extends StatelessWidget {
             unselectedItemColor: Colors.grey[600],
             elevation: 10.0,
           ),
-          cardColor: Colors.grey[850],
-          scaffoldBackgroundColor: Colors.grey[900],
+          cardColor: Colors.grey[900],
+
+          // scaffoldBackgroundColor: Colors.grey[900],
         ),
         themeMode: themeController.isDarkTheme.value
             ? ThemeMode.dark

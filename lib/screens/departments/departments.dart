@@ -97,7 +97,7 @@ class _DepartmentsState extends State<Departments> {
                           );
                         },
                         child: Container(
-                          color: theme.cardColor,
+                          color: theme.cardColor.withOpacity(0.6),
                           margin: const EdgeInsets.symmetric(vertical: 10.0),
                           child: ListTile(
                             leading: Container(

@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -207,7 +206,7 @@ class _LevelTermsState extends State<LevelTerms> {
                                             levelTerms[index].slug);
                                       },
                                       child: Container(
-                                        color: Colors.white,
+                                        color: theme.cardColor.withOpacity(0.6),
                                         margin: const EdgeInsets.symmetric(
                                             vertical: 10.0),
                                         child: ListTile(
@@ -238,9 +237,10 @@ class _LevelTermsState extends State<LevelTerms> {
                                           trailing:
                                               "${Get.parameters['department']}/${levelTerms[index].slug}" ==
                                                       levelTermK
-                                                  ? const FaIcon(
+                                                  ? FaIcon(
                                                       FontAwesomeIcons.fire,
-                                                      color: Colors.cyan,
+                                                      color: theme
+                                                          .primaryColorLight,
                                                     )
                                                   : null,
                                         ),
