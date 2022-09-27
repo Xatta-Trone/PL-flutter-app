@@ -310,7 +310,8 @@ class _UserDevicesState extends State<UserDevices> {
                                             });
                                       },
                                       child: Container(
-                                        color: Colors.white,
+                                            color: theme.cardColor
+                                                .withOpacity(0.6),
                                         margin: const EdgeInsets.symmetric(
                                           vertical: 10.0,
                                         ),
@@ -363,9 +364,9 @@ class _UserDevicesState extends State<UserDevices> {
                                           subtitle: Text(
                                             devices[index].location,
                                           ),
-                                          trailing: Container(
-                                            decoration: const BoxDecoration(
-                                                color: Colors.white70),
+                                              trailing: SizedBox(
+                                                // decoration: const BoxDecoration(
+                                                //     color: Colors.white70),
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width *
