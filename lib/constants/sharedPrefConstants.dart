@@ -5,3 +5,4 @@ const String countKey = 'countKey';
 const String isPrimaryDeviceKey = 'isPrimaryDeviceKey';
 const String isGuestDeviceKey = 'isGuestDeviceKey';
 const String levelTermPinKey = 'levelTermPinKey';
+const String isDarkThemeKey = 'isDarkThemeKey';

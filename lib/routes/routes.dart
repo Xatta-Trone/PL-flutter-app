@@ -134,7 +134,7 @@ appRoutes() => [
       ),
       GetPage(
         name: more,
-        page: () => const More(),
+        page: () => More(),
         middlewares: [MyMiddelware()],
       ),
       GetPage(

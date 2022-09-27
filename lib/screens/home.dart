@@ -6,6 +6,7 @@ import 'package:plandroid/constants/const.dart';
 import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/controller/BottomNavigationBarController.dart';
 import 'package:plandroid/controller/DashboardController.dart';
+import 'package:plandroid/controller/ThemeController.dart';
 import 'package:plandroid/routes/routeconst.dart';
 import 'package:plandroid/screens/books/books.dart';
 import 'package:plandroid/screens/dashboard/dashboard.dart';
@@ -28,18 +29,21 @@ class Home extends StatelessWidget {
         Get.put(DashboardController());
 
     final AuthController authController = Get.put(AuthController());
+    ThemeController themeController = Get.find<ThemeController>();
+
+    ThemeData themeData = Theme.of(context);
 
     return SafeArea(
       child: Scaffold(
           body: Obx(
             () => IndexedStack(
               index: botNavController.tabIndex.value,
-              children: const [
-                Dashboard(),
-                Departments(),
-                Books(),
-                Softwares(),
-                Profile(),
+              children: [
+                const Dashboard(),
+                const Departments(),
+                const Books(),
+                const Softwares(),
+                const Profile(),
                 More(),
               ],
             ),
@@ -50,10 +54,10 @@ class Home extends StatelessWidget {
               onTap: botNavController.changeTabIndex,
               showSelectedLabels: false,
               showUnselectedLabels: false,
-              selectedItemColor: Colors.cyan,
-              unselectedItemColor: Colors.grey,
+              // selectedItemColor: themeData.primaryColor,
+              // unselectedItemColor: themeData.unselectedWidgetColor,
               type: BottomNavigationBarType.fixed,
-              backgroundColor: bottomBgColor,
+              // backgroundColor: themeData.backgroundColor,
               items: const [
                 BottomNavigationBarItem(
                   icon: FaIcon(

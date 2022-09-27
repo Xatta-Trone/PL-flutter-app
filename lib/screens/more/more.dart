@@ -5,11 +5,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:plandroid/constants/const.dart';
+import 'package:plandroid/controller/ThemeController.dart';
 import 'package:plandroid/globals/globals.dart';
 import 'package:plandroid/routes/routeconst.dart';
 
 class More extends StatelessWidget {
-  const More({Key? key}) : super(key: key);
+  More({Key? key}) : super(key: key);
+
+  ThemeController themeController = Get.find<ThemeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +22,21 @@ class More extends StatelessWidget {
           child: Column(
             children: [
               divider,
+              Obx(
+                () => ListTile(
+                  leading: const FaIcon(
+                    FontAwesomeIcons.draft2digital,
+                    color: iconColor,
+                  ),
+                  title: Text(themeController.isDarkTheme.value.toString()),
+                  trailing: Switch(
+                    onChanged: (value) {
+                      themeController.toggleDarkTheme(value: value);
+                    },
+                    value: themeController.isDarkTheme.value,
+                  ),
+                ),
+              ),
               ListTile(
                 leading: const FaIcon(
                   FontAwesomeIcons.circlePlus,

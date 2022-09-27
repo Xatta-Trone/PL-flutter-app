@@ -209,7 +209,7 @@ class Dashboard extends StatelessWidget {
                             margin: const EdgeInsets.symmetric(horizontal: 5.0),
                             // ignore: prefer_const_constructors
                             decoration: BoxDecoration(
-                              color: Colors.redAccent,
+                              color: theme.primaryColor,
                               borderRadius: const BorderRadius.all(
                                 Radius.circular(10.0),
                               ),
@@ -282,7 +282,7 @@ class SingleDataComponent extends StatelessWidget {
       width: mediaQuery.width * 0.22,
       padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
       decoration: BoxDecoration(
-        color: dashboardController.randomColor(),
+        color: theme.primaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(10.0)),
       ),
       child: Column(
