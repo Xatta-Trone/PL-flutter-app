@@ -20,9 +20,11 @@ class _ChangeCurrentPasswordState extends State<ChangeCurrentPassword> {
   bool _obscureCurrentText = true; // for password toggle
   bool _obscureText = true; // for password toggle
   bool _obscureConfirmText = true; // for password toggle
+  
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
         child: Obx(
@@ -35,10 +37,7 @@ class _ChangeCurrentPasswordState extends State<ChangeCurrentPassword> {
                 children: [
                   Text(
                     'Change password',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4
-                        ?.copyWith(color: Colors.black87),
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                   const SizedBox(
                     height: 25.0,
@@ -65,7 +64,6 @@ class _ChangeCurrentPasswordState extends State<ChangeCurrentPassword> {
                             },
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
                               hintText: "Current password",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),
@@ -116,7 +114,6 @@ class _ChangeCurrentPasswordState extends State<ChangeCurrentPassword> {
                             },
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
                               hintText: "New password",
                               helperText:
                                   'Password must be 8 characters or more.',
@@ -163,8 +160,7 @@ class _ChangeCurrentPasswordState extends State<ChangeCurrentPassword> {
                                 return 'Please enter your password';
                               }
                               if (value !=
-                                  _authController
-                                      .newPwdController.value.text) {
+                                  _authController.newPwdController.value.text) {
                                 return 'Passwords do not match.';
                               }
 
@@ -172,7 +168,6 @@ class _ChangeCurrentPasswordState extends State<ChangeCurrentPassword> {
                             },
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
                               hintText: "Password confirmation",
                               // errorText: _authController.passwordErrorText,
                               border: OutlineInputBorder(
@@ -225,7 +220,7 @@ class _ChangeCurrentPasswordState extends State<ChangeCurrentPassword> {
                             },
                             child: Text(
                               'Change password',
-                              style: Theme.of(context)
+                              style: theme
                                   .textTheme
                                   .titleMedium
                                   ?.copyWith(color: Colors.white),
