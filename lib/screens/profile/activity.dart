@@ -237,16 +237,19 @@ class _UserActivitiesPageState extends State<UserActivitiesPage> {
                                       );
                                     }
 
-                                    return const Padding(
-                                      padding: EdgeInsets.all(8.0),
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
                                       child: Center(
-                                          child: CircularProgressIndicator()),
+                                              child: CircularProgressIndicator(
+                                            color: theme.primaryColor,
+                                          )),
                                     );
                                   }
 
                                   if (activities.isNotEmpty) {
                                     return Container(
-                                      color: Colors.white,
+                                          color:
+                                              theme.cardColor.withOpacity(0.6),
                                       margin: const EdgeInsets.symmetric(
                                         vertical: 10.0,
                                       ),
@@ -280,9 +283,7 @@ class _UserActivitiesPageState extends State<UserActivitiesPage> {
                                         subtitle: Text(
                                           activities[index].label,
                                         ),
-                                        trailing: Container(
-                                          decoration: const BoxDecoration(
-                                              color: Colors.white70),
+                                            trailing: SizedBox(
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
