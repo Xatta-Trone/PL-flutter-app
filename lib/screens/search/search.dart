@@ -23,15 +23,13 @@ class Search extends StatefulWidget {
   State<Search> createState() => _SearchState();
 }
 
-
 class _SearchState extends State<Search> {
   List<Department> departments = List<Department>.empty(growable: true);
   List<Course> courses = List<Course>.empty(growable: true);
   List<Course> backupCourses = List<Course>.empty(growable: true);
   List<SearchData> searchResult = List<SearchData>.empty(growable: true);
 
-  
-final AuthController authController = Get.find<AuthController>();
+  final AuthController authController = Get.find<AuthController>();
 
   List<KeyValueModel> levelTerms = [
     KeyValueModel(key: "1-1", value: "Level 1 Term 1"),
@@ -156,10 +154,16 @@ final AuthController authController = Get.find<AuthController>();
     if (_isLoading) {
       return;
     }
+    // if searching then set page params
+    if (isSearching) {
+      setState(() {
+        _page = 1;
+      });
+    }
 
     setState(() {
       _isLoading = true;
-      _isInitiallyLoaded = false;
+      // _isInitiallyLoaded = false;
     });
 
     try {
@@ -174,13 +178,12 @@ final AuthController authController = Get.find<AuthController>();
         setState(() {
           if (isSearching) {
             searchResult.clear();
-          }
-
-          if (scrollController.hasClients) {
-            scrollController.animateTo(
-                scrollController.position.minScrollExtent,
-                duration: const Duration(milliseconds: 100),
-                curve: Curves.easeOut);
+            if (scrollController.hasClients) {
+              scrollController.animateTo(
+                  scrollController.position.minScrollExtent,
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.easeOut);
+            }
           }
 
           if (kDebugMode) {
@@ -194,12 +197,13 @@ final AuthController authController = Get.find<AuthController>();
 
           // set the  data
           searchResult.addAll(searchData);
+          if (!_isInitiallyLoaded) {
+            _isInitiallyLoaded = true;
+          }
 
-// to set the initial progress indicator
-          _isInitiallyLoaded = true;
 
           //  set the data's
-          // _page++;
+          _page++;
 
           // is last page
           if (searchData.length < _pageSize) {
@@ -224,9 +228,11 @@ final AuthController authController = Get.find<AuthController>();
     } finally {
       setState(() {
         _isLoading = false;
+        
       });
-
+      
       Globals.saveSearchActivity(getQueryParams());
+
     }
   }
 
@@ -239,51 +245,7 @@ final AuthController authController = Get.find<AuthController>();
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      var response = await Api()
-          .dio
-          .get('/search', queryParameters: getQueryParams(isLoadingMore: true));
-
-      if (response.data != null) {
-        if (kDebugMode) {
-          // print("count ${response.data}");
-        }
-
-        setState(() {
-          Iterable<SearchData> searchData =
-              (response.data as List).map((x) => SearchData.fromJson(x));
-
-          // set the data
-          searchResult.addAll(searchData);
-
-          //  set the data's
-          _page++;
-
-          // is last page
-          if (searchData.length < _pageSize) {
-            _hasMore = false;
-          } else {
-            _hasMore = true;
-          }
-
-          if (kDebugMode) {
-            // print(books.toList());
-          }
-        });
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    search(isSearching: false);
   }
 
   Future<void> _refreshData() async {
@@ -292,6 +254,7 @@ final AuthController authController = Get.find<AuthController>();
       _page = 1;
       _hasMore = true;
       _isLoading = false;
+      _isInitiallyLoaded = false;
       search();
     });
   }
@@ -360,8 +323,6 @@ final AuthController authController = Get.find<AuthController>();
     }
     String courseSlug = getSingleCourseSlug(searchItem.courseId.toString());
     return searchItem.getAuthor(courseSlug: courseSlug);
-
-    
   }
 
   String getSingleCourseSlug(String courseId) {
@@ -415,227 +376,235 @@ final AuthController authController = Get.find<AuthController>();
               ? const Login()
               : !authController.hasCheckedDevice.value
                   ? const DeviceGuardPage()
-              : Column(
-                  children: [
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15.0, vertical: 10.0),
-                      child: TextField(
-                        controller: queryString,
-                        textInputAction: TextInputAction.search,
-                        keyboardType: TextInputType.text,
-                        // autofocus: true,
-                        onChanged: (value) {
-                          if (value.isNotEmpty) {
-                            // setState(() {});
-                            if (kDebugMode) {
-                              print(queryString.text);
-                            }
-                            handleSearchDebounce(value);
-                          }
-                        },
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(
-                            left: 15.0,
-                            top: 15.0,
-                            right: 25.0,
-                            bottom: 15.0,
-                          ),
-                          filled: true,
-                          hintText: "Search here....",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: BorderSide.none,
-                          ),
-                          suffixIcon: GestureDetector(
-                            onTap: () {
-                              if (kDebugMode) {
-                                print(' suffix clicked');
-                                // _settingModalBottomSheet(context);
+                  : Column(
+                      children: [
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 10.0),
+                          child: TextField(
+                            controller: queryString,
+                            textInputAction: TextInputAction.search,
+                            keyboardType: TextInputType.text,
+                            // autofocus: true,
+                            onChanged: (value) {
+                              if (value.isNotEmpty) {
+                                // setState(() {});
+                                if (kDebugMode) {
+                                  print(queryString.text);
+                                }
+                                handleSearchDebounce(value);
                               }
-
-                              bottomSheet(context);
                             },
-                            child: Align(
-                              widthFactor: 1.0,
-                              heightFactor: 1.0,
-                              child: FaIcon(
-                                FontAwesomeIcons.sliders,
-                                color: detailSearchSelected
-                                    ? theme.primaryColor.withRed(255)
-                                    : Colors.grey,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(
+                                left: 15.0,
+                                top: 15.0,
+                                right: 25.0,
+                                bottom: 15.0,
+                              ),
+                              filled: true,
+                              hintText: "Search here....",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                borderSide: BorderSide.none,
+                              ),
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  if (kDebugMode) {
+                                    print(' suffix clicked');
+                                    // _settingModalBottomSheet(context);
+                                  }
+
+                                  bottomSheet(context);
+                                },
+                                child: Align(
+                                  widthFactor: 1.0,
+                                  heightFactor: 1.0,
+                                  child: FaIcon(
+                                    FontAwesomeIcons.sliders,
+                                    color: detailSearchSelected
+                                        ? theme.primaryColor.withRed(255)
+                                        : Colors.grey,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    Text(
-                      'Double tap on the softwares to see the details',
-                      style: theme.textTheme.bodySmall,
-                    ),
-                    Expanded(
-                      child: _isLoading && !_isInitiallyLoaded
-                          ? Center(
-                              child: CircularProgressIndicator(
-                                color: theme.primaryColor,
-                              ),
-                            )
-                          : !_isLoading && !_isInitiallyLoaded
-                              ? const Center(
-                                  child: Text('Type something to search'),
+                        Text(
+                          'Double tap on the softwares to see the details',
+                          style: theme.textTheme.bodySmall,
+                        ),
+                        Expanded(
+                          child: _isLoading && !_isInitiallyLoaded
+                              ? Center(
+                                  child: CircularProgressIndicator(
+                                    color: theme.primaryColor,
+                                  ),
                                 )
-                              : !_hasMore && searchResult.isEmpty
+                              : !_isLoading && !_isInitiallyLoaded
                                   ? const Center(
-                                      child: Text('No data found'),
+                                      child: Text('Type something to search'),
                                     )
-                                  : RefreshIndicator(
-                                      onRefresh: () {
-                                        return _refreshData();
-                                      },
-                                      child: ListView.builder(
-                                        controller: scrollController,
-                                        itemCount: searchResult.length + 1,
-                                        itemBuilder: (context, index) {
-                                          if (kDebugMode) {
-                                            // print("index $index");
-                                          }
-                                          // check if it is the last item
-                                          if (index == searchResult.length) {
-                                            // check if more data could not be loaded
-                                            if (_hasMore == false) {
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Center(
-                                                  child: Text(
-                                                    'End of list',
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline6,
-                                                  ),
-                                                ),
-                                              );
-                                            }
+                                  : !_hasMore && searchResult.isEmpty
+                                      ? const Center(
+                                          child: Text('No data found'),
+                                        )
+                                      : RefreshIndicator(
+                                          onRefresh: () {
+                                            return _refreshData();
+                                          },
+                                          child: ListView.builder(
+                                            controller: scrollController,
+                                            itemCount: searchResult.length + 1,
+                                            itemBuilder: (context, index) {
+                                              if (kDebugMode) {
+                                                // print("index $index");
+                                              }
+                                              // check if it is the last item
+                                              if (index ==
+                                                  searchResult.length) {
+                                                // check if more data could not be loaded
+                                                if (_hasMore == false) {
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Center(
+                                                      child: Text(
+                                                        'End of list',
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .headline6,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
 
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Center(
-                                                  child:
-                                                    CircularProgressIndicator(
-                                                  color: theme.primaryColor,
-                                                ),
-                                              ),
-                                            );
-                                          }
-
-                                          return searchResult.isNotEmpty
-                                              ? Container(
-                                                  color: theme.cardColor
-                                                      .withOpacity(0.6),
-                                                  margin: const EdgeInsets
-                                                      .symmetric(
-                                                    vertical: 10.0,
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color: theme.primaryColor,
+                                                    ),
                                                   ),
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      if (kDebugMode) {
-                                                        print(
-                                                            searchResult[index]
+                                                );
+                                              }
+
+                                              return searchResult.isNotEmpty
+                                                  ? Container(
+                                                      color: theme.cardColor
+                                                          .withOpacity(0.6),
+                                                      margin: const EdgeInsets
+                                                          .symmetric(
+                                                        vertical: 10.0,
+                                                      ),
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          if (kDebugMode) {
+                                                            print(searchResult[
+                                                                    index]
                                                                 .link
                                                                 .toString());
-                                                        print(getQueryParams()
-                                                            .toString());
-                                                      }
-                                                      Globals.downloadItem(
-                                                          model: searchResult[
-                                                                  index]
-                                                              .toJson(),
-                                                          postType:
-                                                              searchResult[
-                                                                      index]
-                                                              .postType
-                                                                  .toString(),
-                                                          additionalData:
-                                                              searchResult[
-                                                                      index]
-                                                                  .getAuthor());
-                                                    },
-                                                    onDoubleTap: () {
-                                                      if (kDebugMode) {
-                                                        print('double tap');
-                                                        // print(searchResult[index]
-                                                        //     .description
-                                                        //     .toString());
-                                                      }
-
-                                                      return showInfoDialog(
-                                                          index);
-                                                    },
-                                                    child: ListTile(
-                                                      leading: Container(
-                                                        decoration: BoxDecoration(
-                                                            color: theme
-                                                                .primaryColor,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        7.0)),
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.15,
-                                                        child: Center(
-                                                          child: FaIcon(
-                                                            getIcon(
-                                                              materialType:
+                                                            print(
+                                                                getQueryParams()
+                                                                    .toString());
+                                                          }
+                                                          Globals.downloadItem(
+                                                              model:
+                                                                  searchResult[
+                                                                          index]
+                                                                      .toJson(),
+                                                              postType:
                                                                   searchResult[
                                                                           index]
                                                                       .postType
                                                                       .toString(),
+                                                              additionalData:
+                                                                  searchResult[
+                                                                          index]
+                                                                      .getAuthor());
+                                                        },
+                                                        onDoubleTap: () {
+                                                          if (kDebugMode) {
+                                                            print('double tap');
+                                                            // print(searchResult[index]
+                                                            //     .description
+                                                            //     .toString());
+                                                          }
+
+                                                          return showInfoDialog(
+                                                              index);
+                                                        },
+                                                        child: ListTile(
+                                                          leading: Container(
+                                                            decoration: BoxDecoration(
+                                                                color: theme
+                                                                    .primaryColor,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            7.0)),
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.15,
+                                                            child: Center(
+                                                              child: FaIcon(
+                                                                getIcon(
+                                                                  materialType: searchResult[
+                                                                          index]
+                                                                      .postType
+                                                                      .toString(),
+                                                                ),
+                                                                color: Colors
+                                                                    .white,
+                                                                size: 30.0,
+                                                              ),
                                                             ),
-                                                            color: Colors.white,
-                                                            size: 30.0,
+                                                          ),
+                                                          title: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    bottom:
+                                                                        10.0),
+                                                            child: Text(
+                                                              searchResult[
+                                                                      index]
+                                                                  .name
+                                                                  .toString(),
+                                                              style: const TextStyle(
+                                                                  fontSize:
+                                                                      12.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ),
+                                                          subtitle: Text(
+                                                            getAuthor(
+                                                                searchResult[
+                                                                    index]),
                                                           ),
                                                         ),
                                                       ),
-                                                      title: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                bottom: 10.0),
-                                                        child: Text(
-                                                          searchResult[index]
-                                                              .name
-                                                              .toString(),
-                                                          style: const TextStyle(
-                                                              fontSize: 12.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ),
-                                                      subtitle: Text(
-                                                        getAuthor(searchResult[
-                                                            index]),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              : const Center(
-                                                  child:
-                                                      Text('No result found'));
-                                        },
-                                      ),
-                                    ),
+                                                    )
+                                                  : const Center(
+                                                      child: Text(
+                                                          'No result found'));
+                                            },
+                                          ),
+                                        ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
         ),
       ),
     );
