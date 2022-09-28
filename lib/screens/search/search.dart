@@ -23,13 +23,15 @@ class Search extends StatefulWidget {
   State<Search> createState() => _SearchState();
 }
 
-final AuthController authController = Get.find<AuthController>();
 
 class _SearchState extends State<Search> {
   List<Department> departments = List<Department>.empty(growable: true);
   List<Course> courses = List<Course>.empty(growable: true);
   List<Course> backupCourses = List<Course>.empty(growable: true);
   List<SearchData> searchResult = List<SearchData>.empty(growable: true);
+
+  
+final AuthController authController = Get.find<AuthController>();
 
   List<KeyValueModel> levelTerms = [
     KeyValueModel(key: "1-1", value: "Level 1 Term 1"),
@@ -383,6 +385,16 @@ class _SearchState extends State<Search> {
         _loadMore();
       }
     });
+
+    authController.isLoggedIn.listen((value) {
+      if (kDebugMode) {
+        print("logged in value from softwares $value");
+      }
+      if (value) {
+        search();
+      }
+    });
+
     super.initState();
   }
 

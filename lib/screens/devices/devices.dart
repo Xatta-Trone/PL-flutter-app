@@ -289,6 +289,28 @@ class _UserListedDevicesState extends State<UserListedDevices> {
                                   )),
                             )
                           ],
+
+                          if (authController.isGuestDevice.value == true) ...[
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size.fromHeight(50),
+                                  ),
+                                  onPressed: () {
+                                    authController.removeGuestDevice();
+                                  },
+                                  child: Text(
+                                    'Remove guest device',
+                                    style: theme.textTheme.titleMedium
+                                        ?.copyWith(color: Colors.white),
+                                  )),
+                            )
+                          ],
                         ],
                       ),
                     ),

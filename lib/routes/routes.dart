@@ -50,22 +50,22 @@ appRoutes() => [
       GetPage(
         name: departmentsPage,
         page: () => const Departments(),
-        middlewares: [MyMiddelware(), AuthGuard()],
+        middlewares: [MyMiddelware()],
       ),
       GetPage(
         name: "$levelTermsPage/:department",
         page: () => const LevelTerms(),
-        middlewares: [MyMiddelware(), AuthGuard()],
+        middlewares: [MyMiddelware()],
       ),
       GetPage(
         name: "$coursesPage/:department/:levelTerm",
         page: () => const Courses(),
-        middlewares: [MyMiddelware(), AuthGuard()],
+        middlewares: [MyMiddelware()],
       ),
       GetPage(
         name: "$postsPage/:department/:levelTerm/:course",
         page: () => const Post(),
-        middlewares: [MyMiddelware(), AuthGuard()],
+        middlewares: [MyMiddelware()],
       ),
       GetPage(
         name: profilePage,
@@ -85,7 +85,7 @@ appRoutes() => [
       GetPage(
         name: searchPage,
         page: () => const Search(),
-        middlewares: [MyMiddelware(), AuthGuard()],
+        middlewares: [MyMiddelware()],
       ),
       GetPage(
         name: settingsPage,

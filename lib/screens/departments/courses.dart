@@ -110,91 +110,102 @@ class _CoursesState extends State<Courses> {
     ThemeData theme = Theme.of(context);
 
     return Scaffold(
-      body: ModalProgressHUD(
-        inAsyncCall: _isLoading,
-        opacity: 1.0,
-        child: !authController.isLoggedIn.value
-            ? const Login()
-            : !authController.hasCheckedDevice.value
-                ? const DeviceGuardPage()
-            : SafeArea(
-                child: RefreshIndicator(
-                onRefresh: () {
-                  return _refresh();
-                },
-                child: GestureDetector(
-                    child: Column(
-                  children: [
-                    if (courses.isNotEmpty) ...[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: SizedBox(
-                          height: 40.0,
-                          child: Center(
-                            child: Text(
-                              'Courses',
-                              style: theme.textTheme.headline5,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                    Expanded(
-                      child: courses.isEmpty
-                          ? Center(
-                              child: Text(
-                                'No course found',
-                                style: theme.textTheme.headline5,
-                              ),
-                            )
-                          : ListView.builder(
-                              itemCount: courses.length,
-                              itemBuilder: (ctx, index) {
-                                return InkWell(
-                                  onTap: () {
-                                    if (kDebugMode) {
-                                      print(courses[index].slug);
-                                    }
-
-                                    Get.toNamed(
-                                      "$postsPage/${Get.parameters['department']}/${Get.parameters['levelTerm']}/${courses[index].slug.toString()}",
-                                    );
-                                  },
-                                  child: Container(
-                                    color: theme.cardColor.withOpacity(0.6),
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    child: ListTile(
-                                      leading: Container(
-                                        decoration: BoxDecoration(
-                                            color: theme.primaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(7.0)),
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.15,
-                                        child: Center(
-                                          child: Text(
-                                            "${Get.parameters['department']}\n${Get.parameters['levelTerm']}"
-                                                .toUpperCase(),
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                      ),
-                                      title: Text(Globals.generateCourseName(
-                                          courses[index].slug.toUpperCase())),
-                                      subtitle: Text(courses[index].courseName),
+      body: SafeArea(
+        child: Obx(
+          () => ModalProgressHUD(
+            inAsyncCall: _isLoading,
+            opacity: 1.0,
+            child: !authController.isLoggedIn.value
+                ? const Login()
+                : !authController.hasCheckedDevice.value
+                    ? const DeviceGuardPage()
+                    : RefreshIndicator(
+                        onRefresh: () {
+                          return _refresh();
+                        },
+                        child: GestureDetector(
+                            child: Column(
+                          children: [
+                            if (courses.isNotEmpty) ...[
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10.0),
+                                child: SizedBox(
+                                  height: 40.0,
+                                  child: Center(
+                                    child: Text(
+                                      'Courses',
+                                      style: theme.textTheme.headline5,
                                     ),
                                   ),
-                                );
-                              }),
-                    ),
-                  ],
-                )),
-              )),
+                                ),
+                              ),
+                            ],
+                            Expanded(
+                              child: courses.isEmpty
+                                  ? Center(
+                                      child: Text(
+                                        'No course found',
+                                        style: theme.textTheme.headline5,
+                                      ),
+                                    )
+                                  : ListView.builder(
+                                      itemCount: courses.length,
+                                      itemBuilder: (ctx, index) {
+                                        return InkWell(
+                                          onTap: () {
+                                            if (kDebugMode) {
+                                              print(courses[index].slug);
+                                            }
+
+                                            Get.toNamed(
+                                              "$postsPage/${Get.parameters['department']}/${Get.parameters['levelTerm']}/${courses[index].slug.toString()}",
+                                            );
+                                          },
+                                          child: Container(
+                                            color: theme.cardColor
+                                                .withOpacity(0.6),
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 10.0),
+                                            child: ListTile(
+                                              leading: Container(
+                                                decoration: BoxDecoration(
+                                                    color: theme.primaryColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7.0)),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.15,
+                                                child: Center(
+                                                  child: Text(
+                                                    "${Get.parameters['department']}\n${Get.parameters['levelTerm']}"
+                                                        .toUpperCase(),
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ),
+                                              title: Text(
+                                                  Globals.generateCourseName(
+                                                      courses[index]
+                                                          .slug
+                                                          .toUpperCase())),
+                                              subtitle: Text(
+                                                  courses[index].courseName),
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                            ),
+                          ],
+                        )),
+                      ),
+          ),
+        ),
       ),
     );
   }

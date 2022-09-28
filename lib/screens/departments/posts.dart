@@ -108,95 +108,103 @@ class _PostState extends State<Post> {
     ThemeData theme = Theme.of(context);
 
     return Scaffold(
-      body: ModalProgressHUD(
-        inAsyncCall: _isLoading,
-        opacity: 1.0,
-        child: !authController.isLoggedIn.value
-            ? const Login()
-            : !authController.hasCheckedDevice.value
-                ? const DeviceGuardPage()
-            : SafeArea(
-                child: RefreshIndicator(
-                onRefresh: () {
-                  return _refresh();
-                },
-                child: GestureDetector(
-                    child: Column(
-                  children: [
-                    if (posts.isNotEmpty) ...[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: Center(
-                          child: Text(
-                            courseName,
-                            style: theme.textTheme.headline5,
-                            softWrap: true,
-                            overflow: TextOverflow.visible,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ],
-                    Expanded(
-                      child: posts.isEmpty
-                          ? Center(
-                              child: Text(
-                                'No data found',
-                                style: theme.textTheme.headline5,
-                              ),
-                            )
-                          : ListView.builder(
-                              itemCount: posts.length,
-                              itemBuilder: (ctx, index) {
-                                return InkWell(
-                                  onTap: () {
-                                    if (kDebugMode) {
-                                      print(posts[index].name);
-                                    }
-
-                                    Globals.downloadItem(
-                                        model: posts[index].toJson(),
-                                        postType: 'post',
-                                        additionalData:
-                                            "${Get.parameters['department']}/${Get.parameters['levelTerm']}/${Get.parameters['course']}");
-                                  },
-                                  child: Container(
-                                    color: theme.cardColor.withOpacity(0.6),
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    child: ListTile(
-                                      leading: Container(
-                                        decoration: BoxDecoration(
-                                            color: theme.primaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(7.0)),
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.15,
-                                        child: Center(
-                                          child: Text(
-                                            Globals.generateCourseName(
-                                                    Get.parameters['course'] ??
-                                                        '')
-                                                .replaceAll('-', '\n')
-                                                .toUpperCase(),
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                      ),
-                                      title: Text(posts[index].name),
-                                      subtitle: Text(posts[index].name),
-                                    ),
+      body: SafeArea(
+        child: Obx(
+          () => ModalProgressHUD(
+            inAsyncCall: _isLoading,
+            opacity: 1.0,
+            child: !authController.isLoggedIn.value
+                ? const Login()
+                : !authController.hasCheckedDevice.value
+                    ? const DeviceGuardPage()
+                    : RefreshIndicator(
+                        onRefresh: () {
+                          return _refresh();
+                        },
+                        child: GestureDetector(
+                            child: Column(
+                          children: [
+                            if (posts.isNotEmpty) ...[
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10.0),
+                                child: Center(
+                                  child: Text(
+                                    courseName,
+                                    style: theme.textTheme.headline6,
+                                    softWrap: true,
+                                    overflow: TextOverflow.visible,
+                                    textAlign: TextAlign.center,
                                   ),
-                                );
-                              }),
-                    ),
-                  ],
-                )),
-              )),
+                                ),
+                              ),
+                            ],
+                            Expanded(
+                              child: posts.isEmpty
+                                  ? Center(
+                                      child: Text(
+                                        'No data found',
+                                        style: theme.textTheme.headline5,
+                                      ),
+                                    )
+                                  : ListView.builder(
+                                      itemCount: posts.length,
+                                      itemBuilder: (ctx, index) {
+                                        return InkWell(
+                                          onTap: () {
+                                            if (kDebugMode) {
+                                              print(posts[index].name);
+                                            }
+
+                                            Globals.downloadItem(
+                                                model: posts[index].toJson(),
+                                                postType: 'post',
+                                                additionalData:
+                                                    "${Get.parameters['department']}/${Get.parameters['levelTerm']}/${Get.parameters['course']}");
+                                          },
+                                          child: Container(
+                                            color: theme.cardColor
+                                                .withOpacity(0.6),
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 10.0),
+                                            child: ListTile(
+                                              leading: Container(
+                                                decoration: BoxDecoration(
+                                                    color: theme.primaryColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7.0)),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                0.15,
+                                                child: Center(
+                                                  child: Text(
+                                                    Globals.generateCourseName(
+                                                            Get.parameters[
+                                                                    'course'] ??
+                                                                '')
+                                                        .replaceAll('-', '\n')
+                                                        .toUpperCase(),
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ),
+                                              title: Text(posts[index].name),
+                                              subtitle: Text(posts[index].name),
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                            ),
+                          ],
+                        )),
+                      ),
+          ),
+        ),
       ),
     );
   }

@@ -657,6 +657,15 @@ class AuthController extends GetxController {
     }
   }
 
+  void removeGuestDevice() async {
+    isInAsyncCall.value = true;
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.remove(isGuestDeviceKey);
+    isGuestDevice.value = false;
+    hasCheckedDevice.value = isInSavedDevice.value ? true : false;
+    isInAsyncCall.value = false;
+  }
+
   String getCreateAt() {
     if (user.value != null) {
       return DateFormat("MMM d, yyyy h:mm a")
