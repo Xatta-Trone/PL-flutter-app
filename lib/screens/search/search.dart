@@ -14,6 +14,7 @@ import 'package:plandroid/models/Departments.dart';
 import 'package:plandroid/models/KeyValueModel.dart';
 import 'package:plandroid/models/Search.dart';
 import 'package:plandroid/screens/auth/Login.dart';
+import 'package:plandroid/screens/devices/deviceGuard.dart';
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -400,6 +401,8 @@ class _SearchState extends State<Search> {
         child: Obx(
           () => !authController.isLoggedIn.value
               ? const Login()
+              : !authController.hasCheckedDevice.value
+                  ? const DeviceGuardPage()
               : Column(
                   children: [
                     const SizedBox(

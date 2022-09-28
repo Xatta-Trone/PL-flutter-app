@@ -11,6 +11,7 @@ import 'package:plandroid/globals/globals.dart';
 import 'package:plandroid/models/CourseData.dart';
 import 'package:plandroid/routes/routeconst.dart';
 import 'package:plandroid/screens/auth/Login.dart';
+import 'package:plandroid/screens/devices/deviceGuard.dart';
 
 class Courses extends StatefulWidget {
   const Courses({super.key});
@@ -114,6 +115,8 @@ class _CoursesState extends State<Courses> {
         opacity: 1.0,
         child: !authController.isLoggedIn.value
             ? const Login()
+            : !authController.hasCheckedDevice.value
+                ? const DeviceGuardPage()
             : SafeArea(
                 child: RefreshIndicator(
                 onRefresh: () {

@@ -11,6 +11,7 @@ import 'package:plandroid/controller/DashboardController.dart';
 import 'package:plandroid/models/LevelTerms.dart';
 import 'package:plandroid/routes/routeconst.dart';
 import 'package:plandroid/screens/auth/Login.dart';
+import 'package:plandroid/screens/devices/deviceGuard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LevelTerms extends StatefulWidget {
@@ -159,7 +160,9 @@ class _LevelTermsState extends State<LevelTerms> {
             inAsyncCall: _isLoading,
             child: !authController.isLoggedIn.value
                 ? const Login()
-                : RefreshIndicator(
+                : !authController.hasCheckedDevice.value
+                    ? const DeviceGuardPage()
+                    : RefreshIndicator(
                     onRefresh: () {
                       return _refresh();
                     },

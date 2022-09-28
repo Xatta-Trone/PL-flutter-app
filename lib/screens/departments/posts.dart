@@ -11,6 +11,7 @@ import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/globals/globals.dart';
 import 'package:plandroid/models/PostData.dart';
 import 'package:plandroid/screens/auth/Login.dart';
+import 'package:plandroid/screens/devices/deviceGuard.dart';
 
 class Post extends StatefulWidget {
   const Post({super.key});
@@ -112,6 +113,8 @@ class _PostState extends State<Post> {
         opacity: 1.0,
         child: !authController.isLoggedIn.value
             ? const Login()
+            : !authController.hasCheckedDevice.value
+                ? const DeviceGuardPage()
             : SafeArea(
                 child: RefreshIndicator(
                 onRefresh: () {
