@@ -18,7 +18,7 @@ class Books extends StatefulWidget {
 
 class _BooksState extends State<Books> {
   List<Book> books = List<Book>.empty(growable: true);
-  static const _pageSize = 15;
+  static const _pageSize = 50;
   int _page = 1;
   TextEditingController queryString = TextEditingController();
   final scrollController = ScrollController();
@@ -137,10 +137,10 @@ class _BooksState extends State<Books> {
     if (kDebugMode) {
       print('Loadmore called');
     }
-    // setState(() {
-    //   _hasMore = true;
-    //   _page = 1;
-    // });
+    if (!_hasMore) {
+      return;
+    }
+   
 
     searchBooks(isSearching: false);
   }

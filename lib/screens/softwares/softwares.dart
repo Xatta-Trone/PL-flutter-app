@@ -32,6 +32,7 @@ class _SoftwaresState extends State<Softwares> {
   bool _hasMore = false;
   int _totalCount = 0;
   bool _isLoading = false;
+  bool _isInitiallyLoaded = false;
 
 //  debounce
   Timer? debounce;
@@ -47,8 +48,17 @@ class _SoftwaresState extends State<Softwares> {
     });
   }
 
-  Future<void> searchBooks({bool isSearching = true}) async {
+  Map<String, String> getQueryParams({bool isLoadingMore = false}) {
+    return {
+      'query': queryString.text,
+      'page': _page.toString(),
+      'limit': _pageSize.toString(),
+      'ascending': 0.toString(),
+      'byColumn': 0.toString(),
+    };
+  }
 
+  Future<void> searchBooks({bool isSearching = true}) async {
     if (kDebugMode) {
       print('softwares search  called');
     }
@@ -57,34 +67,37 @@ class _SoftwaresState extends State<Softwares> {
       return;
     }
 
+    // if searching then set page params
+    if (isSearching) {
+      setState(() {
+        _page = 1;
+      });
+    }
+
     setState(() {
       _isLoading = true;
     });
 
     try {
-      var response = await Api().dio.get('/softwares', queryParameters: {
-        'query': queryString.text,
-        'page': 1,
-        'limit': _pageSize,
-        'ascending': 0,
-        'byColumn': 0,
-      });
+      var response =
+          await Api().dio.get('/softwares', queryParameters: getQueryParams());
 
       if (response.data != null) {
         if (kDebugMode) {
           // print("count ${response.data}");
+          print('is searching');
+          print(isSearching);
         }
 
         setState(() {
           if (isSearching) {
             books.clear();
-          }
-
-          if (scrollController.hasClients) {
-            scrollController.animateTo(
-                scrollController.position.minScrollExtent,
-                duration: const Duration(milliseconds: 100),
-                curve: Curves.easeOut);
+            if (scrollController.hasClients) {
+              scrollController.animateTo(
+                  scrollController.position.minScrollExtent,
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.easeOut);
+            }
           }
 
           SoftwaresData softwaresData = SoftwaresData.fromJson(response.data);
@@ -95,9 +108,12 @@ class _SoftwaresState extends State<Softwares> {
 
           // set the books data
           books.addAll(softwaresData.data);
+          if (!_isInitiallyLoaded) {
+            _isInitiallyLoaded = true;
+          }
 
           //  set the data's
-          // _page++;
+          _page++;
 
           // is last page
           if (softwaresData.data.length < _pageSize) {
@@ -115,6 +131,9 @@ class _SoftwaresState extends State<Softwares> {
       if (kDebugMode) {
         print(e);
       }
+      setState(() {
+        _isInitiallyLoaded = false;
+      });
     } finally {
       setState(() {
         _isLoading = false;
@@ -131,60 +150,7 @@ class _SoftwaresState extends State<Softwares> {
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      var response = await Api().dio.get('/softwares', queryParameters: {
-        'query': queryString.text,
-        'page': _page + 1,
-        'limit': _pageSize,
-        'ascending': 0,
-        'byColumn': 0,
-      });
-
-      if (response.data != null) {
-        if (kDebugMode) {
-          // print("count ${response.data}");
-        }
-
-        setState(() {
-          SoftwaresData booksList = SoftwaresData.fromJson(response.data);
-          // set total count
-          // if (_totalCount != 0) {
-          //   _totalCount = booksList.count;
-          // }
-
-          // print(booksList.data);
-
-          // set the books data
-          books.addAll(booksList.data);
-
-          //  set the data's
-          _page++;
-
-          // is last page
-          if (booksList.data.length < _pageSize) {
-            _hasMore = false;
-          } else {
-            _hasMore = true;
-          }
-
-          if (kDebugMode) {
-            // print(books.toList());
-          }
-        });
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    searchBooks(isSearching: false);
   }
 
   Future<void> _refreshData() async {
@@ -193,6 +159,7 @@ class _SoftwaresState extends State<Softwares> {
       _page = 1;
       _hasMore = true;
       _isLoading = false;
+      _isInitiallyLoaded = false;
       searchBooks();
     });
   }
@@ -200,12 +167,13 @@ class _SoftwaresState extends State<Softwares> {
   @override
   void initState() {
     authController.isLoggedIn.listen((value) {
-      print("logged in value from softwares $value");
+      if (kDebugMode) {
+        print("logged in value from softwares $value");
+      }
       if (value) {
         searchBooks();
       }
     });
-
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
           scrollController.offset) {
@@ -237,164 +205,187 @@ class _SoftwaresState extends State<Softwares> {
               ? const Login()
               : !authController.hasCheckedDevice.value
                   ? const DeviceGuardPage()
-                  : Column(
-                  children: [
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15.0, vertical: 10.0),
-                      child: TextField(
-                        controller: queryString,
-                        textInputAction: TextInputAction.search,
-                        keyboardType: TextInputType.text,
-                        // autofocus: true,
-                        onChanged: (value) {
-                          if (value.isNotEmpty) {
-                            // setState(() {});
-                            if (kDebugMode) {
-                              print(queryString.text);
-                            }
-
-                            handleSearchDebounce(value);
-
-                            // setState(() {});
-                          }
-                        },
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(
-                              left: 15.0, top: 15.0, right: 25.0, bottom: 15.0),
-                              filled: true,
-                          hintText: "Search softwares here....",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: BorderSide.none,
+                  : _isLoading && !_isInitiallyLoaded
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: theme.primaryColor,
                           ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: !_hasMore && books.isEmpty
-                          ? Center(
-                              child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text('No data found'),
-                                  ElevatedButton(
-                                    onPressed: () => _refreshData(),
-                                    child: const Text('Refresh data'),
-                                  )
-                                ],
-                              ),
-                            )
-                          : RefreshIndicator(
-                              onRefresh: () {
-                                return _refreshData();
-                              },
-                              child: ListView.builder(
-                                controller: scrollController,
-                                itemCount: books.length + 1,
-                                itemBuilder: (context, index) {
-                                  if (kDebugMode) {
-                                    // print("index $index");
-                                  }
-                                  // check if it is the last item
-                                  if (index == books.length) {
-                                    // check if more data could not be loaded
-                                    if (_hasMore == false) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Center(
-                                          child: Text(
-                                            'End of list',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6,
-                                          ),
-                                        ),
-                                      );
+                        )
+                      : Column(
+                          children: [
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15.0, vertical: 10.0),
+                              child: TextField(
+                                controller: queryString,
+                                textInputAction: TextInputAction.search,
+                                keyboardType: TextInputType.text,
+                                // autofocus: true,
+                                onChanged: (value) {
+                                  if (value.isNotEmpty) {
+                                    // setState(() {});
+                                    if (kDebugMode) {
+                                      print(queryString.text);
                                     }
 
-                                        return Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                      child: Center(
-                                              child: CircularProgressIndicator(
-                                            color: theme.primaryColor,
-                                          )),
-                                    );
-                                  }
+                                    handleSearchDebounce(value);
 
-                                  return books.isNotEmpty
-                                      ? Container(
-                                              color: theme.cardColor
-                                                  .withOpacity(0.6),
-                                          margin: const EdgeInsets.symmetric(
-                                            vertical: 10.0,
-                                          ),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              if (kDebugMode) {
-                                                print(books[index]
-                                                    .link
-                                                    .toString());
-                                              }
-                                              Globals.downloadItem(
-                                                      model:
-                                                          books[index].toJson(),
-                                                      postType: 'software',
-                                                      additionalData:
-                                                          books[index].author ??
-                                                              "");
-                                            },
-                                            child: ListTile(
-                                              leading: Container(
-                                                decoration: BoxDecoration(
-                                                    color: theme.primaryColor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            7.0)),
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.15,
-                                                child: const Center(
-                                                  child: FaIcon(
-                                                    FontAwesomeIcons.laptopCode,
-                                                    color: Colors.white,
-                                                    size: 30.0,
-                                                  ),
-                                                ),
-                                              ),
-                                              title: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 10.0),
-                                                child: Text(
-                                                  books[index].name.toString(),
-                                                  style: const TextStyle(
-                                                      fontSize: 12.0,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
-                                              subtitle: Text(
-                                                      books[index].author ??
-                                                          books[index]
-                                                              .name
-                                                              .toString()
-                                              ),
-                                              
-                                            ),
-                                          ),
-                                        )
-                                      : const Center(
-                                          child: Text('No software found'));
+                                    // setState(() {});
+                                  }
                                 },
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.only(
+                                      left: 15.0,
+                                      top: 15.0,
+                                      right: 25.0,
+                                      bottom: 15.0),
+                                  filled: true,
+                                  hintText: "Search softwares here....",
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
                               ),
                             ),
-                    ),
-                  ],
-                ),
+                            Expanded(
+                              child: !_hasMore && books.isEmpty
+                                  ? Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text('No data found'),
+                                          ElevatedButton(
+                                            onPressed: () => _refreshData(),
+                                            child: const Text('Refresh data'),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  : RefreshIndicator(
+                                      onRefresh: () {
+                                        return _refreshData();
+                                      },
+                                      child: ListView.builder(
+                                        controller: scrollController,
+                                        itemCount: books.length + 1,
+                                        itemBuilder: (context, index) {
+                                          if (kDebugMode) {
+                                            // print("index $index");
+                                          }
+                                          // check if it is the last item
+                                          if (index == books.length) {
+                                            // check if more data could not be loaded
+                                            if (_hasMore == false) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Center(
+                                                  child: Text(
+                                                    'End of list',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline6,
+                                                  ),
+                                                ),
+                                              );
+                                            }
+
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                color: theme.primaryColor,
+                                              )),
+                                            );
+                                          }
+
+                                          return books.isNotEmpty
+                                              ? Container(
+                                                  color: theme.cardColor
+                                                      .withOpacity(0.6),
+                                                  margin: const EdgeInsets
+                                                      .symmetric(
+                                                    vertical: 10.0,
+                                                  ),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      if (kDebugMode) {
+                                                        print(books[index]
+                                                            .link
+                                                            .toString());
+                                                      }
+                                                      Globals.downloadItem(
+                                                          model: books[index]
+                                                              .toJson(),
+                                                          postType: 'software',
+                                                          additionalData:
+                                                              books[index]
+                                                                      .author ??
+                                                                  "");
+                                                    },
+                                                    child: ListTile(
+                                                      leading: Container(
+                                                        decoration: BoxDecoration(
+                                                            color: theme
+                                                                .primaryColor,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        7.0)),
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.15,
+                                                        child: const Center(
+                                                          child: FaIcon(
+                                                            FontAwesomeIcons
+                                                                .laptopCode,
+                                                            color: Colors.white,
+                                                            size: 30.0,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      title: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                bottom: 10.0),
+                                                        child: Text(
+                                                          books[index]
+                                                              .name
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              fontSize: 12.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                      subtitle: Text(
+                                                          books[index].author ??
+                                                              books[index]
+                                                                  .name
+                                                                  .toString()),
+                                                    ),
+                                                  ),
+                                                )
+                                              : const Center(
+                                                  child: Text(
+                                                      'No software found'));
+                                        },
+                                      ),
+                                    ),
+                            ),
+                          ],
+                        ),
         ),
       ),
     );
