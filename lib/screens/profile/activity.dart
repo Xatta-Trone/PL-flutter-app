@@ -106,10 +106,10 @@ class _UserActivitiesPageState extends State<UserActivitiesPage> {
           }
 
           if (kDebugMode) {
-            print('page size');
-            print(activityData.data.length);
-            print(activityData.data.length < _pageSize);
-            print(_hasMore);
+            // print('page size');
+            // print(activityData.data.length);
+            // print(activityData.data.length < _pageSize);
+            // print(_hasMore);
           }
         });
       }

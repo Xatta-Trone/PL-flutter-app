@@ -25,6 +25,7 @@ class _BooksState extends State<Books> {
   bool _hasMore = false;
   int _totalCount = 0;
   bool _isLoading = false;
+  bool _isInitiallyLoaded = false;
 
 //  debounce
   Timer? debounce;
@@ -40,13 +41,20 @@ class _BooksState extends State<Books> {
     });
   }
 
-  Future<void> searchBooks({bool isSearching = true}) async {
+  Map<String, String> getQueryParams({bool isLoadingMore = false}) {
+    return {
+      'query': queryString.text,
+      'page': _page.toString(),
+      'limit': _pageSize.toString(),
+      'ascending': 0.toString(),
+      'byColumn': 0.toString(),
+    };
+  }
 
+  Future<void> searchBooks({bool isSearching = true}) async {
     if (kDebugMode) {
       print('books search  called');
     }
-
-
 
     if (_isLoading) {
       return;
@@ -57,13 +65,8 @@ class _BooksState extends State<Books> {
     });
 
     try {
-      var response = await Api().dio.get('/books', queryParameters: {
-        'query': queryString.text,
-        'page': 1,
-        'limit': _pageSize,
-        'ascending': 0,
-        'byColumn': 0,
-      });
+      var response =
+          await Api().dio.get('/books', queryParameters: getQueryParams());
 
       if (response.data != null) {
         if (kDebugMode) {
@@ -73,16 +76,13 @@ class _BooksState extends State<Books> {
         setState(() {
           if (isSearching) {
             books.clear();
+            if (scrollController.hasClients) {
+              scrollController.animateTo(
+                  scrollController.position.minScrollExtent,
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.easeOut);
+            }
           }
-
-          if (scrollController.hasClients) {
-            scrollController.animateTo(
-                scrollController.position.minScrollExtent,
-                duration: const Duration(milliseconds: 100),
-                curve: Curves.easeOut);
-          }
-
-         
 
           BooksList booksList = BooksList.fromJson(response.data);
           // set total count
@@ -92,71 +92,9 @@ class _BooksState extends State<Books> {
 
           // set the books data
           books.addAll(booksList.data);
-
-          //  set the data's
-          // _page++;
-
-          // is last page
-          if (booksList.data.length < _pageSize) {
-            _hasMore = false;
-          } else {
-            _hasMore = true;
+          if (!_isInitiallyLoaded) {
+            _isInitiallyLoaded = true;
           }
-
-          if (kDebugMode) {
-            // print(books.toList());
-          }
-        });
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  _loadMore() async {
-    // searchBooks(isSearching: false);
-    if (kDebugMode) {
-      print('Loadmore called');
-    }
-    if (!_hasMore) {
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      var response = await Api().dio.get('/books', queryParameters: {
-        'query': queryString.text,
-        'page': _page + 1,
-        'limit': _pageSize,
-        'ascending': 0,
-        'byColumn': 0,
-      });
-
-      if (response.data != null) {
-        if (kDebugMode) {
-          // print("count ${response.data}");
-        }
-
-        setState(() {
-          BooksList booksList = BooksList.fromJson(response.data);
-          // set total count
-          // if (_totalCount != 0) {
-          //   _totalCount = booksList.count;
-          // }
-
-          // print(booksList.data);
-
-          // set the books data
-          books.addAll(booksList.data);
 
           //  set the data's
           _page++;
@@ -177,11 +115,28 @@ class _BooksState extends State<Books> {
       if (kDebugMode) {
         print(e);
       }
+      setState(() {
+        _isInitiallyLoaded = false;
+      });
     } finally {
       setState(() {
         _isLoading = false;
       });
     }
+  }
+
+  _loadMore() async {
+    // searchBooks(isSearching: false);
+    if (kDebugMode) {
+      print('Loadmore called');
+    }
+    if (!_hasMore) {
+      return;
+    }
+
+    searchBooks(isSearching: false);
+
+   
   }
 
   Future<void> _refreshData() async {
@@ -190,6 +145,7 @@ class _BooksState extends State<Books> {
       _page = 1;
       _hasMore = true;
       _isLoading = false;
+      _isInitiallyLoaded = false;
       searchBooks();
     });
   }
@@ -201,7 +157,7 @@ class _BooksState extends State<Books> {
       if (scrollController.position.maxScrollExtent ==
           scrollController.offset) {
         if (kDebugMode) {
-          print('reaced end');
+          print('reached end');
         }
         _loadMore();
       }
@@ -262,7 +218,13 @@ class _BooksState extends State<Books> {
               ),
             ),
             Expanded(
-              child: !_hasMore && books.isEmpty
+              child: _isLoading && !_isInitiallyLoaded
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        color: theme.primaryColor,
+                      ),
+                    )
+                  : !_hasMore && books.isEmpty
                   ? Center(
                       child: Column(
                         children: [
@@ -327,8 +289,7 @@ class _BooksState extends State<Books> {
                                           additionalData:
                                               books[index].author ?? "");
                                     },
-                                    child: ListTile(
-
+                                        child: ListTile(
                                       leading: Container(
                                         decoration: BoxDecoration(
                                             color: theme.primaryColor,
@@ -345,7 +306,6 @@ class _BooksState extends State<Books> {
                                           ),
                                         ),
                                       ),
-
 
                                       title: Padding(
                                         padding:
