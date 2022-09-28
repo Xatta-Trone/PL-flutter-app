@@ -430,7 +430,6 @@ class _SearchState extends State<Search> {
                             bottom: 15.0,
                           ),
                           filled: true,
-                          fillColor: Colors.white,
                           hintText: "Search here....",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
@@ -451,7 +450,7 @@ class _SearchState extends State<Search> {
                               child: FaIcon(
                                 FontAwesomeIcons.sliders,
                                 color: detailSearchSelected
-                                    ? theme.primaryColor
+                                    ? theme.primaryColor.withRed(255)
                                     : Colors.grey,
                               ),
                             ),
@@ -521,7 +520,8 @@ class _SearchState extends State<Search> {
 
                                           return searchResult.isNotEmpty
                                               ? Container(
-                                                  color: Colors.white,
+                                                  color: theme.cardColor
+                                                      .withOpacity(0.6),
                                                   margin: const EdgeInsets
                                                       .symmetric(
                                                     vertical: 10.0,
@@ -740,7 +740,7 @@ class _SearchState extends State<Search> {
                                 vertical: 10.0, horizontal: 5.0),
                             decoration: InputDecoration(
                                 filled: true,
-                                border: InputBorder.none,
+                                // border: InputBorder.,
                                 labelText: 'Search course....'),
                           ),
                         ),

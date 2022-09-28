@@ -52,9 +52,14 @@ class MyApp extends StatelessWidget {
           cardColor: Colors.white,
           inputDecorationTheme: const InputDecorationTheme(
             fillColor: Colors.white,
+          // focusedBorder:
+          //     OutlineInputBorder(borderSide: BorderSide(color: Colors.cyan)),
+          border:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.cyan)),
           ),
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: Colors.cyan,
+            
           ),
 
           dividerColor: Colors.grey[200],
@@ -87,6 +92,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
           primarySwatch: Colors.cyan,
           primaryColorLight: Colors.grey,
+          
           fontFamily: 'Nunito',
         
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -98,6 +104,10 @@ class MyApp extends StatelessWidget {
           cardColor: Colors.grey[900],
           inputDecorationTheme: InputDecorationTheme(
             fillColor: Colors.grey[800],
+          border: const OutlineInputBorder(
+              borderSide: BorderSide(
+            color: Colors.grey,
+          )),
           ),
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: Colors.white70,
