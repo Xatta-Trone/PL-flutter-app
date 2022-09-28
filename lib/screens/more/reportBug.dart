@@ -174,6 +174,7 @@ class _ReportBugPageState extends State<ReportBugPage> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
         child: ModalProgressHUD(
@@ -186,10 +187,10 @@ class _ReportBugPageState extends State<ReportBugPage> {
                 children: [
                   Text(
                     'Report bug',
-                    style: Theme.of(context)
+                    style: theme
                         .textTheme
                         .headline4
-                        ?.copyWith(color: Colors.black87),
+                        ,
                   ),
                   const SizedBox(
                     height: 25.0,
@@ -217,7 +218,7 @@ class _ReportBugPageState extends State<ReportBugPage> {
                             },
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
+                             
                               hintText: "Describe in details",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),

@@ -94,6 +94,7 @@ class _ContactPageState extends State<ContactPage> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
         child: ModalProgressHUD(
@@ -106,10 +107,10 @@ class _ContactPageState extends State<ContactPage> {
                 children: [
                   Text(
                     'Get In Touch',
-                    style: Theme.of(context)
+                    style: theme
                         .textTheme
                         .headline4
-                        ?.copyWith(color: Colors.black87),
+                        ,
                   ),
                   const SizedBox(
                     height: 25.0,
@@ -134,7 +135,6 @@ class _ContactPageState extends State<ContactPage> {
                             },
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
                               hintText: "Your Name",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),
@@ -167,7 +167,6 @@ class _ContactPageState extends State<ContactPage> {
                             },
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
                               hintText: "Your Email Address",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),
@@ -192,7 +191,6 @@ class _ContactPageState extends State<ContactPage> {
                             },
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
                               hintText: "Email Subject",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),
@@ -220,7 +218,6 @@ class _ContactPageState extends State<ContactPage> {
                             },
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
                               hintText: "Message..",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),
@@ -249,7 +246,7 @@ class _ContactPageState extends State<ContactPage> {
                             },
                             child: Text(
                               'Submit',
-                              style: Theme.of(context)
+                              style: theme
                                   .textTheme
                                   .titleMedium
                                   ?.copyWith(color: Colors.white),
