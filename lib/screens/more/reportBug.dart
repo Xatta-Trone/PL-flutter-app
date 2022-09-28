@@ -120,16 +120,22 @@ class _ReportBugPageState extends State<ReportBugPage> {
             data: formData,
           );
 
-      // Get.toNamed(changePassword);
-      Get.defaultDialog(
-        title: 'Success !!',
-        middleText: "Response received successfully.",
-        textConfirm: ('Okay'),
-        onConfirm: () {
-          Get.close(2);
-          // cleanup
-          msgController.clear();
-        },
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Success !!'),
+          content: const Text('Response received successfully.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.close(2);
+                FocusManager.instance.primaryFocus?.unfocus();
+                // cleanup
+                msgController.clear();
+              },
+              child: const Text('Okay'),
+            )
+          ],
+        ),
       );
     } on DioError catch (e) {
       if (e.response != null) {
@@ -141,12 +147,25 @@ class _ReportBugPageState extends State<ReportBugPage> {
         String errData = Globals().formatText(
             e.response?.data['message'] ?? 'Something unknown occurred');
 
-        Get.defaultDialog(
-          title: 'Error !!',
-          middleText: "${e.response?.statusCode}: $errData",
-          textConfirm: ('Okay'),
-          onConfirm: () => Get.back(),
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: Text("${e.response?.statusCode}: $errData"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  // cleanup
+                  msgController.clear();
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
         );
+
+
       } else {
         if (kDebugMode) {
           print(e.message);
@@ -188,10 +207,7 @@ class _ReportBugPageState extends State<ReportBugPage> {
                 children: [
                   Text(
                     'Report bug',
-                    style: theme
-                        .textTheme
-                        .headline4
-                        ,
+                    style: theme.textTheme.headline4,
                   ),
                   const SizedBox(
                     height: 25.0,
@@ -219,7 +235,6 @@ class _ReportBugPageState extends State<ReportBugPage> {
                             },
                             decoration: InputDecoration(
                               filled: true,
-                             
                               hintText: "Describe in details",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),

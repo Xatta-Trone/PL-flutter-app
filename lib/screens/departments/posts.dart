@@ -55,17 +55,42 @@ class _PostState extends State<Post> {
       }
 
       if (e.response?.statusCode == 422) {
-        Get.defaultDialog(
-            title: "Error !!",
-            middleText: "422: You do not have permission to access.",
-            textConfirm: 'Okay',
-            onConfirm: () {
-              Get.close(2);
-            });
+        
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: const Text("422: You do not have permission to access."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.close(2);
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
+        );
 
         setState(() {
           posts.clear();
         });
+      } else {
+        String errData = Globals().formatText(
+            e.response?.data['message'] ?? 'Something unknown occurred');
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: Text("${e.response?.statusCode}: $errData"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
+        );
       }
     } finally {
       setState(() {

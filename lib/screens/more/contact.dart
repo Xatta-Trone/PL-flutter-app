@@ -36,20 +36,30 @@ class _ContactPageState extends State<ContactPage> {
         'body': msgController.value.text,
       });
 
-      // Get.toNamed(changePassword);
-      Get.defaultDialog(
-        title: 'Success !!',
-        middleText: "Response received successfully.",
-        textConfirm: ('Okay'),
-        onConfirm: () {
-          Get.close(2);
-          // cleanup
-          nameController.clear();
-          emailController.clear();
-          subjectController.clear();
-          msgController.clear();
-        },
+  
+
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Success !!'),
+          content: const Text("Response received successfully."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.close(2);
+                FocusManager.instance.primaryFocus?.unfocus();
+                // cleanup
+                nameController.clear();
+                emailController.clear();
+                subjectController.clear();
+                msgController.clear();
+              },
+              child: const Text('Okay'),
+            )
+          ],
+        ),
       );
+
+
     } on DioError catch (e) {
       if (e.response != null) {
         if (kDebugMode) {
@@ -60,12 +70,23 @@ class _ContactPageState extends State<ContactPage> {
         String errData = Globals().formatText(
             e.response?.data['message'] ?? 'Something unknown occurred');
 
-        Get.defaultDialog(
-          title: 'Error !!',
-          middleText: "${e.response?.statusCode}: $errData",
-          textConfirm: ('Okay'),
-          onConfirm: () => Get.back(),
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: Text("${e.response?.statusCode}: $errData"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
         );
+
+
       } else {
         if (kDebugMode) {
           print(e.message);

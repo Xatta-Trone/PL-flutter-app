@@ -8,6 +8,7 @@ import 'package:plandroid/api/api.dart';
 import 'package:plandroid/constants/sharedPrefConstants.dart';
 import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/controller/DashboardController.dart';
+import 'package:plandroid/globals/globals.dart';
 import 'package:plandroid/models/LevelTerms.dart';
 import 'package:plandroid/routes/routeconst.dart';
 import 'package:plandroid/screens/auth/Login.dart';
@@ -63,9 +64,12 @@ class _LevelTermsState extends State<LevelTerms> {
     if (kDebugMode) {
       print('get level terms called');
     }
-    setState(() {
-      _isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+  
     try {
       var response =
           await Api().dio.get("/departments/${Get.parameters['department']}");
@@ -96,18 +100,43 @@ class _LevelTermsState extends State<LevelTerms> {
       }
 
       if (e.response?.statusCode == 422) {
-        Get.defaultDialog(
-            title: "Error !!",
-            middleText:
-                "422: You do not have permission to access this department.",
-            textConfirm: 'Okay',
-            onConfirm: () {
-              Get.close(2);
-            });
+        
+
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: const Text("422: You do not have permission to access."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.close(2);
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
+        );
 
         setState(() {
           levelTerms.clear();
         });
+      } else {
+        String errData = Globals().formatText(
+            e.response?.data['message'] ?? 'Something unknown occurred');
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: Text("${e.response?.statusCode}: $errData"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
+        );
       }
     } finally {
       setState(() {

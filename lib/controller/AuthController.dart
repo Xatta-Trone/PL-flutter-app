@@ -151,15 +151,40 @@ class AuthController extends GetxController {
         if (kDebugMode) {
           print(e.response);
         }
-        Get.defaultDialog(
-          title: 'Error !!',
-          middleText:
-              "${e.response?.statusCode}: ${e.response?.data['message'] ?? 'Something unknown occurred'}",
-          textConfirm: ('Okay'),
-          onConfirm: () => Get.back(),
+
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: Text(
+                "${e.response?.statusCode}: ${e.response?.data['message'] ?? 'Something unknown occurred'}"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
         );
       } else {
-        print(e.message);
+        if (kDebugMode) {
+          print(e.message);
+        }
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: const Text("Something unknown occurred"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
+        );
       }
     } finally {
       isInAsyncCall.value = false;
@@ -195,16 +220,39 @@ class AuthController extends GetxController {
         String errData = Globals().formatText(
             e.response?.data['message'] ?? 'Something unknown occurred');
 
-        Get.defaultDialog(
-          title: 'Error !!',
-          middleText: "${e.response?.statusCode}: $errData",
-          textConfirm: ('Okay'),
-          onConfirm: () => Get.back(),
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: Text("${e.response?.statusCode}: $errData"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
         );
       } else {
         if (kDebugMode) {
           print(e.message);
         }
+
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: const Text("Something unknown occurred."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
+        );
       }
     } finally {
       // async call complete
@@ -230,13 +278,21 @@ class AuthController extends GetxController {
       changePwdConfirmationController.clear();
       pwdCodeController.clear();
 
-      // Get.toNamed(changePassword);
-      Get.defaultDialog(
-        title: 'Success !!',
-        middleText:
-            "Password changed successfully. Now login into your account.",
-        textConfirm: ('Okay'),
-        onConfirm: () => Get.offAllNamed(homePage),
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Success !!'),
+          content: const Text(
+              "Password changed successfully. Now login into your account."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                Get.offAllNamed(homePage);
+              },
+              child: const Text('Okay'),
+            )
+          ],
+        ),
       );
 
       if (kDebugMode) {
@@ -255,16 +311,38 @@ class AuthController extends GetxController {
         String errData = Globals().formatText(
             e.response?.data['message'] ?? 'Something unknown occurred');
 
-        Get.defaultDialog(
-          title: 'Error !!',
-          middleText: "${e.response?.statusCode}: $errData",
-          textConfirm: ('Okay'),
-          onConfirm: () => Get.back(),
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: Text("${e.response?.statusCode}: $errData"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
         );
       } else {
         if (kDebugMode) {
           print(e.message);
         }
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: const Text("Something unknown occurred"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
+        );
       }
     } finally {
       // async call complete
@@ -283,18 +361,24 @@ class AuthController extends GetxController {
         'password_confirmation': newPwdConfirmController.value.text,
       });
 
-      // Get.toNamed(changePassword);
-      Get.defaultDialog(
-        title: 'Success !!',
-        middleText: "Password changed successfully.",
-        textConfirm: ('Okay'),
-        onConfirm: () {
-          Get.close(2);
-          // cleanup
-          currentPwdController.clear();
-          newPwdController.clear();
-          newPwdConfirmController.clear();
-        },
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Success !!'),
+          content: const Text("Password changed successfully."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.close(2);
+                FocusManager.instance.primaryFocus?.unfocus();
+                // cleanup
+                currentPwdController.clear();
+                newPwdController.clear();
+                newPwdConfirmController.clear();
+              },
+              child: const Text('Okay'),
+            )
+          ],
+        ),
       );
 
       if (kDebugMode) {
@@ -313,16 +397,38 @@ class AuthController extends GetxController {
         String errData = Globals().formatText(
             e.response?.data['message'] ?? 'Something unknown occurred');
 
-        Get.defaultDialog(
-          title: 'Error !!',
-          middleText: "${e.response?.statusCode}: $errData",
-          textConfirm: ('Okay'),
-          onConfirm: () => Get.back(),
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: Text("${e.response?.statusCode}: $errData"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
         );
       } else {
         if (kDebugMode) {
           print(e.message);
         }
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: const Text("Something unknown occurred."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
+        );
       }
     } finally {
       // async call complete
@@ -343,15 +449,26 @@ class AuthController extends GetxController {
         if (kDebugMode) {
           print(e.response);
         }
-        Get.defaultDialog(
-          title: 'Error !!',
-          middleText:
-              "${e.response?.statusCode}: ${e.response?.data['message'] ?? 'Something unknown occurred'}",
-          textConfirm: ('Okay'),
-          onConfirm: () => Get.back(),
+
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: Text(
+                "${e.response?.statusCode}: ${e.response?.data['message'] ?? 'Something unknown occurred'}"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
         );
       } else {
-        print(e.message);
+        if (kDebugMode) {
+          print(e.message);
+        }
       }
     }
   }
@@ -409,12 +526,22 @@ class AuthController extends GetxController {
 
       clearValues();
 
-      Get.defaultDialog(
-        title: 'Success !!',
-        middleText:
-            "Account created successfully. Please check your email (also spam) for the password.",
-        textConfirm: ('Okay'),
-        onConfirm: () => Get.offAllNamed(homePage),
+    
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Success !!'),
+          content: const Text(
+              "Account created successfully. Please check your email (also spam) for the password."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.offAllNamed(homePage);
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
+              child: const Text('Okay'),
+            )
+          ],
+        ),
       );
     } on DioError catch (e) {
       // server sent a res back with err
@@ -432,11 +559,21 @@ class AuthController extends GetxController {
             }
           });
 
-          return Get.defaultDialog(
-            title: 'Error !!',
-            middleText: "${e.response?.statusCode}: $combinedMessage",
-            textConfirm: ('Okay'),
-            onConfirm: () => Get.back(),
+
+
+          return Get.dialog(
+            AlertDialog(
+              title: const Text('Error !!'),
+              content: Text("${e.response?.statusCode}: $combinedMessage"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: const Text('Okay'),
+                )
+              ],
+            ),
           );
         }
 
@@ -458,22 +595,45 @@ class AuthController extends GetxController {
           // print(combinedMessage);
         }
 
-        Get.defaultDialog(
-          title: 'Error !!',
-          middleText: "${e.response?.statusCode}: $errData",
-          textConfirm: ('Okay'),
-          onConfirm: () => Get.back(),
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: Text("${e.response?.statusCode}: $errData"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
         );
+
+
+
       } else {
         if (kDebugMode) {
           print(e.message);
         }
-        Get.defaultDialog(
-          title: 'Error !!',
-          middleText:
-              "${e.response?.statusCode}: Something unexpected occurred. ${e.message}",
-          textConfirm: ('Okay'),
-          onConfirm: () => Get.back(),
+
+
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error !!'),
+            content: Text(
+                "${e.response?.statusCode}: Something unexpected occurred. ${e.message}"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                child: const Text('Okay'),
+              )
+            ],
+          ),
         );
       }
     } finally {
@@ -585,12 +745,23 @@ class AuthController extends GetxController {
       await preferences.setBool(isPrimaryDeviceKey, true);
       await preferences.remove(isGuestDeviceKey);
 
-      Get.defaultDialog(
-        title: 'Success',
-        middleText: "Device added",
-        textConfirm: ('Okay'),
-        onConfirm: () => Get.back(),
+   
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Success !!'),
+          content: const Text("Device added"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('Okay'),
+            )
+          ],
+        ),
       );
+
+
     } on DioError catch (e) {
       if (kDebugMode) {
         print(e.message);
@@ -598,12 +769,23 @@ class AuthController extends GetxController {
       String errData = Globals().formatText(
           e.response?.data['message'] ?? 'Something unknown occurred');
 
-      Get.defaultDialog(
-        title: 'Error !!',
-        middleText: "${e.response?.statusCode}: $errData",
-        textConfirm: ('Okay'),
-        onConfirm: () => Get.back(),
+
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Error !!'),
+          content: Text("${e.response?.statusCode}: $errData"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('Okay'),
+            )
+          ],
+        ),
       );
+
+
     } finally {
       isInAsyncCall.value = false;
     }
@@ -621,12 +803,24 @@ class AuthController extends GetxController {
         print('====user devices delete ===');
         // print(response.data);
       }
-      Get.defaultDialog(
-        title: 'Success',
-        middleText: "Device removed",
-        textConfirm: ('Okay'),
-        onConfirm: () => Get.back(),
+
+
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Success !!'),
+          content: const Text("Device removed"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('Okay'),
+            )
+          ],
+        ),
       );
+
+
       getUserDevices();
     } on DioError catch (e) {
       if (kDebugMode) {
@@ -635,11 +829,19 @@ class AuthController extends GetxController {
       String errData = Globals().formatText(
           e.response?.data['message'] ?? 'Something unknown occurred');
 
-      Get.defaultDialog(
-        title: 'Error !!',
-        middleText: "${e.response?.statusCode}: $errData",
-        textConfirm: ('Okay'),
-        onConfirm: () => Get.back(),
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Error !!'),
+          content: Text("${e.response?.statusCode}: $errData"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('Okay'),
+            )
+          ],
+        ),
       );
     }
   }
