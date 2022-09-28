@@ -22,103 +22,94 @@ void main() async {
   runApp(MyApp());
 }
 
+final ThemeController themeController = Get.put(ThemeController());
+
 class MyApp extends StatelessWidget {
   MyApp({super.key}) {
-    // Get.changeThemeMode(
-    //     themeController.isDarkTheme.value ? ThemeMode.dark : ThemeMode.light);
+    themeController.isDarkTheme.listen((value) {
+      Get.changeThemeMode(value ? ThemeMode.dark : ThemeMode.light);
+    });
   }
-
-  ThemeController themeController = Get.put(ThemeController());
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     Get.put(AuthController());
     return GetMaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.cyan,
-          brightness: Brightness.light,
-          fontFamily: 'Nunito',
-          scaffoldBackgroundColor: const Color(0xfff6f8fa),
+      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.cyan,
+        brightness: Brightness.light,
+        fontFamily: 'Nunito',
+        scaffoldBackgroundColor: const Color(0xfff6f8fa),
         primaryColorLight: Colors.cyan,
-          bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            backgroundColor: Colors.white,
-            selectedItemColor: Colors.cyan,
-            unselectedItemColor: Colors.grey[600],
-            elevation: 10.0,
-          ),
-          cardColor: Colors.white,
-          inputDecorationTheme: const InputDecorationTheme(
-            fillColor: Colors.white,
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.cyan,
+          unselectedItemColor: Colors.grey[600],
+          elevation: 10.0,
+        ),
+        cardColor: Colors.white,
+        inputDecorationTheme: const InputDecorationTheme(
+          fillColor: Colors.white,
           // focusedBorder:
           //     OutlineInputBorder(borderSide: BorderSide(color: Colors.cyan)),
           border:
               OutlineInputBorder(borderSide: BorderSide(color: Colors.cyan)),
-          ),
-          textSelectionTheme: const TextSelectionThemeData(
-            cursorColor: Colors.cyan,
-            
-          ),
-
-          dividerColor: Colors.grey[200],
-
-            textButtonTheme: TextButtonThemeData(
-              style: ButtonStyle(
-                foregroundColor:
-                    MaterialStateProperty.resolveWith((states) => Colors.cyan),
-              ),
-            ),
-            elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ButtonStyle(
-                foregroundColor:
-                    MaterialStateProperty.resolveWith((states) => Colors.white),
-              ),
         ),
-        floatingActionButtonTheme:
-            const FloatingActionButtonThemeData(
-          backgroundColor: Colors.cyan,
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Colors.cyan,
         ),
-
-        
-
-          
-       
-        
-         
-        ),
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          primarySwatch: Colors.cyan,
-          primaryColorLight: Colors.grey,
-          
-          fontFamily: 'Nunito',
-        
-          bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            backgroundColor: Colors.grey[800],
-            selectedItemColor: Colors.grey[100],
-            unselectedItemColor: Colors.grey[600],
-            elevation: 10.0,
+        dividerColor: Colors.grey[200],
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor:
+                MaterialStateProperty.resolveWith((states) => Colors.cyan),
           ),
-          cardColor: Colors.grey[900],
-          inputDecorationTheme: InputDecorationTheme(
-            fillColor: Colors.grey[800],
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor:
+                MaterialStateProperty.resolveWith((states) => Colors.white),
+          ),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Colors.redAccent,
+        ),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: Colors.cyan,
+        ),
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.cyan,
+        primaryColorLight: Colors.grey,
+        fontFamily: 'Nunito',
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.grey[800],
+          selectedItemColor: Colors.grey[100],
+          unselectedItemColor: Colors.grey[600],
+          elevation: 10.0,
+        ),
+        cardColor: Colors.grey[900],
+        inputDecorationTheme: InputDecorationTheme(
+          fillColor: Colors.grey[800],
           border: const OutlineInputBorder(
               borderSide: BorderSide(
             color: Colors.grey,
           )),
-          ),
-          textSelectionTheme: const TextSelectionThemeData(
-            cursorColor: Colors.white70,
-          ),
-          dividerColor: Colors.grey[800],
+        ),
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Colors.white70,
+        ),
+        dividerColor: Colors.grey[800],
 
-            textButtonTheme: TextButtonThemeData(
-              style: ButtonStyle(
-                foregroundColor:
-                    MaterialStateProperty.resolveWith((states) => Colors.white),
-              ),
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor:
+                MaterialStateProperty.resolveWith((states) => Colors.white),
+          ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
@@ -128,17 +119,18 @@ class MyApp extends StatelessWidget {
         ),
         floatingActionButtonTheme:
             FloatingActionButtonThemeData(backgroundColor: Colors.grey[600]),
-
-          // scaffoldBackgroundColor: Colors.grey[900],
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          color: Colors.grey[900],
         ),
-        themeMode: themeController.isDarkTheme.value
-            ? ThemeMode.dark
-            : ThemeMode.light,
-        initialRoute: homePage,
-        getPages: appRoutes(),
-        unknownRoute: unknownRoute(),
-        // initialBinding: InitialBindings(),
-      
+
+        // scaffoldBackgroundColor: Colors.grey[900],
+      ),
+      themeMode:
+          themeController.isDarkTheme.value ? ThemeMode.dark : ThemeMode.light,
+      initialRoute: homePage,
+      getPages: appRoutes(),
+      unknownRoute: unknownRoute(),
+      // initialBinding: InitialBindings(),
     );
   }
 }
