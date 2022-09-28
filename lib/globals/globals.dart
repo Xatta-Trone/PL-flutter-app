@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/api/api.dart';
 import 'package:plandroid/controller/AuthController.dart';
+import 'package:plandroid/screens/search/search.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 extension StringCasingExtension on String {
@@ -83,6 +84,93 @@ class Globals {
         label: label,
         model_id: modelId,
         model_type: modelType);
+  }
+
+  static String formatSearchString(String search) {
+    if (!search.contains('q=')) {
+      return search;
+    }
+
+    String finalString = 'Searched ';
+
+    List<String> explodedString = search.split(",");
+
+    // get query param
+    var query =
+        explodedString.firstWhereOrNull((element) => element.contains('q='));
+    var dept =
+        explodedString.firstWhereOrNull((element) => element.contains('dept='));
+    var levelTerm =
+        explodedString.firstWhereOrNull((element) => element.contains('l_t='));
+    var courseSlug = explodedString
+        .firstWhereOrNull((element) => element.contains('course_slug='));
+    var courseTitle = explodedString
+        .firstWhereOrNull((element) => element.contains('course_title='));
+    var contentType = explodedString
+        .firstWhereOrNull((element) => element.contains('content_type='));
+
+    if (query != null) {
+      var q = getValue(query);
+      if (q != '') {
+        finalString += "for ${q.toLowerCase()} ";
+      }
+    }
+
+    // dept/levelterm/course
+
+    var deptStr = dept?.split('=').last ?? '';
+    var ltStr = levelTerm?.split('=').last ?? '';
+    var courseStr = courseSlug?.split('=').last ?? '';
+    var courseTitleStr = courseTitle?.split('=').last ?? '';
+
+    if (deptStr != '' ||
+        ltStr != '' ||
+        courseStr != '' ||
+        courseTitleStr != '') {
+      var finalCourseString =
+          getDeptString(dept, levelTerm, courseSlug, courseTitle);
+      int patternInt = finalCourseString.indexOf('//');
+
+      // if (kDebugMode) {
+      //   print('index of //');
+      //   print(patternInt);
+      // }
+
+      if (patternInt != -1) {
+        finalString += "in ${finalCourseString.split('//').first}";
+      } else {
+        finalString += "in $finalCourseString";
+      }
+
+      // finalString += "in $finalCourseString";
+    }
+
+    // content type
+    if (contentType != null) {
+      var contentValue = getValue(contentType);
+      if (contentValue != '') {
+        finalString += " :: content type: ${contentValue.toLowerCase()}";
+      }
+    }
+
+    return finalString;
+  }
+
+  static String getValue(String str) {
+    return (str.split('=')[1]).toUpperCase();
+  }
+
+  static String getDeptString(
+      String? dept, String? levelTerm, String? course, String? courseTitle) {
+    if (dept == null && levelTerm == null && course == null) {
+      return "";
+    }
+    return "${[
+      dept?.split('=').last,
+      levelTerm?.split('=').last,
+      course?.split('=').last,
+    ].join('/')}  ${courseTitle?.split('=').last}"
+        .toUpperCase();
   }
 
   static void saveSearchActivity(Map<String, String> querySting) {

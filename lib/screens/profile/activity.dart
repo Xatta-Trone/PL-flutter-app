@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/api/api.dart';
 import 'package:plandroid/controller/AuthController.dart';
+import 'package:plandroid/globals/globals.dart';
 import 'package:plandroid/models/UserActivityData.dart';
 import 'package:plandroid/models/UserDevicesData.dart';
 import 'package:plandroid/screens/auth/Login.dart';
@@ -279,10 +280,20 @@ class _UserActivitiesPageState extends State<UserActivitiesPage> {
                                             ),
                                           ),
                                         ),
-                                        title: Text(activities[index]
+                                            title: Text(
+                                              activities[index]
                                             .activity
                                             .toString(),),
-                                        subtitle: Text(
+                                            subtitle: Text(
+                                              activities[index]
+                                                      .activity
+                                                      .toString()
+                                                      .contains('search')
+                                                  ? Globals.formatSearchString(
+                                                      activities[index]
+                                                          .label
+                                                          .toString())
+                                                  :
                                           activities[index].label,
                                         ),
                                             trailing: SizedBox(
