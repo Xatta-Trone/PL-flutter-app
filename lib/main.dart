@@ -76,7 +76,9 @@ class MyApp extends StatelessWidget {
                 foregroundColor:
                     MaterialStateProperty.resolveWith((states) => Colors.white),
               ),
-            )
+        ),
+        floatingActionButtonTheme:
+            const FloatingActionButtonThemeData(backgroundColor: Colors.cyan),
 
           
        
@@ -111,7 +113,15 @@ class MyApp extends StatelessWidget {
                 foregroundColor:
                     MaterialStateProperty.resolveWith((states) => Colors.white),
               ),
-            )
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor:
+                MaterialStateProperty.resolveWith((states) => Colors.white),
+          ),
+        ),
+        floatingActionButtonTheme:
+            FloatingActionButtonThemeData(backgroundColor: Colors.grey[600]),
 
           // scaffoldBackgroundColor: Colors.grey[900],
         ),
