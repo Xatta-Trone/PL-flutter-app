@@ -465,8 +465,10 @@ class _SearchState extends State<Search> {
                     ),
                     Expanded(
                       child: _isLoading && !_isInitiallyLoaded
-                          ? const Center(
-                              child: CircularProgressIndicator(),
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                color: theme.primaryColor,
+                              ),
                             )
                           : !_isLoading && !_isInitiallyLoaded
                               ? const Center(
@@ -505,11 +507,15 @@ class _SearchState extends State<Search> {
                                               );
                                             }
 
-                                            return const Padding(
-                                              padding: EdgeInsets.all(8.0),
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Center(
                                                   child:
-                                                      CircularProgressIndicator()),
+                                                    CircularProgressIndicator(
+                                                  color: theme.primaryColor,
+                                                ),
+                                              ),
                                             );
                                           }
 

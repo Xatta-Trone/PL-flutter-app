@@ -191,8 +191,10 @@ class _UserActivitiesPageState extends State<UserActivitiesPage> {
           () => !authController.isLoggedIn.value
               ? const Login()
               : _isLoading && !_isInitiallyLoaded
-                  ? const Center(
-                      child: CircularProgressIndicator(),
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        color: theme.primaryColor,
+                      ),
                     )
                   : Column(
                   children: [
