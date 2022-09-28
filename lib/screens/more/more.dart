@@ -32,6 +32,13 @@ class More extends StatelessWidget {
                   trailing: Switch(
                     onChanged: (value) {
                       themeController.toggleDarkTheme(value: value);
+                      if (kDebugMode) {
+                        print('theme mode');
+                        print(value);
+                      }
+
+                      Get.changeThemeMode(
+                          value ? ThemeMode.dark : ThemeMode.light);
                     },
                     value: themeController.isDarkTheme.value,
                   ),

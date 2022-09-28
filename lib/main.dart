@@ -34,8 +34,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(AuthController());
-    return Obx(
-      () => GetMaterialApp(
+    return GetMaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -123,7 +122,7 @@ class MyApp extends StatelessWidget {
         getPages: appRoutes(),
         unknownRoute: unknownRoute(),
         // initialBinding: InitialBindings(),
-      ),
+      
     );
   }
 }
