@@ -38,7 +38,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     style: Theme.of(context)
                         .textTheme
                         .headline4
-                        ?.copyWith(color: Colors.black87),
+                        ,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -47,7 +47,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                       style: Theme.of(context)
                           .textTheme
                           .bodyText1
-                          ?.copyWith(color: Colors.black87),
+                          ,
+                      textAlign: TextAlign.center,
                     ),
                   ),
                   const SizedBox(
@@ -86,7 +87,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                             },
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
                               hintText: "Password reset code",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),
@@ -114,7 +114,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                             },
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
                               hintText: "Password",
                               helperText:
                                   'Password must be 8 characters or more.',
@@ -171,7 +170,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                             },
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
                               hintText: "Password confirmation",
                               // errorText: _authController.passwordErrorText,
                               border: OutlineInputBorder(

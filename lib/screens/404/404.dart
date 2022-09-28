@@ -5,10 +5,11 @@ class Unknown404 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: prefer_const_constructors
     return SafeArea(
-      child: Center(
-        child: Container(
-          child: const Text('Unknown404'),
+      child: const Center(
+        child: Text(
+          'Unknown404',
         ),
       ),
     );

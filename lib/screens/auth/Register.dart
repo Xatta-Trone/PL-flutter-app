@@ -82,7 +82,7 @@ class _RegisterState extends State<Register> {
   void openDialog(String text) {
     Get.dialog(
       AlertDialog(
-        title: const Text('Alert'),
+        title: const Text('Alert !'),
         content: Text(text),
         actions: [
           TextButton(
@@ -105,7 +105,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    final txtTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -116,18 +116,17 @@ class _RegisterState extends State<Register> {
             inAsyncCall: _authController.isInAsyncCall.value,
             child: Center(
               child: selectedUserType == null
-                  ? selectUserType(txtTheme)
+                  ? selectUserType(theme.textTheme)
                   : selectedUserType == UserType.outsider
-                      ? OutsiderWidget(txtTheme: txtTheme)
+                      ? OutsiderWidget(txtTheme: theme.textTheme)
                       : selectedUserType == UserType.alumni
-                          ? AlumniWidget(txtTheme: txtTheme)
+                          ? AlumniWidget(txtTheme: theme.textTheme)
                           : SingleChildScrollView(
                               child: Column(
                                 children: [
                                   Text(
                                     'Register',
-                                    style: txtTheme.headline4
-                                        ?.copyWith(color: Colors.black87),
+                                    style: theme.textTheme.headline4,
                                   ),
                                   const SizedBox(
                                     height: 25.0,
@@ -141,9 +140,9 @@ class _RegisterState extends State<Register> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          const Text(
+                                          Text(
                                             'Please enter all the data according to your student ID card.',
-                                            style: TextStyle(color: Colors.red),
+                                            style: theme.textTheme.titleMedium,
                                             textAlign: TextAlign.center,
                                           ),
                                           const SizedBox(
@@ -172,7 +171,7 @@ class _RegisterState extends State<Register> {
                                             },
                                             decoration: InputDecoration(
                                               filled: true,
-                                              fillColor: Colors.white,
+                                             
                                               hintText: "Your official name",
                                               helperText:
                                                   'According to your student ID',
@@ -218,7 +217,7 @@ class _RegisterState extends State<Register> {
                                             },
                                             decoration: InputDecoration(
                                               filled: true,
-                                              fillColor: Colors.white,
+                                             
                                               hintText: "E-mail address",
                                               helperText: 'Gmail is preferred',
                                               border: OutlineInputBorder(
@@ -253,7 +252,7 @@ class _RegisterState extends State<Register> {
                                               },
                                               decoration: InputDecoration(
                                                 filled: true,
-                                                fillColor: Colors.white,
+                                               
                                                 border: OutlineInputBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(5),
@@ -288,7 +287,7 @@ class _RegisterState extends State<Register> {
                                             },
                                             decoration: InputDecoration(
                                               filled: true,
-                                              fillColor: Colors.white,
+                                             
                                               hintText: "Your merit position",
                                               border: OutlineInputBorder(
                                                 borderRadius:
@@ -301,20 +300,24 @@ class _RegisterState extends State<Register> {
                                             height: 15.0,
                                           ),
                                           Container(
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0),
+                                            decoration: BoxDecoration(
+                                              color: theme.inputDecorationTheme
+                                                  .fillColor,
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                Radius.circular(5.0),
                                               ),
                                             ),
                                             padding: const EdgeInsets.symmetric(
-                                                horizontal: 10.0),
+                                                horizontal: 10.0,
+                                                vertical: 5.0),
                                             child: DropdownButtonFormField(
                                               decoration: const InputDecoration(
                                                 border: InputBorder.none,
                                               ),
                                               hint: const Text(
-                                                  'Select your hall'),
+                                                'Select your hall',
+                                              ),
                                               isExpanded: true,
                                               items: _authController.halls.map<
                                                       DropdownMenuItem<String>>(
@@ -451,7 +454,7 @@ class _RegisterState extends State<Register> {
                                             },
                                             child: Text(
                                               'Register',
-                                              style: txtTheme.titleMedium
+                                              style: theme.textTheme.titleMedium
                                                   ?.copyWith(
                                                       color: Colors.white),
                                             ),

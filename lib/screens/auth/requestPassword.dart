@@ -35,7 +35,7 @@ class _RequestPasswordState extends State<RequestPassword> {
                     style: Theme.of(context)
                         .textTheme
                         .headline4
-                        ?.copyWith(color: Colors.black87),
+                        
                   ),
                   const SizedBox(
                     height: 25.0,
@@ -75,7 +75,6 @@ class _RequestPasswordState extends State<RequestPassword> {
                             },
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
                               hintText: "E-mail address",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),

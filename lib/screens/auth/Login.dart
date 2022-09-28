@@ -27,6 +27,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return SafeArea(
       child: Obx(
         () => ModalProgressHUD(
@@ -42,7 +43,6 @@ class _LoginState extends State<Login> {
                   style: Theme.of(context)
                       .textTheme
                       .headline4
-                      ?.copyWith(color: Colors.black87),
                 ),
                 const SizedBox(
                   height: 25.0,
@@ -83,7 +83,6 @@ class _LoginState extends State<Login> {
                             },
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
                               hintText: "E-mail address",
                               errorText: _authController.emailErrorText,
                               border: OutlineInputBorder(
@@ -111,7 +110,6 @@ class _LoginState extends State<Login> {
                             },
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
                               hintText: "Password",
                               // errorText: _authController.passwordErrorText,
                               border: OutlineInputBorder(
@@ -181,10 +179,7 @@ class _LoginState extends State<Login> {
                             },
                             child: Text(
                               'Create New Account',
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 16,
-                              ),
+                                style: theme.textTheme.titleMedium
                             ),
                           ),
                           // const SizedBox(
@@ -197,12 +192,10 @@ class _LoginState extends State<Login> {
                               }
                               Get.toNamed(requestPassword);
                             },
-                            child: const Text(
+                            child: Text(
                               'Reset Your Password',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 16,
-                              ),
+                              style: theme.textTheme.titleMedium
+                                  ?.copyWith(color: Colors.red),
                             ),
                           )
                         ],
