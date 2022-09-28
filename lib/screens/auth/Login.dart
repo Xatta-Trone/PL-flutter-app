@@ -43,11 +43,11 @@ class _LoginState extends State<Login> {
                 const SizedBox(
                   height: 25.0,
                 ),
-                AutofillGroup(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Form(
-                      key: _formKey,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Form(
+                    key: _formKey,
+                    child: AutofillGroup(
                       child: Column(
                         // ignore: prefer_const_literals_to_create_immutables
                         children: [
@@ -55,21 +55,24 @@ class _LoginState extends State<Login> {
                             controller: _authController.emailController,
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.emailAddress,
+                            autofillHints: const [
+                              AutofillHints.email,
+                            ],
                             autofocus: true,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
                               final emailRegExp = RegExp(
                                   r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-
+                    
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your email';
                               }
-
+                    
                               if (emailRegExp.hasMatch(value) == false) {
                                 return 'Please enter a valid email';
                               }
-
+                    
                               return null;
                             },
                             onChanged: (value) {
@@ -93,6 +96,7 @@ class _LoginState extends State<Login> {
                           TextFormField(
                             controller: _authController.passwordController,
                             obscureText: _obscureText,
+                            autofillHints: const [AutofillHints.password],
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) {
@@ -148,7 +152,7 @@ class _LoginState extends State<Login> {
                               if (kDebugMode) {
                                 print(_formKey.currentState!.validate());
                               }
-
+                    
                               if (_formKey.currentState!.validate()) {
                                 FocusManager.instance.primaryFocus?.unfocus();
                                 _formKey.currentState!.save();

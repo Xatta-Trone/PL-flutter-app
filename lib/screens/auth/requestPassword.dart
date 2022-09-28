@@ -43,75 +43,79 @@ class _RequestPasswordState extends State<RequestPassword> {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Form(
                       key: _formKey,
-                      child: Column(
-                        // ignore: prefer_const_literals_to_create_immutables
-                        children: [
-                          TextFormField(
-                            controller: _authController.pwdResetEmailController,
-                            textInputAction: TextInputAction.done,
-                            keyboardType: TextInputType.emailAddress,
-                            autofocus: true,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              final emailRegExp = RegExp(
-                                  r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                      child: AutofillGroup(
+                        child: Column(
+                          // ignore: prefer_const_literals_to_create_immutables
+                          children: [
+                            TextFormField(
+                              controller:
+                                  _authController.pwdResetEmailController,
+                              textInputAction: TextInputAction.done,
+                              keyboardType: TextInputType.emailAddress,
+                              autofocus: true,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              autofillHints: const [AutofillHints.email],
+                              validator: (value) {
+                                final emailRegExp = RegExp(
+                                    r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your email';
-                              }
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your email';
+                                }
 
-                              if (emailRegExp.hasMatch(value) == false) {
-                                return 'Please enter a valid email';
-                              }
+                                if (emailRegExp.hasMatch(value) == false) {
+                                  return 'Please enter a valid email';
+                                }
 
-                              return null;
-                            },
-                            onChanged: (value) {
-                              if (value.isNotEmpty) {
-                                setState(() {});
-                              }
-                            },
-                            decoration: InputDecoration(
-                              filled: true,
-                              hintText: "E-mail address",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide: BorderSide.none,
+                                return null;
+                              },
+                              onChanged: (value) {
+                                if (value.isNotEmpty) {
+                                  setState(() {});
+                                }
+                              },
+                              decoration: InputDecoration(
+                                filled: true,
+                                hintText: "E-mail address",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide.none,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15.0,
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size.fromHeight(50), // NEW
+                            const SizedBox(
+                              height: 15.0,
                             ),
-                            // ignore: avoid_print
-                            onPressed: () {
-                              if (kDebugMode) {
-                                print(_formKey.currentState!.validate());
-                              }
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size.fromHeight(50), // NEW
+                              ),
+                              // ignore: avoid_print
+                              onPressed: () {
+                                if (kDebugMode) {
+                                  print(_formKey.currentState!.validate());
+                                }
 
-                              if (_formKey.currentState!.validate()) {
-                                FocusManager.instance.primaryFocus?.unfocus();
-                                _formKey.currentState!.save();
-                                _authController.requestPassword();
-                              }
-                            },
-                            child: Text(
-                              'Request code',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(color: Colors.white),
+                                if (_formKey.currentState!.validate()) {
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                  _formKey.currentState!.save();
+                                  _authController.requestPassword();
+                                }
+                              },
+                              child: Text(
+                                'Request code',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(color: Colors.white),
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 25.0,
-                          ),
-                        ],
+                            const SizedBox(
+                              height: 25.0,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   )

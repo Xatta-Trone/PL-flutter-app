@@ -138,111 +138,84 @@ class _RegisterState extends State<Register> {
                                         horizontal: 20.0),
                                     child: Form(
                                       key: _formKey,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Please enter all the data according to your student ID card.',
-                                            style: theme.textTheme.titleMedium,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          const SizedBox(
-                                            height: 15.0,
-                                          ),
-                                          TextFormField(
-                                            controller:
-                                                _authController.nameController,
-                                            textInputAction:
-                                                TextInputAction.next,
-                                            keyboardType: TextInputType.text,
-                                            autofocus: true,
-                                            autovalidateMode: AutovalidateMode
-                                                .onUserInteraction,
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return 'Please enter your name';
-                                              }
-                                              return null;
-                                            },
-                                            onChanged: (value) {
-                                              if (value.isNotEmpty) {
-                                                setState(() {});
-                                              }
-                                            },
-                                            decoration: InputDecoration(
-                                              filled: true,
-                                             
-                                              hintText: "Your official name",
-                                              helperText:
-                                                  'According to your student ID',
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                borderSide: BorderSide.none,
-                                              ),
+                                      child: AutofillGroup(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Please enter all the data according to your student ID card.',
+                                              style:
+                                                  theme.textTheme.titleMedium,
+                                              textAlign: TextAlign.center,
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            height: 15.0,
-                                          ),
-                                          TextFormField(
-                                            controller: _authController
-                                                .emailRegisterController,
-                                            textInputAction:
-                                                TextInputAction.next,
-                                            keyboardType:
-                                                TextInputType.emailAddress,
-                                            autovalidateMode: AutovalidateMode
-                                                .onUserInteraction,
-                                            validator: (value) {
-                                              final emailRegExp = RegExp(
-                                                  r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return 'Please enter your email';
-                                              }
-
-                                              if (emailRegExp.hasMatch(value) ==
-                                                  false) {
-                                                return 'Please enter a valid email';
-                                              }
-
-                                              return null;
-                                            },
-                                            onChanged: (value) {
-                                              if (value.isNotEmpty) {
-                                                setState(() {});
-                                              }
-                                            },
-                                            decoration: InputDecoration(
-                                              filled: true,
-                                             
-                                              hintText: "E-mail address",
-                                              helperText: 'Gmail is preferred',
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                borderSide: BorderSide.none,
-                                              ),
+                                            const SizedBox(
+                                              height: 15.0,
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            height: 15.0,
-                                          ),
-                                          Visibility(
-                                            visible: false,
-                                            child: TextFormField(
+                                            TextFormField(
                                               controller: _authController
-                                                  .studentIdController,
+                                                  .nameController,
                                               textInputAction:
                                                   TextInputAction.next,
+                                              keyboardType: TextInputType.text,
+                                              autofillHints: const [
+                                                AutofillHints.name
+                                              ],
+                                              autofocus: true,
+                                              autovalidateMode: AutovalidateMode
+                                                  .onUserInteraction,
                                               validator: (value) {
                                                 if (value == null ||
                                                     value.isEmpty) {
-                                                  return 'Please enter your student id';
+                                                  return 'Please enter your name';
+                                                }
+                                                return null;
+                                              },
+                                              onChanged: (value) {
+                                                if (value.isNotEmpty) {
+                                                  setState(() {});
+                                                }
+                                              },
+                                              decoration: InputDecoration(
+                                                filled: true,
+                                                hintText: "Your official name",
+                                                helperText:
+                                                    'According to your student ID',
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  borderSide: BorderSide.none,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 15.0,
+                                            ),
+                                            TextFormField(
+                                              controller: _authController
+                                                  .emailRegisterController,
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              keyboardType:
+                                                  TextInputType.emailAddress,
+                                              autofillHints: const [
+                                                AutofillHints.email
+                                              ],
+                                              autovalidateMode: AutovalidateMode
+                                                  .onUserInteraction,
+                                              validator: (value) {
+                                                final emailRegExp = RegExp(
+                                                    r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
+                                                if (value == null ||
+                                                    value.isEmpty) {
+                                                  return 'Please enter your email';
+                                                }
+
+                                                if (emailRegExp
+                                                        .hasMatch(value) ==
+                                                    false) {
+                                                  return 'Please enter a valid email';
                                                 }
 
                                                 return null;
@@ -254,7 +227,9 @@ class _RegisterState extends State<Register> {
                                               },
                                               decoration: InputDecoration(
                                                 filled: true,
-                                               
+                                                hintText: "E-mail address",
+                                                helperText:
+                                                    'Gmail is preferred',
                                                 border: OutlineInputBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(5),
@@ -262,209 +237,250 @@ class _RegisterState extends State<Register> {
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          // const SizedBox(
-                                          //   height: 15.0,
-                                          // ),
-                                          TextFormField(
-                                            controller: _authController
-                                                .meritPosController,
-                                            textInputAction:
-                                                TextInputAction.next,
-                                            keyboardType: TextInputType.number,
-                                            autovalidateMode: AutovalidateMode
-                                                .onUserInteraction,
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return 'Please enter your merit position';
-                                              }
-
-                                              return null;
-                                            },
-                                            onChanged: (value) {
-                                              if (value.isNotEmpty) {
-                                                setState(() {});
-                                              }
-                                            },
-                                            decoration: InputDecoration(
-                                              filled: true,
-                                             
-                                              hintText: "Your merit position",
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                                borderSide: BorderSide.none,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 15.0,
-                                          ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: theme.inputDecorationTheme
-                                                  .fillColor,
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(5.0),
-                                              ),
-                                            ),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10.0,
-                                                vertical: 5.0),
-                                            child: DropdownButtonFormField(
-                                              decoration: const InputDecoration(
-                                                border: InputBorder.none,
-                                              ),
-                                              hint: const Text(
-                                                'Select your hall',
-                                              ),
-                                              isExpanded: true,
-                                              items: _authController.halls.map<
-                                                      DropdownMenuItem<String>>(
-                                                  (String value) {
-                                                return DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Text(value),
-                                                );
-                                              }).toList(),
-                                              onChanged: (String? value) {
-                                                // This is called when the user selects an item.
-                                                _authController.setSelectedHall(
-                                                    value ?? '');
-                                                if (kDebugMode) {
-                                                  print(value);
-                                                }
-                                              },
-                                              validator: (value) {
-                                                if (value == null) {
-                                                  return 'Please select your hall';
-                                                }
-                                                return null;
-                                              },
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 15.0,
-                                          ),
-                                          OutlinedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.white,
-                                              foregroundColor: Colors.black54,
-                                              minimumSize:
-                                                  const Size.fromHeight(
-                                                      50.0), // NEW
-                                            ),
-                                            onPressed: () {
-                                              if (kDebugMode) {
-                                                print('pressed');
-                                              }
-                                              // pickImage();
-                                              scanFile();
-                                            },
-                                            child: const Text(
-                                              'Select the back side photo of student id',
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 15.0,
-                                          ),
-                                          if (image != null) ...[
                                             const SizedBox(
                                               height: 15.0,
                                             ),
-                                            SizedBox(
-                                              height: 200,
-                                              child: Image.file(
-                                                image,
-                                                fit: BoxFit.cover,
+                                            Visibility(
+                                              visible: false,
+                                              child: TextFormField(
+                                                controller: _authController
+                                                    .studentIdController,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'Please enter your student id';
+                                                  }
+
+                                                  return null;
+                                                },
+                                                onChanged: (value) {
+                                                  if (value.isNotEmpty) {
+                                                    setState(() {});
+                                                  }
+                                                },
+                                                decoration: InputDecoration(
+                                                  filled: true,
+                                                  border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    borderSide: BorderSide.none,
+                                                  ),
+                                                ),
                                               ),
                                             ),
+                                            // const SizedBox(
+                                            //   height: 15.0,
+                                            // ),
+                                            TextFormField(
+                                              controller: _authController
+                                                  .meritPosController,
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              autovalidateMode: AutovalidateMode
+                                                  .onUserInteraction,
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.isEmpty) {
+                                                  return 'Please enter your merit position';
+                                                }
+
+                                                return null;
+                                              },
+                                              onChanged: (value) {
+                                                if (value.isNotEmpty) {
+                                                  setState(() {});
+                                                }
+                                              },
+                                              decoration: InputDecoration(
+                                                filled: true,
+                                                hintText: "Your merit position",
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  borderSide: BorderSide.none,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 15.0,
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: theme
+                                                    .inputDecorationTheme
+                                                    .fillColor,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                  Radius.circular(5.0),
+                                                ),
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10.0,
+                                                      vertical: 5.0),
+                                              child: DropdownButtonFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                  border: InputBorder.none,
+                                                ),
+                                                hint: const Text(
+                                                  'Select your hall',
+                                                ),
+                                                isExpanded: true,
+                                                items: _authController.halls
+                                                    .map<
+                                                            DropdownMenuItem<
+                                                                String>>(
+                                                        (String value) {
+                                                  return DropdownMenuItem<
+                                                      String>(
+                                                    value: value,
+                                                    child: Text(value),
+                                                  );
+                                                }).toList(),
+                                                onChanged: (String? value) {
+                                                  // This is called when the user selects an item.
+                                                  _authController
+                                                      .setSelectedHall(
+                                                          value ?? '');
+                                                  if (kDebugMode) {
+                                                    print(value);
+                                                  }
+                                                },
+                                                validator: (value) {
+                                                  if (value == null) {
+                                                    return 'Please select your hall';
+                                                  }
+                                                  return null;
+                                                },
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 15.0,
+                                            ),
+                                            OutlinedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.white,
+                                                foregroundColor: Colors.black54,
+                                                minimumSize:
+                                                    const Size.fromHeight(
+                                                        50.0), // NEW
+                                              ),
+                                              onPressed: () {
+                                                if (kDebugMode) {
+                                                  print('pressed');
+                                                }
+                                                // pickImage();
+                                                scanFile();
+                                              },
+                                              child: const Text(
+                                                'Select the back side photo of student id',
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 15.0,
+                                            ),
+                                            if (image != null) ...[
+                                              const SizedBox(
+                                                height: 15.0,
+                                              ),
+                                              SizedBox(
+                                                height: 200,
+                                                child: Image.file(
+                                                  image,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ],
+
+                                            Text.rich(
+                                              textAlign: TextAlign.center,
+                                              TextSpan(
+                                                text:
+                                                    'By registering you are agreeing to the ',
+                                                children: [
+                                                  const TextSpan(text: '  '),
+                                                  TextSpan(
+                                                    text: 'Terms & conditions',
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () {
+                                                            Globals.launchURL(
+                                                                "$homeUrl/page/terms-and-conditions");
+                                                          },
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium
+                                                        ?.copyWith(
+                                                            color: Colors.cyan),
+                                                  ),
+                                                  const TextSpan(text: '  '),
+                                                  TextSpan(
+                                                    text: ' & Privacy policy',
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () {
+                                                            Globals.launchURL(
+                                                                "$homeUrl/page/privacy-policy");
+                                                          },
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium
+                                                        ?.copyWith(
+                                                            color: Colors.red),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+
+                                            const SizedBox(
+                                              height: 15.0,
+                                            ),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                minimumSize:
+                                                    const Size.fromHeight(
+                                                        50.0), // NEW
+                                              ),
+                                              onPressed: () {
+                                                if (kDebugMode) {
+                                                  print(_formKey.currentState!
+                                                      .validate());
+                                                }
+
+                                                if (!_isStudentIDSet) {
+                                                  openDialog(
+                                                      'There was an error with the photo. Please use a different one.');
+                                                }
+
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  FocusManager
+                                                      .instance.primaryFocus
+                                                      ?.unfocus();
+
+                                                  _formKey.currentState!.save();
+                                                  _authController.register();
+                                                }
+                                              },
+                                              child: Text(
+                                                'Register',
+                                                style: theme
+                                                    .textTheme.titleMedium
+                                                    ?.copyWith(
+                                                        color: Colors.white),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 25.0,
+                                            ),
                                           ],
-
-                                          Text.rich(
-                                            textAlign: TextAlign.center,
-                                            TextSpan(
-                                              text:
-                                                  'By registering you are agreeing to the ',
-                                              children: [
-                                                const TextSpan(text: '  '),
-                                                TextSpan(
-                                                  text: 'Terms & conditions',
-                                                  recognizer:
-                                                      TapGestureRecognizer()
-                                                        ..onTap = () {
-                                                          Globals.launchURL(
-                                                              "$homeUrl/page/terms-and-conditions");
-                                                        },
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyMedium
-                                                      ?.copyWith(
-                                                          color: Colors.cyan),
-                                                ),
-                                                const TextSpan(text: '  '),
-                                                TextSpan(
-                                                  text: ' & Privacy policy',
-                                                  recognizer:
-                                                      TapGestureRecognizer()
-                                                        ..onTap = () {
-                                                          Globals.launchURL(
-                                                              "$homeUrl/page/privacy-policy");
-                                                        },
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyMedium
-                                                      ?.copyWith(
-                                                          color: Colors.red),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-
-
-                                          const SizedBox(
-                                            height: 15.0,
-                                          ),
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              minimumSize:
-                                                  const Size.fromHeight(
-                                                      50.0), // NEW
-                                            ),
-                                            onPressed: () {
-                                              if (kDebugMode) {
-                                                print(_formKey.currentState!
-                                                    .validate());
-                                              }
-
-                                              if (!_isStudentIDSet) {
-                                                openDialog(
-                                                    'There was an error with the photo. Please use a different one.');
-                                              }
-
-                                              if (_formKey.currentState!
-                                                  .validate()) {
-                                                FocusManager
-                                                    .instance.primaryFocus
-                                                    ?.unfocus();
-
-                                                _formKey.currentState!.save();
-                                                _authController.register();
-                                              }
-                                            },
-                                            child: Text(
-                                              'Register',
-                                              style: theme.textTheme.titleMedium
-                                                  ?.copyWith(
-                                                      color: Colors.white),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 25.0,
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ),

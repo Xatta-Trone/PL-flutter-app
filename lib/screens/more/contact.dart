@@ -119,143 +119,147 @@ class _ContactPageState extends State<ContactPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Form(
                       key: _formKey,
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            controller: nameController,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            textInputAction: TextInputAction.next,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your name';
-                              }
-
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              filled: true,
-                              hintText: "Your Name",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide: BorderSide.none,
+                      child: AutofillGroup(
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: nameController,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              textInputAction: TextInputAction.next,
+                              autofillHints: const [AutofillHints.name],
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your name';
+                                }
+                      
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                filled: true,
+                                hintText: "Your Name",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide.none,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15.0,
-                          ),
-                          TextFormField(
-                            controller: emailController,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              final emailRegExp = RegExp(
-                                  r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your email';
-                              }
-
-                              if (emailRegExp.hasMatch(value) == false) {
-                                return 'Please enter a valid email';
-                              }
-
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              filled: true,
-                              hintText: "Your Email Address",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide: BorderSide.none,
+                            const SizedBox(
+                              height: 15.0,
+                            ),
+                            TextFormField(
+                              controller: emailController,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.emailAddress,
+                              autofillHints: const [AutofillHints.email],
+                              validator: (value) {
+                                final emailRegExp = RegExp(
+                                    r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                      
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your email';
+                                }
+                      
+                                if (emailRegExp.hasMatch(value) == false) {
+                                  return 'Please enter a valid email';
+                                }
+                      
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                filled: true,
+                                hintText: "Your Email Address",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide.none,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15.0,
-                          ),
-                          TextFormField(
-                            controller: subjectController,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            textInputAction: TextInputAction.next,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter subject';
-                              }
-
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              filled: true,
-                              hintText: "Email Subject",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide: BorderSide.none,
+                            const SizedBox(
+                              height: 15.0,
+                            ),
+                            TextFormField(
+                              controller: subjectController,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              textInputAction: TextInputAction.next,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter subject';
+                                }
+                      
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                filled: true,
+                                hintText: "Email Subject",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide.none,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15.0,
-                          ),
-                          TextFormField(
-                            controller: msgController,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            textInputAction: TextInputAction.done,
-                            minLines: 6,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please type your message';
-                              }
-
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              filled: true,
-                              hintText: "Message..",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide: BorderSide.none,
+                            const SizedBox(
+                              height: 15.0,
+                            ),
+                            TextFormField(
+                              controller: msgController,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              textInputAction: TextInputAction.done,
+                              minLines: 6,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please type your message';
+                                }
+                      
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                filled: true,
+                                hintText: "Message..",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide.none,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15.0,
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size.fromHeight(50), // NEW
+                            const SizedBox(
+                              height: 15.0,
                             ),
-                            // ignore: avoid_print
-                            onPressed: () {
-                              if (kDebugMode) {
-                                print(_formKey.currentState!.validate());
-                              }
-
-                              if (_formKey.currentState!.validate()) {
-                                // FocusManager.instance.primaryFocus?.unfocus();
-                                _formKey.currentState!.save();
-                                submitResponse();
-                              }
-                            },
-                            child: Text(
-                              'Submit',
-                              style: theme
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(color: Colors.white),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size.fromHeight(50), // NEW
+                              ),
+                              // ignore: avoid_print
+                              onPressed: () {
+                                if (kDebugMode) {
+                                  print(_formKey.currentState!.validate());
+                                }
+                      
+                                if (_formKey.currentState!.validate()) {
+                                  // FocusManager.instance.primaryFocus?.unfocus();
+                                  _formKey.currentState!.save();
+                                  submitResponse();
+                                }
+                              },
+                              child: Text(
+                                'Submit',
+                                style: theme
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(color: Colors.white),
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 25.0,
-                          ),
-                        ],
+                            const SizedBox(
+                              height: 25.0,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   )
