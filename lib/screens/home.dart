@@ -16,6 +16,7 @@ import 'package:plandroid/screens/profile/profile.dart';
 import 'package:plandroid/screens/search/search.dart';
 import 'package:plandroid/screens/settings/settings.dart';
 import 'package:plandroid/screens/softwares/softwares.dart';
+import 'package:upgrader/upgrader.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -35,17 +36,19 @@ class Home extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-          body: Obx(
-            () => IndexedStack(
-              index: botNavController.tabIndex.value,
-              children: [
-                const Dashboard(),
-                const Departments(),
-                const Books(),
-                const Softwares(),
-                const Profile(),
-                More(),
-              ],
+          body: UpgradeAlert(
+            child: Obx(
+              () => IndexedStack(
+                index: botNavController.tabIndex.value,
+                children: [
+                  const Dashboard(),
+                  const Departments(),
+                  const Books(),
+                  const Softwares(),
+                  const Profile(),
+                  More(),
+                ],
+              ),
             ),
           ),
           bottomNavigationBar: Obx(
