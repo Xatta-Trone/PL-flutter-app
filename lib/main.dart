@@ -42,13 +42,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light,
           fontFamily: 'Nunito',
           scaffoldBackgroundColor: const Color(0xfff6f8fa),
-          primaryColorLight: Colors.cyan,
-          iconTheme: const IconThemeData(
-            color: Colors.black,
-          ),
-          primaryIconTheme: const IconThemeData(
-            color: Colors.black,
-          ),
+        primaryColorLight: Colors.cyan,
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
             backgroundColor: Colors.white,
             selectedItemColor: Colors.cyan,
@@ -78,7 +72,9 @@ class MyApp extends StatelessWidget {
               ),
         ),
         floatingActionButtonTheme:
-            const FloatingActionButtonThemeData(backgroundColor: Colors.cyan),
+            const FloatingActionButtonThemeData(
+          backgroundColor: Colors.cyan,
+        ),
 
           
        
@@ -90,9 +86,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.cyan,
           primaryColorLight: Colors.grey,
           fontFamily: 'Nunito',
-          iconTheme: const IconThemeData(
-            color: Colors.white70,
-          ),
+        
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
             backgroundColor: Colors.grey[800],
             selectedItemColor: Colors.grey[100],

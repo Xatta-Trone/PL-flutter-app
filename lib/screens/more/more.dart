@@ -16,6 +16,8 @@ class More extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -25,11 +27,12 @@ class More extends StatelessWidget {
               Obx(
                 () => ListTile(
                   leading: const FaIcon(
-                    FontAwesomeIcons.draft2digital,
-                    color: iconColor,
+                    FontAwesomeIcons.moon,
                   ),
-                  title: Text(themeController.isDarkTheme.value.toString()),
+                  title: const Text("Dark mode"),
                   trailing: Switch(
+                    activeColor: theme.primaryColorLight,
+                    
                     onChanged: (value) {
                       themeController.toggleDarkTheme(value: value);
                       if (kDebugMode) {
@@ -44,15 +47,14 @@ class More extends StatelessWidget {
                   ),
                 ),
               ),
+              divider,
               ListTile(
                 leading: const FaIcon(
                   FontAwesomeIcons.circlePlus,
-                  color: iconColor,
                 ),
                 title: const Text('Contribute materials'),
                 trailing: const FaIcon(
                   FontAwesomeIcons.chevronRight,
-                  color: iconColor,
                   size: iconSize,
                 ),
                 onTap: () {
@@ -67,12 +69,10 @@ class More extends StatelessWidget {
               ListTile(
                 leading: const FaIcon(
                   FontAwesomeIcons.message,
-                  color: iconColor,
                 ),
                 title: const Text('Contact PL Tutorials'),
                 trailing: const FaIcon(
                   FontAwesomeIcons.chevronRight,
-                  color: iconColor,
                   size: iconSize,
                 ),
                 onTap: () {
@@ -87,12 +87,10 @@ class More extends StatelessWidget {
               ListTile(
                 leading: const FaIcon(
                   FontAwesomeIcons.facebook,
-                  color: iconColor,
                 ),
                 title: const Text('Follow PL Tutorials'),
                 trailing: const FaIcon(
                   FontAwesomeIcons.chevronRight,
-                  color: iconColor,
                   size: iconSize,
                 ),
                 onTap: () {
@@ -106,12 +104,10 @@ class More extends StatelessWidget {
               ListTile(
                 leading: const FaIcon(
                   FontAwesomeIcons.facebookMessenger,
-                  color: iconColor,
                 ),
                 title: const Text('Send message'),
                 trailing: const FaIcon(
                   FontAwesomeIcons.chevronRight,
-                  color: iconColor,
                   size: iconSize,
                 ),
                 onTap: () {
@@ -125,12 +121,10 @@ class More extends StatelessWidget {
               ListTile(
                 leading: const FaIcon(
                   FontAwesomeIcons.laptop,
-                  color: iconColor,
                 ),
                 title: const Text('Visit website'),
                 trailing: const FaIcon(
                   FontAwesomeIcons.chevronRight,
-                  color: iconColor,
                   size: iconSize,
                 ),
                 onTap: () async {
@@ -144,12 +138,10 @@ class More extends StatelessWidget {
               ListTile(
                 leading: const FaIcon(
                   FontAwesomeIcons.youtube,
-                  color: iconColor,
                 ),
                 title: const Text('Visit youtube'),
                 trailing: const FaIcon(
                   FontAwesomeIcons.chevronRight,
-                  color: iconColor,
                   size: iconSize,
                 ),
                 onTap: () async {
@@ -163,12 +155,10 @@ class More extends StatelessWidget {
               ListTile(
                 leading: const FaIcon(
                   FontAwesomeIcons.question,
-                  color: iconColor,
                 ),
                 title: const Text('Terms & Conditions'),
                 trailing: const FaIcon(
                   FontAwesomeIcons.chevronRight,
-                  color: iconColor,
                   size: iconSize,
                 ),
                 onTap: () async {
@@ -182,12 +172,10 @@ class More extends StatelessWidget {
               ListTile(
                 leading: const FaIcon(
                   FontAwesomeIcons.userSecret,
-                  color: iconColor,
                 ),
                 title: const Text('Privacy policy'),
                 trailing: const FaIcon(
                   FontAwesomeIcons.chevronRight,
-                  color: iconColor,
                   size: iconSize,
                 ),
                 onTap: () async {
@@ -201,12 +189,10 @@ class More extends StatelessWidget {
               ListTile(
                 leading: const FaIcon(
                   FontAwesomeIcons.android,
-                  color: iconColor,
                 ),
                 title: const Text('App Info'),
                 trailing: const FaIcon(
                   FontAwesomeIcons.chevronRight,
-                  color: iconColor,
                   size: iconSize,
                 ),
                 onTap: () {
@@ -220,12 +206,10 @@ class More extends StatelessWidget {
               ListTile(
                 leading: const FaIcon(
                   FontAwesomeIcons.bug,
-                  color: iconColor,
                 ),
                 title: const Text('Report a bug'),
                 trailing: const FaIcon(
                   FontAwesomeIcons.chevronRight,
-                  color: iconColor,
                   size: iconSize,
                 ),
                 onTap: () {
@@ -239,12 +223,10 @@ class More extends StatelessWidget {
               ListTile(
                 leading: const FaIcon(
                   FontAwesomeIcons.rotate,
-                  color: iconColor,
                 ),
                 title: const Text('Check for updates'),
                 trailing: const FaIcon(
                   FontAwesomeIcons.chevronRight,
-                  color: iconColor,
                   size: iconSize,
                 ),
                 onTap: () async {
@@ -261,12 +243,10 @@ class More extends StatelessWidget {
               ListTile(
                 leading: const FaIcon(
                   FontAwesomeIcons.star,
-                  color: iconColor,
                 ),
                 title: const Text('Rate the app'),
                 trailing: const FaIcon(
                   FontAwesomeIcons.chevronRight,
-                  color: iconColor,
                   size: iconSize,
                 ),
                 onTap: () async {

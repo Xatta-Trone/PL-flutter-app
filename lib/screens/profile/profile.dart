@@ -80,18 +80,15 @@ class Profile extends StatelessWidget {
                       ),
                     ),
                     divider,
-                    Dismissible(
-                      key: const Key('notice'),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15.0, vertical: 10.0),
-                        child: Text(
-                            'Please refrain from sharing your account with others. Such activity may lead to permanent account suspension. The website constantly monitors all activities to prevent account sharing. You can see your activities from the Activity section.',
-                            textScaleFactor: 0.85,
-                            softWrap: true,
-                            style: theme.textTheme.titleMedium
-                                ?.copyWith(color: Colors.redAccent)),
-                      ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15.0, vertical: 10.0),
+                      child: Text(
+                          'Please refrain from sharing your account with others. Such activity may lead to permanent account suspension. The website constantly monitors all activities to prevent account sharing. You can see your activities from the Activity section.',
+                          textScaleFactor: 0.85,
+                          softWrap: true,
+                          style: theme.textTheme.titleMedium
+                              ?.copyWith(color: Colors.redAccent)),
                     ),
                     
                     divider,
