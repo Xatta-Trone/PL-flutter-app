@@ -1,13 +1,8 @@
-
-// To parse this JSON data, do
-//
-//     final CourseDataForSearch = CourseDataForSearchFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 import 'package:plandroid/globals/globals.dart';
 
+// ignore: non_constant_identifier_names
 CourseDataForSearch CourseDataForSearchFromJson(String str) =>
     CourseDataForSearch.fromJson(json.decode(str));
 

@@ -1,15 +1,13 @@
+// ignore: file_names
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_user_agentx/flutter_user_agent.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/api/api.dart';
-import 'package:plandroid/constants/const.dart';
 import 'package:plandroid/models/CountData.dart';
 import 'package:plandroid/models/Quote.dart';
 import 'package:plandroid/models/TestimonialData.dart';
@@ -22,6 +20,7 @@ class DashboardController extends GetxController {
   final quote = Rxn<Quote>();
   final countData = Rxn<CountData>();
   final RxList<Testimonial> testimonials = RxList<Testimonial>();
+  // ignore: non_constant_identifier_names
   final RxString UA = RxString('');
   final RxString levelTermString = RxString('');
 
@@ -29,7 +28,9 @@ class DashboardController extends GetxController {
     try {
       var response = await Api().dio.get('/quote');
 
-      print('=========== set current quote ================');
+      if (kDebugMode) {
+        print('=========== set current quote ================');
+      }
       final SharedPreferences preferences =
           await SharedPreferences.getInstance();
 
@@ -137,8 +138,9 @@ class DashboardController extends GetxController {
     String? deviceId = await PlatformDeviceId.getDeviceId;
 
     if (kDebugMode) {
-      print("devide id ${deviceId}");
+      print("device id ${deviceId}");
     }
+    return null;
   }
 
   String greetingText() {

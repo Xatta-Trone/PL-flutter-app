@@ -9,6 +9,7 @@ import 'package:plandroid/controller/ThemeController.dart';
 import 'package:plandroid/globals/globals.dart';
 import 'package:plandroid/routes/routeconst.dart';
 
+// ignore: must_be_immutable
 class More extends StatelessWidget {
   More({Key? key}) : super(key: key);
 

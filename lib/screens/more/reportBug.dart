@@ -4,7 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+// ignore: implementation_imports
 import 'package:dio/src/form_data.dart' as form_data;
+// ignore: implementation_imports
 import 'package:dio/src/multipart_file.dart' as multipart_file;
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -26,7 +28,6 @@ class _ReportBugPageState extends State<ReportBugPage> {
   // ignore: prefer_final_fields
   bool _isLoading = false;
   // ignore: prefer_final_fields
-  double _progress = 0.0;
   // ignore: prefer_final_fields
   List<File> _images = List<File>.empty(growable: true);
   List uploadList = [];

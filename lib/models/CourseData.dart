@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//
-//     final courseData = courseDataFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 CourseData courseDataFromJson(String str) =>

@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'dart:io';
 
 import 'package:barcode_finder/barcode_finder.dart';
@@ -77,6 +78,7 @@ class _RegisterState extends State<Register> {
         }
       }
     }
+    return null;
   }
 
   void openDialog(String text) {

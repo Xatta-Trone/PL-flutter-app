@@ -20,10 +20,6 @@ class _LoginState extends State<Login> {
 
   final AuthController _authController = Get.find<AuthController>();
 
-  @override
-  void initState() {
-    // _obscureText = true;
-  }
 
   @override
   Widget build(BuildContext context) {

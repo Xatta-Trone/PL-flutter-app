@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +7,9 @@ import 'package:get/get.dart';
 import 'package:plandroid/api/api.dart';
 import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/globals/globals.dart';
-import 'package:plandroid/models/Books.dart';
 import 'package:plandroid/models/SoftwaresData.dart';
 import 'package:plandroid/screens/auth/Login.dart';
 import 'package:plandroid/screens/devices/deviceGuard.dart';
-import 'package:plandroid/screens/devices/devices.dart';
 
 class Softwares extends StatefulWidget {
   const Softwares({Key? key}) : super(key: key);
@@ -30,7 +27,6 @@ class _SoftwaresState extends State<Softwares> {
   TextEditingController queryString = TextEditingController();
   final scrollController = ScrollController();
   bool _hasMore = false;
-  int _totalCount = 0;
   bool _isLoading = false;
   bool _isInitiallyLoaded = false;
 

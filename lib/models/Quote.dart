@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//
-//     final quote = quoteFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 Quote quoteFromJson(String str) => Quote.fromJson(json.decode(str));

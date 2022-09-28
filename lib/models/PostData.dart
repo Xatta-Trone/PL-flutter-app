@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//
-//     final postData = postDataFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 PostData postDataFromJson(String str) => PostData.fromJson(json.decode(str));

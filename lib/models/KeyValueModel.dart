@@ -1,3 +1,4 @@
+// ignore: file_names
 class KeyValueModel {
   String key;
   String value;

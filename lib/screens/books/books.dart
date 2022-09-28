@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 import 'package:plandroid/api/api.dart';
 import 'package:plandroid/globals/globals.dart';
 import 'package:plandroid/models/Books.dart';
@@ -23,7 +21,6 @@ class _BooksState extends State<Books> {
   TextEditingController queryString = TextEditingController();
   final scrollController = ScrollController();
   bool _hasMore = false;
-  int _totalCount = 0;
   bool _isLoading = false;
   bool _isInitiallyLoaded = false;
 

@@ -53,7 +53,6 @@ class _SearchState extends State<Search> {
   TextEditingController queryString = TextEditingController();
   final scrollController = ScrollController();
   bool _hasMore = false;
-  int _totalCount = 0;
   bool _isLoading = false;
   bool _isInitiallyLoaded = false;
 

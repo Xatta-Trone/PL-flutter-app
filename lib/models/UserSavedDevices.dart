@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//
-//     final userSavedDevices = userSavedDevicesFromMap(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 UserSavedDevices userSavedDevicesFromMap(String str) =>

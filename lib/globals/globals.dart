@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/api/api.dart';
 import 'package:plandroid/controller/AuthController.dart';
-import 'package:plandroid/screens/search/search.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 extension StringCasingExtension on String {

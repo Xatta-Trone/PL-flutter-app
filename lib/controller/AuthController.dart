@@ -98,6 +98,7 @@ class AuthController extends GetxController {
 
   String? get passwordErrorText {
     // at any time, we can get the text from _controller.value.text
+    // ignore: unused_local_variable
     final text = passwordController.value.text;
     // Note: you can do your own custom validation here
 
@@ -261,7 +262,9 @@ class AuthController extends GetxController {
           onConfirm: () => Get.back(),
         );
       } else {
-        print(e.message);
+        if (kDebugMode) {
+          print(e.message);
+        }
       }
     } finally {
       // async call complete
@@ -329,6 +332,7 @@ class AuthController extends GetxController {
 
   Future<void> logout() async {
     try {
+      // ignore: unused_local_variable
       var response = await Api().dio.get('/logout');
       // logout user
       setLogoutValues();
@@ -372,7 +376,9 @@ class AuthController extends GetxController {
 
       if (response.data != null) {
         // update state
-        print(response.data['data']);
+        if (kDebugMode) {
+          print(response.data['data']);
+        }
         halls.value = List<String>.from(response.data['data']);
         // insert select
         // halls.insert(0, 'Select your hall');
@@ -380,7 +386,9 @@ class AuthController extends GetxController {
         // print(halls);
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -555,6 +563,7 @@ class AuthController extends GetxController {
     isInAsyncCall.value = true;
 
     try {
+      // ignore: unused_local_variable
       var response = await Api().dio.post('/user-devices', data: {
         'fingerprint': deviceId,
         'deviceName': deviceName,
@@ -605,6 +614,7 @@ class AuthController extends GetxController {
 
     isInAsyncCall.value = true;
     try {
+      // ignore: unused_local_variable
       var response = await Api().dio.delete("/user-devices/$id");
 
       if (kDebugMode) {

@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//
-//     final testimonialData = testimonialDataFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 TestimonialData testimonialDataFromJson(String str) =>

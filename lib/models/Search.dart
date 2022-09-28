@@ -1,12 +1,6 @@
-// To parse this JSON data, do
-//
-//     final searchData = searchDataFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'package:plandroid/globals/globals.dart';
 import 'dart:convert';
 
-import 'package:plandroid/models/CourseForSearch.dart';
 
 
 List<SearchData> searchDataFromJson(String str) =>

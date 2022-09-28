@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//
-//     final countData = countDataFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 import 'package:plandroid/globals/globals.dart';

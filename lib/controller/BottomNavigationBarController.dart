@@ -8,13 +8,5 @@ class BottomNavigationBarController extends GetxController {
     // update();
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }

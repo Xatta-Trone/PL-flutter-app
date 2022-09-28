@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +36,7 @@ class _CoursesState extends State<Courses> {
           "/departments/${Get.parameters['department']}/${Get.parameters['levelTerm']}");
 
       if (response.data != null) {
-        CourseData couseData = CourseData.fromJson(response.data);
+        CourseData courseData = CourseData.fromJson(response.data);
 
         // if (kDebugMode) {
         //   print(deptData.data.courses.toString());
@@ -45,7 +44,7 @@ class _CoursesState extends State<Courses> {
 
         setState(() {
           courses.clear();
-          courses.addAll(couseData.data.course);
+          courses.addAll(courseData.data.course);
         });
 
         if (kDebugMode) {

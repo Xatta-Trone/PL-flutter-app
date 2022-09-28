@@ -1,7 +1,4 @@
 import 'package:get/get.dart';
-import 'package:plandroid/models/CountData.dart';
-import 'package:plandroid/models/Quote.dart';
-import 'package:plandroid/models/TestimonialData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/sharedPrefConstants.dart';

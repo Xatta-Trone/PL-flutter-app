@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:plandroid/controller/AuthController.dart';
-import 'package:plandroid/routes/routeconst.dart';
 
 class RequestPassword extends StatefulWidget {
   const RequestPassword({Key? key}) : super(key: key);

@@ -1,8 +1,4 @@
-// To parse this JSON data, do
-//
-//     final user = userFromJson(jsonString);
-
-import 'package:meta/meta.dart';
+// ignore: file_names
 import 'dart:convert';
 
 User userFromJson(String str) => User.fromJson(json.decode(str));

@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//
-//     final userActivityData = userActivityDataFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 UserActivityData userActivityDataFromJson(String str) =>

@@ -8,9 +8,7 @@ import 'package:plandroid/api/api.dart';
 import 'package:plandroid/controller/AuthController.dart';
 import 'package:plandroid/globals/globals.dart';
 import 'package:plandroid/models/UserActivityData.dart';
-import 'package:plandroid/models/UserDevicesData.dart';
 import 'package:plandroid/screens/auth/Login.dart';
-import 'package:platform_device_id/platform_device_id.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class UserActivitiesPage extends StatefulWidget {

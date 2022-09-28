@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//
-//     final softwaresData = softwaresDataFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 SoftwaresData softwaresDataFromJson(String str) =>

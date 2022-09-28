@@ -13,8 +13,6 @@ import 'package:plandroid/screens/dashboard/dashboard.dart';
 import 'package:plandroid/screens/departments/departments.dart';
 import 'package:plandroid/screens/more/more.dart';
 import 'package:plandroid/screens/profile/profile.dart';
-import 'package:plandroid/screens/search/search.dart';
-import 'package:plandroid/screens/settings/settings.dart';
 import 'package:plandroid/screens/softwares/softwares.dart';
 import 'package:upgrader/upgrader.dart';
 
