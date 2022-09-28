@@ -30,7 +30,7 @@ class Dashboard extends StatelessWidget {
                   top: 30.0,
                 ),
                 child: Text(
-                  '${dashboardController.getHello().toString()} ${dashboardController.greetingText().toString()}',
+                  'Hello there ! ${dashboardController.greetingText().toString()}',
                   style: theme.textTheme.headline5
                       ?.copyWith(fontWeight: FontWeight.w500),
                 ),
