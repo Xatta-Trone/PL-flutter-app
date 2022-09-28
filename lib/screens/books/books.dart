@@ -18,7 +18,7 @@ class Books extends StatefulWidget {
 
 class _BooksState extends State<Books> {
   List<Book> books = List<Book>.empty(growable: true);
-  static const _pageSize = 50;
+  static const _pageSize = 15;
   int _page = 1;
   TextEditingController queryString = TextEditingController();
   final scrollController = ScrollController();
@@ -58,6 +58,13 @@ class _BooksState extends State<Books> {
 
     if (_isLoading) {
       return;
+    }
+
+    // if searching then set page params
+    if (isSearching) {
+      setState(() {
+        _page = 1;
+      });
     }
 
     setState(() {
@@ -130,13 +137,12 @@ class _BooksState extends State<Books> {
     if (kDebugMode) {
       print('Loadmore called');
     }
-    if (!_hasMore) {
-      return;
-    }
+    // setState(() {
+    //   _hasMore = true;
+    //   _page = 1;
+    // });
 
     searchBooks(isSearching: false);
-
-   
   }
 
   Future<void> _refreshData() async {
@@ -225,117 +231,119 @@ class _BooksState extends State<Books> {
                       ),
                     )
                   : !_hasMore && books.isEmpty
-                  ? Center(
-                      child: Column(
-                        children: [
-                          const Text('No data found'),
-                          ElevatedButton(
-                            onPressed: () => _refreshData(),
-                            child: const Text('Refresh data'),
-                          )
-                        ],
-                      ),
-                    )
-                  : RefreshIndicator(
-                      onRefresh: () {
-                        return _refreshData();
-                      },
-                      child: ListView.builder(
-                        controller: scrollController,
-                        itemCount: books.length + 1,
-                        itemBuilder: (context, index) {
-                          if (kDebugMode) {
-                            // print("index $index");
-                          }
-                          // check if it is the last item
-                          if (index == books.length) {
-                            // check if more data could not be loaded
-                            if (_hasMore == false) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: Text(
-                                    'End of list',
-                                    style:
-                                        Theme.of(context).textTheme.headline6,
-                                  ),
-                                ),
-                              );
-                            }
-
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Center(
-                                  child: CircularProgressIndicator(
-                                color: theme.primaryColor,
-                              )),
-                            );
-                          }
-
-                          return books.isNotEmpty
-                              ? Container(
-                                  color: theme.cardColor.withOpacity(0.6),
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 10.0,
-                                  ),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      if (kDebugMode) {
-                                        print(books[index].link.toString());
-                                      }
-                                      Globals.downloadItem(
-                                          model: books[index].toJson(),
-                                          postType: 'book',
-                                          additionalData:
-                                              books[index].author ?? "");
-                                    },
-                                        child: ListTile(
-                                      leading: Container(
-                                        decoration: BoxDecoration(
-                                            color: theme.primaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(7.0)),
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.15,
-                                        child: const Center(
-                                          child: FaIcon(
-                                            FontAwesomeIcons.book,
-                                            color: Colors.white,
-                                            size: 30.0,
-                                          ),
-                                        ),
+                      ? Center(
+                          child: Column(
+                            children: [
+                              const Text('No data found'),
+                              ElevatedButton(
+                                onPressed: () => _refreshData(),
+                                child: const Text('Refresh data'),
+                              )
+                            ],
+                          ),
+                        )
+                      : RefreshIndicator(
+                          onRefresh: () {
+                            return _refreshData();
+                          },
+                          child: ListView.builder(
+                            controller: scrollController,
+                            itemCount: books.length + 1,
+                            itemBuilder: (context, index) {
+                              if (kDebugMode) {
+                                // print("index $index");
+                              }
+                              // check if it is the last item
+                              if (index == books.length) {
+                                // check if more data could not be loaded
+                                if (_hasMore == false) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Center(
+                                      child: Text(
+                                        'End of list',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6,
                                       ),
-
-                                      title: Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 10.0),
-                                        child: Text(
-                                          books[index].name.toString(),
-                                          style: const TextStyle(
-                                              fontSize: 12.0,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      subtitle: Text(
-                                          books[index].author ?? 'No author'),
-                                      // trailing: Container(
-                                      //   decoration: const BoxDecoration(color: Colors.white70),
-                                      //   width: MediaQuery.of(context).size.width * 0.1,
-                                      //   child: const Center(
-                                      //     child: FaIcon(
-                                      //       FontAwesomeIcons.download,
-                                      //       size: 28.0,
-                                      //     ),
-                                      //   ),
-                                      // ),
                                     ),
-                                  ),
-                                )
-                              : const Center(child: Text('No book found'));
-                        },
-                      ),
-                    ),
+                                  );
+                                }
+
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                      child: CircularProgressIndicator(
+                                    color: theme.primaryColor,
+                                  )),
+                                );
+                              }
+
+                              return books.isNotEmpty
+                                  ? Container(
+                                      color: theme.cardColor.withOpacity(0.6),
+                                      margin: const EdgeInsets.symmetric(
+                                        vertical: 10.0,
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (kDebugMode) {
+                                            print(books[index].link.toString());
+                                          }
+                                          Globals.downloadItem(
+                                              model: books[index].toJson(),
+                                              postType: 'book',
+                                              additionalData:
+                                                  books[index].author ?? "");
+                                        },
+                                        child: ListTile(
+                                          leading: Container(
+                                            decoration: BoxDecoration(
+                                                color: theme.primaryColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(7.0)),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.15,
+                                            child: const Center(
+                                              child: FaIcon(
+                                                FontAwesomeIcons.book,
+                                                color: Colors.white,
+                                                size: 30.0,
+                                              ),
+                                            ),
+                                          ),
+
+                                          title: Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10.0),
+                                            child: Text(
+                                              books[index].name.toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 12.0,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          subtitle: Text(books[index].author ??
+                                              'No author'),
+                                          // trailing: Container(
+                                          //   decoration: const BoxDecoration(color: Colors.white70),
+                                          //   width: MediaQuery.of(context).size.width * 0.1,
+                                          //   child: const Center(
+                                          //     child: FaIcon(
+                                          //       FontAwesomeIcons.download,
+                                          //       size: 28.0,
+                                          //     ),
+                                          //   ),
+                                          // ),
+                                        ),
+                                      ),
+                                    )
+                                  : const Center(child: Text('No book found'));
+                            },
+                          ),
+                        ),
             ),
           ],
         ),
