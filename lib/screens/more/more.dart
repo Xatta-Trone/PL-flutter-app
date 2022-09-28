@@ -261,7 +261,7 @@ class More extends StatelessWidget {
               ),
               divider,
               const SizedBox(
-                height: 60.0,
+                height: 80.0,
               ),
               const Text(
                 '\u00a9 PL Tutorials Team',
@@ -302,7 +302,7 @@ class More extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 60.0,
+                height: 80.0,
               ),
             ],
           ),

@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
-        primarySwatch: Colors.cyan,
+        primarySwatch: Colors.grey,
         primaryColorLight: Colors.grey,
         fontFamily: 'Nunito',
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
