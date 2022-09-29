@@ -37,6 +37,12 @@ class _UserActivitiesPageState extends State<UserActivitiesPage> {
     if (deviceString.toLowerCase().contains('download')) {
       return FontAwesomeIcons.download;
     }
+    if (deviceString.toLowerCase().contains('login')) {
+      return FontAwesomeIcons.rightToBracket;
+    }
+    if (deviceString.toLowerCase().contains('logout')) {
+      return FontAwesomeIcons.rightFromBracket;
+    }
 
     return FontAwesomeIcons.chartColumn;
   }

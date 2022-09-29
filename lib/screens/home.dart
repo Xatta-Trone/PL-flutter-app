@@ -19,8 +19,14 @@ import 'package:upgrader/upgrader.dart';
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
+
+
+
   @override
   Widget build(BuildContext context) {
+    
+    DateTime _lastExitTime = DateTime.now();
+    
     final BottomNavigationBarController botNavController =
         Get.put(BottomNavigationBarController());
 
@@ -32,8 +38,22 @@ class Home extends StatelessWidget {
 
     ThemeData themeData = Theme.of(context);
 
-    return SafeArea(
-      child: Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        if (DateTime.now().difference(_lastExitTime) >=
+            const Duration(seconds: 2)) {
+          _lastExitTime = DateTime.now();
+          var snack = const SnackBar(
+            content: Text("Press the back button again to exist the app"),
+            duration: Duration(seconds: 2),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snack);
+          return false;
+        }
+        return true;
+      },
+      child: SafeArea(
+        child: Scaffold(
           body: UpgradeAlert(
             child: Obx(
               () => IndexedStack(
@@ -118,7 +138,9 @@ class Home extends StatelessWidget {
               size: iconSize,
               color: Colors.white,
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }
