@@ -37,6 +37,7 @@ class _UserListedDevicesState extends State<UserListedDevices> {
   @override
   void initState() {
     getDeviceId();
+    authController.getUserDevices();
     super.initState();
   }
 
