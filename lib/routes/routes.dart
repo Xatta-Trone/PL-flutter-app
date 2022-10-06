@@ -8,6 +8,7 @@ import 'package:plandroid/screens/appinfo/appinfo.dart';
 import 'package:plandroid/screens/auth/ChangePassword.dart';
 import 'package:plandroid/screens/auth/Login.dart';
 import 'package:plandroid/screens/auth/Register.dart';
+import 'package:plandroid/screens/auth/RegisterPrePage.dart';
 import 'package:plandroid/screens/auth/requestPassword.dart';
 import 'package:plandroid/screens/books/books.dart';
 import 'package:plandroid/screens/contribute/contribuet.dart';
@@ -115,6 +116,11 @@ appRoutes() => [
       GetPage(
         name: register,
         page: () => const Register(),
+        middlewares: [MyMiddelware()],
+      ),
+      GetPage(
+        name: registerPrePage,
+        page: () => const RegisterPrePage(),
         middlewares: [MyMiddelware()],
       ),
       GetPage(

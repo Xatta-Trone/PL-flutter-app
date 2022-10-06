@@ -15,6 +15,7 @@ const String notFoundPage = '/404';
 const String appInfo = '/appInfo';
 const String login = '/login';
 const String register = '/register';
+const String registerPrePage = '/registerPrePage';
 const String requestPassword = '/requestPassword';
 const String changePassword = '/changePassword';
 const String changeCurrentPassword = '/changeCurrentPassword';

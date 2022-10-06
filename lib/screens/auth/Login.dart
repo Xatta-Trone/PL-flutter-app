@@ -175,7 +175,7 @@ class _LoginState extends State<Login> {
                               if (kDebugMode) {
                                 print('create new account');
                               }
-                              Get.toNamed(register);
+                              Get.toNamed(registerPrePage);
                             },
                             child: Text(
                               'Create New Account',
