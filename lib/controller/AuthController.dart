@@ -526,7 +526,6 @@ class AuthController extends GetxController {
 
       clearValues();
 
-    
       Get.dialog(
         AlertDialog(
           title: const Text('Success !!'),
@@ -558,8 +557,6 @@ class AuthController extends GetxController {
               combinedMessage = "$combinedMessage- $message\n";
             }
           });
-
-
 
           return Get.dialog(
             AlertDialog(
@@ -610,14 +607,10 @@ class AuthController extends GetxController {
             ],
           ),
         );
-
-
-
       } else {
         if (kDebugMode) {
           print(e.message);
         }
-
 
         Get.dialog(
           AlertDialog(
@@ -745,7 +738,6 @@ class AuthController extends GetxController {
       await preferences.setBool(isPrimaryDeviceKey, true);
       await preferences.remove(isGuestDeviceKey);
 
-   
       Get.dialog(
         AlertDialog(
           title: const Text('Success !!'),
@@ -760,15 +752,12 @@ class AuthController extends GetxController {
           ],
         ),
       );
-
-
     } on DioError catch (e) {
       if (kDebugMode) {
         print(e.message);
       }
       String errData = Globals().formatText(
           e.response?.data['message'] ?? 'Something unknown occurred');
-
 
       Get.dialog(
         AlertDialog(
@@ -777,6 +766,7 @@ class AuthController extends GetxController {
           actions: [
             TextButton(
               onPressed: () {
+                getUserDevices();
                 Get.back();
               },
               child: const Text('Okay'),
@@ -784,8 +774,6 @@ class AuthController extends GetxController {
           ],
         ),
       );
-
-
     } finally {
       isInAsyncCall.value = false;
     }
@@ -804,7 +792,6 @@ class AuthController extends GetxController {
         // print(response.data);
       }
 
-
       Get.dialog(
         AlertDialog(
           title: const Text('Success !!'),
@@ -819,7 +806,6 @@ class AuthController extends GetxController {
           ],
         ),
       );
-
 
       getUserDevices();
     } on DioError catch (e) {

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -34,6 +35,17 @@ class _DeviceGuardPageState extends State<DeviceGuardPage> {
   @override
   void initState() {
     getDeviceId();
+
+    authController.isLoggedIn.listen((value) {
+      if (kDebugMode) {
+        print("logged in value from device guard $value");
+      }
+      if (value) {
+        authController.getUserDevices();
+      }
+    });
+    
+   
     super.initState();
   }
 
@@ -66,6 +78,144 @@ class _DeviceGuardPageState extends State<DeviceGuardPage> {
                   const SizedBox(
                     height: 15.0,
                   ),
+                  if (authController.userDevices.value?.devices.length ==
+                      int.tryParse(authController
+                              .userDevices.value?.maxAllowedDevice
+                              .toString() ??
+                          "0")) ...[
+                    Container(
+                      color: theme.cardColor.withOpacity(0.6),
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 10.0),
+                      child: Text(
+                        'You have reached your device limit. \n You can delete saved devices to add more.',
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyLarge
+                            ?.copyWith(color: Colors.red),
+                      ),
+                    ),
+                    if (authController.userDevices.value != null) ...[
+                      Flexible(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount:
+                              authController.userDevices.value?.devices.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                              color: theme.cardColor.withOpacity(0.6),
+                              margin: const EdgeInsets.symmetric(
+                                vertical: 10.0,
+                              ),
+                              child: ListTile(
+                                  isThreeLine: true,
+                                  leading: Container(
+                                    decoration: BoxDecoration(
+                                      color: theme.primaryColor,
+                                      borderRadius: BorderRadius.circular(7.0),
+                                    ),
+                                    width: MediaQuery.of(context).size.width *
+                                        0.15,
+                                    child: Center(
+                                      child: FaIcon(
+                                        Globals.getIcon(
+                                          deviceString: authController
+                                                  .userDevices
+                                                  .value
+                                                  ?.devices[index]
+                                                  .device
+                                                  .toString() ??
+                                              "",
+                                        ),
+                                        color: Colors.white,
+                                        size: 30.0,
+                                      ),
+                                    ),
+                                  ),
+                                  title: RichText(
+                                    text: TextSpan(
+                                      text: authController.userDevices.value
+                                          ?.devices[index].device
+                                          .toString(),
+                                      style: DefaultTextStyle.of(context).style,
+                                      children: [
+                                        const TextSpan(text: '  '),
+                                        TextSpan(
+                                            text:
+                                                "(${authController.userDevices.value?.devices[index].ipAddress.toString()})"),
+                                        TextSpan(
+                                          text: _isCurrentDevice(authController
+                                                  .userDevices
+                                                  .value
+                                                  ?.devices[index]
+                                                  .fingerprint
+                                                  .toString() ??
+                                              ""),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.red),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    authController.userDevices.value
+                                            ?.devices[index].location
+                                            .toString() ??
+                                        "",
+                                  ),
+                                  trailing: IconButton(
+                                    icon: const FaIcon(
+                                      FontAwesomeIcons.trashCan,
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text(
+                                                  'Are you sure to delete this device ?'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    authController
+                                                        .deleteUserDevice(
+                                                            id: authController
+                                                                    .userDevices
+                                                                    .value
+                                                                    ?.devices[
+                                                                        index]
+                                                                    .id
+                                                                    .toString() ??
+                                                                "");
+                                                    Get.back();
+                                                  },
+                                                  child: const Text('Yes'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Get.back();
+                                                  },
+                                                  child: const Text(
+                                                    'No',
+                                                    style: TextStyle(
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            );
+                                          });
+                                    },
+                                  )),
+                            );
+                          },
+                        ),
+                      )
+                    ],
+                  ],
+                  
                   Text(
                     'For regular use',
                     style: theme.textTheme.titleMedium,
@@ -121,140 +271,7 @@ class _DeviceGuardPageState extends State<DeviceGuardPage> {
                   const SizedBox(
                     height: 15.0,
                   ),
-                  if (authController.userDevices.value?.devices.length ==
-                      int.tryParse(authController
-                              .userDevices.value?.maxAllowedDevice
-                              .toString() ??
-                          "0")) ...[
-                    Container(
-                      color: theme.cardColor.withOpacity(0.6),
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 10.0),
-                      child: Text(
-                        'You have reached your device limit. \n You can delete saved devices to add more.',
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyLarge
-                            ?.copyWith(color: Colors.red),
-                      ),
-                    )
-                  ],
-                  if (authController.userDevices.value != null) ...[
-                    Flexible(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount:
-                            authController.userDevices.value?.devices.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            color: theme.cardColor.withOpacity(0.6),
-                            margin: const EdgeInsets.symmetric(
-                              vertical: 10.0,
-                            ),
-                            child: ListTile(
-                                isThreeLine: true,
-                                leading: Container(
-                                  decoration: BoxDecoration(
-                                    color: theme.primaryColor,
-                                    borderRadius: BorderRadius.circular(7.0),
-                                  ),
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.15,
-                                  child: Center(
-                                    child: FaIcon(
-                                      Globals.getIcon(
-                                        deviceString: authController.userDevices
-                                                .value?.devices[index].device
-                                                .toString() ??
-                                            "",
-                                      ),
-                                      color: Colors.white,
-                                      size: 30.0,
-                                    ),
-                                  ),
-                                ),
-                                title: RichText(
-                                  text: TextSpan(
-                                    text: authController.userDevices.value
-                                        ?.devices[index].device
-                                        .toString(),
-                                    style: DefaultTextStyle.of(context).style,
-                                    children: [
-                                      const TextSpan(text: '  '),
-                                      TextSpan(
-                                          text:
-                                              "(${authController.userDevices.value?.devices[index].ipAddress.toString()})"),
-                                      TextSpan(
-                                        text: _isCurrentDevice(authController
-                                                .userDevices
-                                                .value
-                                                ?.devices[index]
-                                                .fingerprint
-                                                .toString() ??
-                                            ""),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.red),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  authController.userDevices.value
-                                          ?.devices[index].location
-                                          .toString() ??
-                                      "",
-                                ),
-                                trailing: IconButton(
-                                  icon: const FaIcon(
-                                    FontAwesomeIcons.trashCan,
-                                  ),
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text(
-                                                'Are you sure to delete this device ?'),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  authController
-                                                      .deleteUserDevice(
-                                                          id: authController
-                                                                  .userDevices
-                                                                  .value
-                                                                  ?.devices[
-                                                                      index]
-                                                                  .id
-                                                                  .toString() ??
-                                                              "");
-                                                  Get.back();
-                                                },
-                                                child: const Text('Yes'),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  Get.back();
-                                                },
-                                                child: const Text(
-                                                  'No',
-                                                  style: TextStyle(
-                                                    color: Colors.red,
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          );
-                                        });
-                                  },
-                                )),
-                          );
-                        },
-                      ),
-                    )
-                  ],
+                  
                 ],
               ),
             ),
