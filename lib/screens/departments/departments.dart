@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:plandroid/api/api.dart';
 import 'package:plandroid/models/Departments.dart';
+import 'package:plandroid/models/DeptNotice.dart';
 import 'package:plandroid/routes/routeconst.dart';
 
 class Departments extends StatefulWidget {
@@ -16,6 +17,25 @@ class Departments extends StatefulWidget {
 class _DepartmentsState extends State<Departments> {
   List<Department> depts = List<Department>.empty(growable: true);
   bool _isLoading = false;
+  var dNotice;
+
+  Future<void> getDeptNotice() async {
+    try {
+      var response = await Api().dio.get('/get-value?key=dept_notice');
+
+      if (response.data != null) {
+        DeptNotice deptNotice = DeptNotice.fromJson(response.data);
+
+        setState(() {
+          dNotice = deptNotice;
+        });
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
 
   Future<void> getDepartments() async {
     setState(() {
@@ -48,12 +68,14 @@ class _DepartmentsState extends State<Departments> {
       _isLoading = false;
       depts.clear();
       getDepartments();
+      getDeptNotice();
     });
   }
 
   @override
   void initState() {
     getDepartments();
+    getDeptNotice();
     super.initState();
   }
 
@@ -82,6 +104,13 @@ class _DepartmentsState extends State<Departments> {
                   )),
                 ),
               ),
+              if (dNotice != null) ...[
+                Text(
+                  dNotice.data.value,
+                  style: theme.textTheme.bodySmall,
+                  overflow: TextOverflow.visible,
+                ),
+              ],
               Expanded(
                 child: ListView.builder(
                     itemCount: depts.length,
