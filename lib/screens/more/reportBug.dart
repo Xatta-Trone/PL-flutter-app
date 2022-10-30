@@ -113,17 +113,14 @@ class _ReportBugPageState extends State<ReportBugPage> {
           uploadList.add(file);
         }
 
-       
         if (kDebugMode) {
           print(uploadList.toList());
         }
       }
 
-      
-
       var formData = form_data.FormData.fromMap({
         'message':
-            "${msgController.value.text}  \n Device Info: \n $map \n Package info \n ${_packageInfo.toString()}",
+            "${msgController.value.text}  \n Device Info: \n $map \n Package info \n version: ${_packageInfo.version.toString()} \n buildNumber: ${_packageInfo.buildNumber.toString()} \n buildSignature: ${_packageInfo.buildSignature.toString()}",
         'files[]': _images.isEmpty ? null : uploadList,
       });
 
