@@ -30,7 +30,7 @@ class _ReportBugPageState extends State<ReportBugPage> {
   // ignore: prefer_final_fields
   // ignore: prefer_final_fields
   List<File> _images = List<File>.empty(growable: true);
-  List uploadList = [];
+  List<multipart_file.MultipartFile> uploadList = [];
 
   PackageInfo _packageInfo = PackageInfo(
     appName: 'Unknown',
@@ -85,6 +85,7 @@ class _ReportBugPageState extends State<ReportBugPage> {
   Future submitResponse() async {
     setState(() {
       _isLoading = true;
+      uploadList.clear();
     });
 
     final deviceInfoPlugin = DeviceInfoPlugin();
@@ -96,28 +97,40 @@ class _ReportBugPageState extends State<ReportBugPage> {
     }
     try {
       if (_images.isNotEmpty) {
-        uploadList.clear();
-        _images.asMap().forEach((key, value) async {
-          String fileNameSingle = _images[key].path.split('/').last;
-          // print(fileNameSingle);
+        for (int i = 0; i < _images.length; i++) {
+          String fileNameSingle = _images[i].path.split('/').last;
+          if (kDebugMode) {
+            print(_images[i].path);
+            print(fileNameSingle);
+          }
 
-          uploadList.add(await multipart_file.MultipartFile.fromFile(
-            _images[key].path,
-            filename: fileNameSingle,
-          ));
-        });
-        // print(uploadList.toList());
+          multipart_file.MultipartFile file =
+              await multipart_file.MultipartFile.fromFile(
+            _images[i].path,
+            filename: fileNameSingle.toString(),
+          );
+
+          uploadList.add(file);
+        }
+
+       
+        if (kDebugMode) {
+          print(uploadList.toList());
+        }
       }
+
+      
 
       var formData = form_data.FormData.fromMap({
         'message':
             "${msgController.value.text}  \n Device Info: \n $map \n Package info \n ${_packageInfo.toString()}",
-        'files': _images.isEmpty ? null : uploadList,
+        'files[]': _images.isEmpty ? null : uploadList,
       });
 
       var response = await Api().dio.post(
             '/report-bug',
             data: formData,
+            // options: Options(headers: {"Content-Type": "multipart/form-data"})
           );
 
       Get.dialog(
@@ -164,8 +177,6 @@ class _ReportBugPageState extends State<ReportBugPage> {
             ],
           ),
         );
-
-
       } else {
         if (kDebugMode) {
           print(e.message);
