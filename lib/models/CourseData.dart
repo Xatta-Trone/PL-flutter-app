@@ -40,7 +40,7 @@ class Data {
 
   final int id;
   final String name;
-  final int departmentId;
+  final String departmentId;
   final List<Course> course;
   final Department department;
 
@@ -73,7 +73,7 @@ class Course {
   final int id;
   final String courseName;
   final String slug;
-  final int levelTermId;
+  final String levelTermId;
 
   factory Course.fromJson(Map<String, dynamic> json) => Course(
         id: json["id"],

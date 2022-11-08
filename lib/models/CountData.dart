@@ -1,3 +1,8 @@
+// To parse this JSON data, do
+//
+//     final countData = countDataFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 import 'package:plandroid/globals/globals.dart';
@@ -43,12 +48,29 @@ class Data {
   final int softwares;
   final int downloads;
 
+
+  // String formatUser() {
+  //   return Globals.getRounded(int.parse(users));
+  // }
+
+  // String formatBooks() {
+  //   return Globals.getRounded(int.parse(books));
+  // }
+
+  // String formatSoftwares() {
+  //   return Globals.getRounded(int.parse(softwares));
+  // }
+
+  // String formatDownloads() {
+  //   return Globals.getRounded(downloads);
+  // }
+
   String formatUser() {
     return Globals.getRounded(users);
   }
 
   String formatBooks() {
-   return Globals.getRounded(books);
+    return Globals.getRounded(books);
   }
 
   String formatSoftwares() {

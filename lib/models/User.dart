@@ -46,10 +46,10 @@ class UserClass {
   final String studentId;
   final dynamic emailVerifiedAt;
   final String userLetter;
-  final int status;
+  final String status;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final int whitelisted;
+  final String whitelisted;
   final dynamic deletedAt;
 
   factory UserClass.fromJson(Map<String, dynamic> json) => UserClass(

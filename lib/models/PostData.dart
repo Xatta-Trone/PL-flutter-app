@@ -67,7 +67,7 @@ class ActivePost {
 
   final int id;
   final String name;
-  final int courseId;
+  final String courseId;
   final String link;
 
   factory ActivePost.fromJson(Map<String, dynamic> json) => ActivePost(

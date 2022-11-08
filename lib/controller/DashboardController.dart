@@ -113,6 +113,11 @@ class DashboardController extends GetxController {
 
       if (response.data != null) {
         // update state
+
+        if (kDebugMode) {
+          print(response.data);
+        }
+
         countData.value = CountData.fromJson(response.data);
 
         // save data

@@ -69,7 +69,7 @@ class Levelterm {
   final int id;
   final String name;
   final String slug;
-  final int departmentId;
+  final String departmentId;
 
   factory Levelterm.fromJson(Map<String, dynamic> json) => Levelterm(
         id: json["id"],

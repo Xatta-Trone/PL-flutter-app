@@ -36,7 +36,7 @@ class Software {
     required this.author,
   });
 
-  final int id;
+  final String id;
   final String name;
   final String description;
   final String status;

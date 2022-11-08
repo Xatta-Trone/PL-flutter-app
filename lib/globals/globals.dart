@@ -38,7 +38,7 @@ class Globals {
       {String activity = 'downloaded',
       int causer_id = 0,
       String label = '',
-      int model_id = 0,
+      dynamic model_id = 0,
       String model_type = 'post'}) {
     Api().dio.post('/submit-activity', data: {
       'activity': activity,
@@ -69,7 +69,7 @@ class Globals {
       label += "($additionalData)";
     }
 
-    int modelId = model['id'];
+    dynamic modelId = model['id'];
     String url = model['link'];
     String modelType = postType;
 
