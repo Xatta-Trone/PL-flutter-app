@@ -31,7 +31,11 @@ class AuthInterceptor extends Interceptor {
     var token = authController.isLoggedIn.value
         ? authController.token.value.toString()
         : null;
-    options.headers.addAll({'Authorization': "Bearer $token"});
+
+    if (token != null) {
+      options.headers.addAll({'Authorization': "Bearer $token"});
+    }
+   
     return handler.next(options);
   }
 

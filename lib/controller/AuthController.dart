@@ -481,8 +481,12 @@ class AuthController extends GetxController {
     String? userData = preferences.getString(userDataKey);
 
     if (userData != null) {
+      if (kDebugMode) {
+        print(userData);
+      }
       Map<String, dynamic> jsonUserData = jsonDecode(userData);
       setLoginValues(jsonUserData);
+      
       // getUserDevices();
     }
   }
