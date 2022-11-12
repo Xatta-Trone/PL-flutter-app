@@ -47,8 +47,8 @@ class Course {
   final String courseName;
   final String slug;
   final int id;
-  final String departmentId;
-  final String levelTermId;
+  final int departmentId;
+  final int levelTermId;
   final Levelterm levelterm;
 
   String itemAsString() {

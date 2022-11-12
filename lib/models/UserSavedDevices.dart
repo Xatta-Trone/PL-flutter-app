@@ -42,7 +42,7 @@ class Device {
   });
 
   final int id;
-  final String userId;
+  final int userId;
   final String ipAddress;
   final String location;
   final String device;

@@ -28,7 +28,7 @@ class SearchData {
   final String? author;
   final String? departmentSlug;
   final String? levelTermSlug;
-  final String? courseId;
+  final int? courseId;
   final String postType;
   final String link;
   final String description;

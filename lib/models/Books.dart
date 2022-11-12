@@ -33,7 +33,7 @@ class Book {
     required this.link,
   });
 
-  final String id;
+  final int id;
   final String name;
   final String? author;
   final String status;
