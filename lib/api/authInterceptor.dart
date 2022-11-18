@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/controller/AuthController.dart';
+import 'package:plandroid/routes/routeconst.dart';
 
 class AuthInterceptor extends Interceptor {
   AuthInterceptor();
@@ -35,18 +36,39 @@ class AuthInterceptor extends Interceptor {
     if (token != null) {
       options.headers.addAll({'Authorization': "Bearer $token"});
     }
-   
+
     return handler.next(options);
   }
 
   // You can also perform some actions in the response or onError.
   @override
   void onResponse(response, ResponseInterceptorHandler handler) {
+    if (kDebugMode) {
+      print("err response=================");
+      print(response);
+    }
     return handler.next(response);
   }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
+    if (kDebugMode) {
+      print("err=================");
+      print(err);
+      print(err.response?.statusCode);
+    }
+
+    if (err.response?.statusCode == 401) {
+      authController.setLogoutValues();
+      Get.snackbar(
+        'Unauthenticated !!',
+        'There was an error with the authentication.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      // Get.toNamed(homePage);
+      return handler.next(err);
+    }
+
     return handler.next(err);
   }
 }
