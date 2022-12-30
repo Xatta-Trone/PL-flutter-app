@@ -34,6 +34,7 @@ class Data {
     required this.id,
     required this.name,
     required this.departmentId,
+    required this.additionalData,
     required this.course,
     required this.department,
   });
@@ -41,6 +42,7 @@ class Data {
   final int id;
   final String name;
   final int departmentId;
+  final List<AdditionalDatum> additionalData;
   final List<Course> course;
   final Department department;
 
@@ -48,6 +50,9 @@ class Data {
         id: json["id"],
         name: json["name"],
         departmentId: json["department_id"],
+        additionalData: List<AdditionalDatum>.from(
+            json["additional_data"].map((x) => AdditionalDatum.fromJson(x))),
+
         course:
             List<Course>.from(json["course"].map((x) => Course.fromJson(x))),
         department: Department.fromJson(json["department"]),
@@ -57,10 +62,40 @@ class Data {
         "id": id,
         "name": name,
         "department_id": departmentId,
+        "additional_data":
+            List<dynamic>.from(additionalData.map((x) => x.toJson())),
+
         "course": List<dynamic>.from(course.map((x) => x.toJson())),
         "department": department.toJson(),
       };
 }
+
+
+class AdditionalDatum {
+  AdditionalDatum({
+    required this.id,
+    required this.name,
+    required this.link,
+  });
+
+  final int id;
+  final String name;
+  final String link;
+
+  factory AdditionalDatum.fromJson(Map<String, dynamic> json) =>
+      AdditionalDatum(
+        id: json["id"],
+        name: json["name"],
+        link: json["link"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "link": link,
+      };
+}
+
 
 class Course {
   Course({

@@ -22,6 +22,7 @@ class Courses extends StatefulWidget {
 class _CoursesState extends State<Courses> {
   final AuthController authController = Get.find<AuthController>();
   List<Course> courses = List<Course>.empty(growable: true);
+  List<AdditionalDatum> posts = List<AdditionalDatum>.empty(growable: true);
   bool _isLoading = false;
 
   Future<void> getCourses() async {
@@ -38,13 +39,16 @@ class _CoursesState extends State<Courses> {
       if (response.data != null) {
         CourseData courseData = CourseData.fromJson(response.data);
 
-        // if (kDebugMode) {
-        //   print(deptData.data.courses.toString());
-        // }
+        if (kDebugMode) {
+          print('=========additional data======');
+          print(courseData.data.additionalData);
+        }
 
         setState(() {
           courses.clear();
           courses.addAll(courseData.data.course);
+          posts.clear();
+          posts.addAll(courseData.data.additionalData);
         });
 
         if (kDebugMode) {
@@ -59,7 +63,6 @@ class _CoursesState extends State<Courses> {
       }
 
       if (e.response?.statusCode == 422) {
-        
         Get.dialog(
           AlertDialog(
             title: const Text('Error !!'),
@@ -77,6 +80,7 @@ class _CoursesState extends State<Courses> {
 
         setState(() {
           courses.clear();
+          posts.clear();
         });
       } else {
         String errData = Globals().formatText(
@@ -107,6 +111,7 @@ class _CoursesState extends State<Courses> {
     setState(() {
       _isLoading = false;
       courses.clear();
+      posts.clear();
       getCourses();
     });
   }
@@ -148,84 +153,263 @@ class _CoursesState extends State<Courses> {
                           return _refresh();
                         },
                         child: GestureDetector(
-                            child: Column(
-                          children: [
-                            if (courses.isNotEmpty) ...[
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10.0),
-                                child: SizedBox(
-                                  height: 40.0,
-                                  child: Center(
-                                    child: Text(
-                                      'Courses',
-                                      style: theme.textTheme.headline5,
+                            child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              if (courses.isNotEmpty) ...[
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
+                                  child: SizedBox(
+                                    height: 40.0,
+                                    child: Center(
+                                      child: Text(
+                                        'Courses',
+                                        style: theme.textTheme.headline5,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                            Expanded(
-                              child: courses.isEmpty
-                                  ? Center(
-                                      child: Text(
-                                        'No course found',
-                                        style: theme.textTheme.headline5,
-                                      ),
-                                    )
-                                  : ListView.builder(
-                                      itemCount: courses.length,
-                                      itemBuilder: (ctx, index) {
-                                        return InkWell(
-                                          onTap: () {
-                                            if (kDebugMode) {
-                                              print(courses[index].slug);
-                                            }
+                              ],
 
-                                            Get.toNamed(
-                                              "$postsPage/${Get.parameters['department']}/${Get.parameters['levelTerm']}/${courses[index].slug.toString()}",
-                                            );
-                                          },
-                                          child: Container(
-                                            color: theme.cardColor
-                                                .withOpacity(0.6),
-                                            margin: const EdgeInsets.symmetric(
-                                                vertical: 10.0),
-                                            child: ListTile(
-                                              leading: Container(
-                                                decoration: BoxDecoration(
-                                                    color: theme.primaryColor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            7.0)),
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.15,
-                                                child: Center(
-                                                  child: Text(
-                                                    "${Get.parameters['department']}\n${Get.parameters['levelTerm']}"
-                                                        .toUpperCase(),
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ),
+                              if (courses.isEmpty) ...[
+                                Center(
+                                  child: Text(
+                                    'No course found',
+                                    style: theme.textTheme.headline5,
+                                  ),
+                                )
+                              ],
+
+                              ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: posts.length,
+                                  itemBuilder: (ctx, index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        if (kDebugMode) {
+                                          print(posts[index].name);
+                                        }
+
+                                        Globals.downloadItem(
+                                            model: posts[index].toJson(),
+                                            postType: 'post',
+                                            additionalData:
+                                                "${Get.parameters['department']}/${Get.parameters['levelTerm']}");
+                                      },
+                                      child: Container(
+                                        color: theme.cardColor.withOpacity(0.6),
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 10.0),
+                                        child: ListTile(
+                                          leading: Container(
+                                            decoration: BoxDecoration(
+                                                color: theme.primaryColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(7.0)),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.15,
+                                            child: Center(
+                                              child: Text(
+                                                "${Get.parameters['department']}\n${Get.parameters['levelTerm']}"
+                                                    .toUpperCase(),
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
-                                              title: Text(
-                                                  Globals.generateCourseName(
-                                                      courses[index]
-                                                          .slug
-                                                          .toUpperCase())),
-                                              subtitle: Text(
-                                                  courses[index].courseName),
                                             ),
                                           ),
+                                          title: Text(posts[index].name),
+                                          subtitle: Text(posts[index].name),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+
+                              ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: courses.length,
+                                  itemBuilder: (ctx, index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        if (kDebugMode) {
+                                          print(courses[index].slug);
+                                        }
+
+                                        Get.toNamed(
+                                          "$postsPage/${Get.parameters['department']}/${Get.parameters['levelTerm']}/${courses[index].slug.toString()}",
                                         );
-                                      }),
-                            ),
-                          ],
+                                      },
+                                      child: Container(
+                                        color: theme.cardColor.withOpacity(0.6),
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 10.0),
+                                        child: ListTile(
+                                          leading: Container(
+                                            decoration: BoxDecoration(
+                                                color: theme.primaryColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(7.0)),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.15,
+                                            child: Center(
+                                              child: Text(
+                                                "${Get.parameters['department']}\n${Get.parameters['levelTerm']}"
+                                                    .toUpperCase(),
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                          title: Text(
+                                              Globals.generateCourseName(
+                                                  courses[index]
+                                                      .slug
+                                                      .toUpperCase())),
+                                          subtitle:
+                                              Text(courses[index].courseName),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+
+                              
+
+                              // Expanded(
+                              //   child: courses.isEmpty
+                              //       ? Center(
+                              //           child: Text(
+                              //             'No course found',
+                              //             style: theme.textTheme.headline5,
+                              //           ),
+                              //         )
+                              //       : ListView.builder(
+                              //           itemCount: courses.length,
+                              //           itemBuilder: (ctx, index) {
+                              //             return InkWell(
+                              //               onTap: () {
+                              //                 if (kDebugMode) {
+                              //                   print(courses[index].slug);
+                              //                 }
+
+                              //                 Get.toNamed(
+                              //                   "$postsPage/${Get.parameters['department']}/${Get.parameters['levelTerm']}/${courses[index].slug.toString()}",
+                              //                 );
+                              //               },
+                              //               child: Container(
+                              //                 color: theme.cardColor
+                              //                     .withOpacity(0.6),
+                              //                 margin: const EdgeInsets.symmetric(
+                              //                     vertical: 10.0),
+                              //                 child: ListTile(
+                              //                   leading: Container(
+                              //                     decoration: BoxDecoration(
+                              //                         color: theme.primaryColor,
+                              //                         borderRadius:
+                              //                             BorderRadius.circular(
+                              //                                 7.0)),
+                              //                     width: MediaQuery.of(context)
+                              //                             .size
+                              //                             .width *
+                              //                         0.15,
+                              //                     child: Center(
+                              //                       child: Text(
+                              //                         "${Get.parameters['department']}\n${Get.parameters['levelTerm']}"
+                              //                             .toUpperCase(),
+                              //                         textAlign: TextAlign.center,
+                              //                         style: const TextStyle(
+                              //                             color: Colors.white,
+                              //                             fontWeight:
+                              //                                 FontWeight.bold),
+                              //                       ),
+                              //                     ),
+                              //                   ),
+                              //                   title: Text(
+                              //                       Globals.generateCourseName(
+                              //                           courses[index]
+                              //                               .slug
+                              //                               .toUpperCase())),
+                              //                   subtitle: Text(
+                              //                       courses[index].courseName),
+                              //                 ),
+                              //               ),
+                              //             );
+                              //           }),
+                              // ),
+                              // Expanded(
+                              //   child: posts.isEmpty
+                              //       ? Center(
+                              //           child: Text(
+                              //             'No data found',
+                              //             style: theme.textTheme.headline5,
+                              //           ),
+                              //         )
+                              //       : ListView.builder(
+                              //           itemCount: posts.length,
+                              //           itemBuilder: (ctx, index) {
+                              //             return InkWell(
+                              //               onTap: () {
+                              //                 if (kDebugMode) {
+                              //                   print(posts[index].name);
+                              //                 }
+
+                              //                 Globals.downloadItem(
+                              //                     model: posts[index].toJson(),
+                              //                     postType: 'post',
+                              //                     additionalData:
+                              //                         "${Get.parameters['department']}/${Get.parameters['levelTerm']}}");
+                              //               },
+                              //               child: Container(
+                              //                 color: theme.cardColor
+                              //                     .withOpacity(0.6),
+                              //                 margin: const EdgeInsets.symmetric(
+                              //                     vertical: 10.0),
+                              //                 child: ListTile(
+                              //                   leading: Container(
+                              //                     decoration: BoxDecoration(
+                              //                         color: theme.primaryColor,
+                              //                         borderRadius:
+                              //                             BorderRadius.circular(
+                              //                                 7.0)),
+                              //                     width: MediaQuery.of(context)
+                              //                             .size
+                              //                             .width *
+                              //                         0.15,
+                              //                     child: Center(
+                              //                       child: Text(
+                              //                         Globals.generateCourseName(
+                              //                                 Get.parameters[
+                              //                                         'course'] ??
+                              //                                     '')
+                              //                             .replaceAll('-', '\n')
+                              //                             .toUpperCase(),
+                              //                         textAlign: TextAlign.center,
+                              //                         style: const TextStyle(
+                              //                             color: Colors.white,
+                              //                             fontWeight:
+                              //                                 FontWeight.bold),
+                              //                       ),
+                              //                     ),
+                              //                   ),
+                              //                   title: Text(posts[index].name),
+                              //                   subtitle: Text(posts[index].name),
+                              //                 ),
+                              //               ),
+                              //             );
+                              //           }),
+                              // ),
+                            ],
+                          ),
                         )),
                       ),
           ),

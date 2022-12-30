@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:plandroid/api/UAInterceptor.dart';
+import 'package:plandroid/api/apiVersionInterceptor.dart';
 import 'package:plandroid/api/authInterceptor.dart';
 import 'package:plandroid/constants/const.dart';
 
@@ -27,6 +28,7 @@ class Api {
     dio.interceptors.addAll({
       AuthInterceptor(),
       UAInterceptor(),
+      ApiVersionInterceptor(),
     });
     return dio;
   }
