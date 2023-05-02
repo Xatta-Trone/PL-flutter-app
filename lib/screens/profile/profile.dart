@@ -54,7 +54,7 @@ class Profile extends StatelessWidget {
                                       '',
                                   style: theme
                                       .textTheme
-                                      .headline4
+                                      .headlineMedium
                                       ?.copyWith(
                                         fontWeight: FontWeight.w500,
                                         color: Colors.white,
@@ -69,7 +69,7 @@ class Profile extends StatelessWidget {
                               "#${authController.user.value?.user.studentId ?? ''}",
                               style: theme
                                   .textTheme
-                                  .headline4
+                                  .headlineMedium
                                   ?.copyWith(
                                     fontWeight: FontWeight.w400,
                                     color: Colors.white,

@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:plandroid/controller/AuthController.dart';
-import 'package:plandroid/routes/routeconst.dart';
 
 class AuthInterceptor extends Interceptor {
   AuthInterceptor();

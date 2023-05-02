@@ -6,7 +6,7 @@ import 'package:plandroid/globals/globals.dart';
 CourseDataForSearch CourseDataForSearchFromJson(String str) =>
     CourseDataForSearch.fromJson(json.decode(str));
 
-String CourseDataForSearchToJson(CourseDataForSearch data) =>
+String courseDataForSearchToJson(CourseDataForSearch data) =>
     json.encode(data.toJson());
 
 class CourseDataForSearch {

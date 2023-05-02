@@ -1,8 +1,8 @@
 // ignore: file_names
+// ignore_for_file: file_names
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_user_agentx/flutter_user_agent.dart';
 
 class ApiVersionInterceptor extends Interceptor {
   ApiVersionInterceptor();
