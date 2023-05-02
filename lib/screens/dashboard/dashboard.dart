@@ -26,19 +26,35 @@ class Dashboard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(
                   left: 20.0,
-                  top: 30.0,
+                  top: 20.0,
                 ),
                 child: Text(
-                  'Hello there ! ${dashboardController.greetingText().toString()}',
-                  style: theme.textTheme.headline5
-                      ?.copyWith(fontWeight: FontWeight.w500),
+                  'PL Tutorials',
+                  style: theme.primaryTextTheme.headlineLarge?.copyWith(
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.only(
+              //     left: 20.0,
+              //     top: 30.0,
+              //   ),
+              //   child: Text(
+              //     'Hello there ! ${dashboardController.greetingText().toString()}',
+              //     style: theme.textTheme.headlineSmall
+              //         ?.copyWith(fontWeight: FontWeight.w500),
+              //   ),
+              // ),
               Padding(
                 padding:
-                    const EdgeInsets.only(left: 20.0, bottom: 30.0, top: 5.0),
+                    const EdgeInsets.only(
+                  left: 20.0,
+                  bottom: 20.0,
+                  top: 0.0,
+                ),
                 child: Text(
-                  'How are you doing ?',
+                  'Everything you need !!',
                   style:
                       theme.textTheme.titleMedium?.copyWith(color: Colors.grey),
                 ),
@@ -115,13 +131,13 @@ class Dashboard extends StatelessWidget {
                       borderRadius: const BorderRadius.all(
                         Radius.circular(10.0),
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: theme.primaryColor.withOpacity(0.3),
-                          blurRadius: 2,
-                          offset: const Offset(2, 4), // Shadow position
-                        )
-                      ],
+                      // boxShadow: [
+                      //   BoxShadow(
+                      //     color: theme.primaryColor.withOpacity(0.3),
+                      //     blurRadius: 2,
+                      //     offset: const Offset(2, 4), // Shadow position
+                      //   )
+                      // ],
                     ),
                     child: Center(
                       child: Text(
@@ -149,17 +165,18 @@ class Dashboard extends StatelessWidget {
                   ),
                   child: dashboardController.quote.value != null
                       ? Container(
+                        width: double.infinity,
                           decoration: BoxDecoration(
                             color: theme.primaryColor,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: theme.primaryColor.withOpacity(0.3),
-                                blurRadius: 2,
-                                offset: const Offset(2, 4), // Shadow position
-                              ),
-                            ],
+                            // boxShadow: [
+                            //   BoxShadow(
+                            //     color: theme.primaryColor.withOpacity(0.3),
+                            //     blurRadius: 2,
+                            //     offset: const Offset(2, 4), // Shadow position
+                            //   ),
+                            // ],
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -169,9 +186,8 @@ class Dashboard extends StatelessWidget {
                             child: Column(
                               children: [
                                 Text(
-                                  dashboardController.quote.value?.data.quote ??
-                                      '',
-                                  style: theme.textTheme.headline6
+                                  dashboardController.quote.value?.data.quote ?? "",
+                                  style: theme.textTheme.titleLarge
                                       ?.copyWith(color: Colors.white),
                                   textAlign: TextAlign.center,
                                 ),
