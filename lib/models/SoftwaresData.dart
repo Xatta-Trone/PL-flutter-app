@@ -38,7 +38,7 @@ class Software {
 
   final int id;
   final String name;
-  final String description;
+  final String? description;
   final String status;
   final String link;
   final String? author;
@@ -49,7 +49,7 @@ class Software {
         description: json["description"],
         status: json["status"],
         link: json["link"],
-        author: json["author"] ?? null,
+        author: json["author"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -58,6 +58,6 @@ class Software {
         "description": description,
         "status": status,
         "link": link,
-        "author": author ?? null,
+        "author": author,
       };
 }

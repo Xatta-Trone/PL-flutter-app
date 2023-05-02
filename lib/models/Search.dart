@@ -31,7 +31,7 @@ class SearchData {
   final int? courseId;
   final String postType;
   final String link;
-  final String description;
+  final String? description;
   final DateTime createdAt;
 
   String getAuthor({String courseSlug = ''}) {
@@ -44,11 +44,11 @@ class SearchData {
   factory SearchData.fromJson(Map<String, dynamic> json) => SearchData(
         id: json["id"],
         name: json["name"],
-        author: json["author"] ?? null,
-        departmentSlug: json["department_slug"] ?? null,
-        levelTermSlug: json["level_term_slug"] ?? null,
-        courseId: json["course_id"] ?? null,
-        postType: json["post_type"] ?? null,
+        author: json["author"],
+        departmentSlug: json["department_slug"],
+        levelTermSlug: json["level_term_slug"],
+        courseId: json["course_id"],
+        postType: json["post_type"],
         link: json["link"],
         description: json["description"],
         createdAt: DateTime.parse(json["created_at"]),
@@ -57,11 +57,11 @@ class SearchData {
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "author": author ?? null,
-        "department_slug": departmentSlug ?? null,
-        "level_term_slug": levelTermSlug ?? null,
-        "course_id": courseId ?? null,
-        "post_type": postType ?? null,
+        "author": author,
+        "department_slug": departmentSlug,
+        "level_term_slug": levelTermSlug,
+        "course_id": courseId,
+        "post_type": postType,
         "link": link,
         "description": description,
         "created_at": createdAt.toIso8601String(),
